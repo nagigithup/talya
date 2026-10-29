@@ -5,6 +5,37 @@ app_description = "Talya Healthcare Management Platform"
 app_email = "dev@talya.local"
 app_license = "mit"
 
+required_apps = ["erpnext", "healthcare"]
+
+home_page = "talya"
+after_install = "talya.setup.after_install"
+after_migrate = "talya.setup.after_migrate"
+
+fixtures = [
+	{"dt": "Role", "filters": [["role_name", "=", "Talya Receptionist"]]},
+	{
+		"dt": "Custom Field",
+		"filters": [["name", "in", [
+			"Healthcare Practitioner-custom_show_on_talya_website",
+			"Healthcare Practitioner-custom_talya_display_name_en",
+			"Healthcare Practitioner-custom_talya_display_name_ar",
+			"Healthcare Practitioner-custom_talya_specialty_en",
+			"Healthcare Practitioner-custom_talya_specialty_ar",
+			"Healthcare Practitioner-custom_talya_bio_en",
+			"Healthcare Practitioner-custom_talya_bio_ar",
+			"Healthcare Practitioner-custom_talya_display_order",
+			"Healthcare Practitioner-custom_enable_talya_online_booking",
+		]]],
+	},
+]
+
+doctype_js = {
+	"Talya Online Booking": "public/js/talya_online_booking.js",
+}
+doctype_list_js = {
+	"Talya Online Booking": "public/js/talya_online_booking_list.js",
+}
+
 # Apps
 # ------------------
 
