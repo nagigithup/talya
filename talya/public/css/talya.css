@@ -50,11 +50,11 @@
 .hero-slide {
   position: absolute;
   inset: 0;
-  opacity: 0;
+  display: none;
   pointer-events: none;
-  transition: opacity .65s ease;
 }
-.hero-slide.is-active { opacity: 1; pointer-events: auto; }
+/* An outgoing portrait must never paint beneath another doctor's information. */
+.hero-slide.is-active { display: block; pointer-events: auto; isolation: isolate; }
 .hero-slide-mehira .hero-note { width: 130px; }
 .hero-slide .hero-portrait {
   position: absolute;
@@ -65,10 +65,12 @@
   width: auto;
   max-width: none;
   object-fit: contain;
-  translate: 0 8px;
-  transition: translate .8s ease;
 }
-.hero-slide.is-active .hero-portrait { translate: 0 0; }
+.hero-slide.is-active .hero-portrait { animation: talya-portrait-enter .45s ease-out; }
+@keyframes talya-portrait-enter {
+  from { translate: 0 8px; }
+  to { translate: 0 0; }
+}
 .hero-slide .hero-portrait-mehira {
   height: 630px;
   bottom: 0;
@@ -127,5 +129,5 @@
   .hero-slide .hero-portrait-mehira { height: 370px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .hero-slide, .hero-slide .hero-portrait { transition: none; translate: none; }
+  .hero-slide .hero-portrait { animation: none; }
 }

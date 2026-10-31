@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/talya/css/talya.css">
-<link rel="preload" as="image" href="/assets/talya/images/dr-farouq.png">
+<link rel="stylesheet" href="/assets/talya/css/talya.css?v={{ asset_versions['css/talya.css'] }}">
+<link rel="preload" as="image" href="/assets/talya/images/dr-farouq.png?v={{ asset_versions['images/dr-farouq.png'] }}">
 {% endblock %}
 {% block page_container %}
 <div class="talya-site" id="top" data-practitioners='{{ practitioners | tojson | e }}'>
@@ -54,13 +54,13 @@
         </div>
         <div class="hero-visual hero-slider" role="region" aria-roledescription="carousel" aria-label="Our doctors" tabindex="0">
           <div class="hero-ring"></div><div class="hero-cross">+</div>
-          <div class="hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 / 2" aria-hidden="false">
-            <img class="hero-portrait" src="/assets/talya/images/dr-farouq.png" alt="Dr. Farouq Ejami" width="1050" height="1400" fetchpriority="high">
+          <div class="hero-slide is-active" data-doctor="farouq" role="group" aria-roledescription="slide" aria-label="1 / 2" aria-hidden="false">
+            <img class="hero-portrait" src="/assets/talya/images/dr-farouq.png?v={{ asset_versions['images/dr-farouq.png'] }}" alt="Dr. Farouq Ejami" width="1050" height="1400" fetchpriority="high">
             <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-tooth"/></svg></span><div><b data-hero-text="farouq_name">Dr. Farouq Ejami</b><small data-hero-text="farouq_specialty">Dentist</small></div></div>
             <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="farouq_tagline">Your Health. Your Smile. Our Priority.</p></div>
           </div>
-          <div class="hero-slide hero-slide-mehira" role="group" aria-roledescription="slide" aria-label="2 / 2" aria-hidden="true" inert>
-            <img class="hero-portrait hero-portrait-mehira" src="/assets/talya/images/dr-mehira-original.webp" alt="Dr. Mehira Fadl" width="720" height="900" decoding="async">
+          <div class="hero-slide hero-slide-mehira" data-doctor="mehira" role="group" aria-roledescription="slide" aria-label="2 / 2" aria-hidden="true" inert>
+            <img class="hero-portrait hero-portrait-mehira" src="/assets/talya/images/dr-mehira-original.webp?v={{ asset_versions['images/dr-mehira-original.webp'] }}" alt="Dr. Mehira Fadl" width="720" height="900" decoding="async">
             <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-stethoscope"/></svg></span><div><b data-hero-text="mehira_name">Dr. Mehira Fadl</b><small data-hero-text="mehira_specialty">General Practitioner</small></div></div>
             <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="mehira_tagline">Comprehensive Care. Experience You Can Trust.</p></div>
           </div>
@@ -143,6 +143,6 @@
     <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
   </defs></svg>
 </div>
-<script src="/assets/talya/js/talya.js" defer></script>
-<script src="/assets/talya/js/hero-slider.js" defer></script>
+<script src="/assets/talya/js/talya.js?v={{ asset_versions['js/talya.js'] }}" defer></script>
+<script src="/assets/talya/js/hero-slider.js?v={{ asset_versions['js/hero-slider.js'] }}" defer></script>
 {% endblock %}
