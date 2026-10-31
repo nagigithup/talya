@@ -3,3 +3,34 @@
 @media(max-width:860px){.site-header{height:74px}.shell{width:min(100% - 32px,720px)}.brand{width:220px}.menu-toggle{display:flex;margin-inline-start:auto;flex-direction:column;gap:4px;border:0;background:none;color:var(--navy)}.menu-toggle span{width:24px;border-top:2px solid}.menu-toggle b{font-size:9px}.main-nav{display:none;position:absolute;top:74px;left:0;right:0;background:#fff;padding:12px 20px 22px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch;gap:0}.main-nav.open{display:flex}.main-nav a{padding:14px 8px;border:0}.nav-actions .whatsapp-pill{display:none}.hero-grid{grid-template-columns:1fr;min-height:0}.hero-copy{padding:62px 0 20px}.hero{min-height:850px}.hero-visual{height:420px}.hero-visual>img{height:440px;left:50%;right:auto;transform:translateX(-50%)}[dir=rtl] .hero-visual>img{transform:translateX(-50%) scaleX(-1)}.hero-ring{width:390px;height:390px;border-width:50px;left:50%;transform:translateX(-50%);bottom:5px}.doctor-badge{left:4%;bottom:25px}.section{padding:70px 0}.section-heading{display:block}.section-heading>p{margin-top:16px}.service-grid{grid-template-columns:1fr}.service-card{min-height:300px}.doctor-grid{grid-template-columns:1fr}.booking-grid{grid-template-columns:1fr}.booking-aside{max-width:650px}.contact-card{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}}
 @media(max-width:540px){.shell{width:calc(100% - 24px)}.brand{width:185px}.language-switch{padding:7px}.hero{min-height:800px}.hero-copy{padding-top:44px}.hero h1{font-size:42px}.hero-copy>p{font-size:17px}.hero-actions{display:grid}.button{width:100%}.trust-row{gap:6px}.trust-row>div{padding:0 8px}.hero-visual{height:370px}.hero-visual>img{height:390px}.doctor-badge{left:0;bottom:14px}.hero-note{display:none}.section{padding:58px 0}.section-heading h2,.booking-aside h2,.contact-copy h2{font-size:31px}.service-card{padding:23px}.doctor-card{grid-template-columns:1fr;min-height:0}.doctor-photo{height:280px}.doctor-info{padding:26px}.booking-form{padding:18px;border-radius:18px}.form-head{align-items:flex-start}.form-head h3{font-size:19px}.step-badge{display:none}.form-grid{grid-template-columns:1fr}.wide{grid-column:auto}.contact-copy{padding:27px 22px}.contact-links,.contact-buttons{flex-direction:column}.map-visual{min-height:320px}.footer-grid{grid-template-columns:1fr;gap:28px}.footer-brand{grid-column:auto}.footer-bottom{display:block}.footer-bottom a{display:block;margin-top:10px}.footer-brand img{width:240px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Keep contact values intact inside either page direction. */
+.talya-site .talya-phone,
+.talya-site .talya-email {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+}
+.talya-site .language-switch { direction: ltr; unicode-bidi: isolate; }
+.talya-site .contact-links a { min-width: 0; align-items: center; }
+.talya-site .contact-links svg,
+.talya-site .contact-buttons svg { flex-shrink: 0; }
+.talya-site .service-card { isolation: isolate; }
+.talya-site .service-card > div:not(.card-art) { position: relative; z-index: 1; }
+.talya-site .service-card .card-art { z-index: 0; pointer-events: none; opacity: .35; }
+.talya-site[dir=rtl] .service-card,
+.talya-site[dir=rtl] .contact-copy,
+.talya-site[dir=rtl] .booking-form { text-align: start; }
+.talya-site[dir=rtl] .service-icon { margin-inline-start: 0; margin-inline-end: auto; }
+.talya-site[dir=rtl] .service-card li { display: flex; align-items: baseline; }
+.talya-site[dir=rtl] .service-card li::before { flex: 0 0 18px; }
+.talya-site[dir=rtl] .service-card a b { display: inline-block; transform: scaleX(-1); }
+.talya-site[dir=rtl] .contact-links > a > span { text-align: start; }
+.talya-site[dir=rtl] .form-grid input[dir=ltr] { text-align: left; }
+/* Mirror layout, but preserve the portrait and the lettering on the coat. */
+.talya-site[dir=rtl] .hero-visual > img { transform: none; }
+@media(max-width:860px) {
+  .talya-site[dir=rtl] .hero-visual > img { transform: translateX(-50%); }
+}
