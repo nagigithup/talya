@@ -3,7 +3,7 @@
 {% block footer %}{% endblock %}
 {% block head_include %}
 {{ super() }}
-<meta name="description" content="Quality medicine, dentistry and family healthcare in Ras Al Khaimah.">
+<meta name="description" content="Professional, compassionate general medicine, dental care and medical laboratory services in Ras Al Khaimah.">
 <meta property="og:title" content="Talya Medical Center">
 <meta property="og:description" content="Your Health. Your Smile. Our Priority.">
 <meta property="og:type" content="website">
@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/talya/css/talya.css">
+<link rel="preload" as="image" href="/assets/talya/images/dr-farouq.png">
 {% endblock %}
 {% block page_container %}
 <div class="talya-site" id="top" data-practitioners='{{ practitioners | tojson | e }}'>
@@ -43,19 +44,36 @@
         <div class="hero-copy">
           <div class="eyebrow"><span></span><b data-i18n="eyebrow">Medicine & Dentistry in Ras Al Khaimah</b></div>
           <h1 id="hero-title"><span data-i18n="hero_title">Talya Medical Center</span><em data-i18n="hero_subtitle">Medicine & Dentistry</em></h1>
-          <p data-i18n="hero_description">Providing quality healthcare with professionalism and compassion.</p>
+          <p data-i18n="hero_description">Professional, compassionate healthcare for individuals and families.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#appointment"><svg><use href="#icon-calendar"/></svg><span data-i18n="book">Book Appointment</span></a>
             <a class="button button-whatsapp" href="https://wa.me/971522207872" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">Chat on WhatsApp</span></a>
             <a class="button button-light" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="location">Open Location</span></a>
           </div>
-          <div class="trust-row"><div><strong>3</strong><span data-i18n="care_areas">Care areas</span></div><div><strong>2</strong><span data-i18n="languages">Languages</span></div><div><svg><use href="#icon-shield"/></svg><span data-i18n="privacy_first">Privacy-first requests</span></div></div>
+          <div class="trust-row"><div><strong dir="ltr">3</strong><span data-i18n="care_areas">Care Areas</span></div><div><svg aria-hidden="true"><use href="#icon-users"/></svg><strong dir="ltr">2</strong><span data-i18n="hero_doctors">Doctors</span></div><div><svg aria-hidden="true"><use href="#icon-heart-shield"/></svg><span data-i18n="hero_compassion">Care with Compassion &amp; Privacy</span></div></div>
         </div>
-        <div class="hero-visual">
+        <div class="hero-visual hero-slider" role="region" aria-roledescription="carousel" aria-label="Our doctors" tabindex="0">
           <div class="hero-ring"></div><div class="hero-cross">+</div>
-          <img src="/assets/talya/images/dr-farouq.png" alt="Dr. Farouq Ejami" width="1050" height="1400">
-          <div class="doctor-badge"><span class="badge-icon"><svg><use href="#icon-tooth"/></svg></span><div><b>Dr. Farouq Ejami</b><small data-i18n="dentist">Dentist</small></div></div>
-          <div class="hero-note"><span>“</span><p data-i18n="tagline">Your Health. Your Smile. Our Priority.</p></div>
+          <div class="hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 / 2" aria-hidden="false">
+            <img class="hero-portrait" src="/assets/talya/images/dr-farouq.png" alt="Dr. Farouq Ejami" width="1050" height="1400" fetchpriority="high">
+            <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-tooth"/></svg></span><div><b data-hero-text="farouq_name">Dr. Farouq Ejami</b><small data-hero-text="farouq_specialty">Dentist</small></div></div>
+            <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="farouq_tagline">Your Health. Your Smile. Our Priority.</p></div>
+          </div>
+          <div class="hero-slide hero-slide-mehira" role="group" aria-roledescription="slide" aria-label="2 / 2" aria-hidden="true" inert>
+            <img class="hero-portrait hero-portrait-mehira" src="/assets/talya/images/dr-mehira-original.webp" alt="Dr. Mehira Fadl" width="720" height="900" decoding="async">
+            <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-stethoscope"/></svg></span><div><b data-hero-text="mehira_name">Dr. Mehira Fadl</b><small data-hero-text="mehira_specialty">General Practitioner</small></div></div>
+            <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="mehira_tagline">Comprehensive Care. Experience You Can Trust.</p></div>
+          </div>
+          <div class="hero-slider-controls">
+            <button class="hero-slider-prev" type="button" aria-label="Previous doctor"><span aria-hidden="true">‹</span></button>
+            <div class="hero-slider-dots" role="group" aria-label="Select doctor">
+              <button class="hero-slider-dot" type="button" data-slide="0" aria-label="Show Dr. Farouq Ejami" aria-current="true"></button>
+              <button class="hero-slider-dot" type="button" data-slide="1" aria-label="Show Dr. Mehira Fadl" aria-current="false"></button>
+            </div>
+            <button class="hero-slider-next" type="button" aria-label="Next doctor"><span aria-hidden="true">›</span></button>
+            <button class="hero-slider-toggle" type="button" aria-label="Pause slideshow"><span aria-hidden="true">Ⅱ</span></button>
+          </div>
+          <span class="hero-slider-status" role="status" aria-live="polite" aria-atomic="true"></span>
         </div>
       </div>
     </section>
@@ -64,19 +82,19 @@
       <div class="shell">
         <div class="section-heading"><div><span class="kicker" data-i18n="our_services">Our Services</span><h2 id="services-title" data-i18n="care_for_family">Complete care for every family</h2></div><p data-i18n="services_intro">Focused medical and dental care, delivered with clarity and compassion.</p></div>
         <div class="service-grid">
-          <article class="service-card"><div class="service-icon"><svg><use href="#icon-tooth"/></svg></div><div><h3 data-i18n="dental">Dental Clinic</h3><p data-i18n="dental_desc">General dentistry, cleaning, fillings and preventive dental care.</p><ul><li data-i18n="dental_one">General Dentistry</li><li data-i18n="dental_two">Teeth Cleaning</li><li data-i18n="dental_three">Preventive Care</li></ul><a href="#appointment" data-service="Dentistry"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art tooth-art"><svg><use href="#icon-tooth"/></svg></div></article>
-          <article class="service-card"><div class="service-icon"><svg><use href="#icon-stethoscope"/></svg></div><div><h3 data-i18n="family">Family Medicine</h3><p data-i18n="family_desc">General consultations, checkups and ongoing family healthcare.</p><ul><li data-i18n="family_one">General Consultations</li><li data-i18n="family_two">Health Checkups</li><li data-i18n="family_three">Follow-up Care</li></ul><a href="#appointment" data-service="Family Medicine"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art family-art">✚</div></article>
-          <article class="service-card"><div class="service-icon"><svg><use href="#icon-flask"/></svg></div><div><h3 data-i18n="lab">Medical Laboratory</h3><p data-i18n="lab_desc">Laboratory testing, medical investigations and diagnostic services.</p><ul><li data-i18n="lab_one">Laboratory Testing</li><li data-i18n="lab_two">Medical Investigations</li><li data-i18n="lab_three">Diagnostic Services</li></ul><a href="#appointment" data-service="Laboratory"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art flask-art"><svg><use href="#icon-flask"/></svg></div></article>
+          <article class="service-card"><div class="service-icon"><svg><use href="#icon-tooth"/></svg></div><div><h3 data-i18n="dental">Dental Clinic</h3><p data-i18n="dental_desc">Consultations and preventive, restorative and cosmetic dental care.</p><ul><li data-i18n="dental_one">Examinations, cleaning & gum care</li><li data-i18n="dental_two">Fillings, restorations & root canal care</li><li data-i18n="dental_three">Cosmetic dentistry, whitening & implants</li></ul><a href="#appointment" data-service="Dentistry"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art tooth-art"><svg><use href="#icon-tooth"/></svg></div></article>
+          <article class="service-card"><div class="service-icon"><svg><use href="#icon-stethoscope"/></svg></div><div><h3 data-i18n="family">General Medicine</h3><p data-i18n="family_desc">Patient-centered consultations, checkups and ongoing family healthcare.</p><ul><li data-i18n="family_one">General consultations & checkups</li><li data-i18n="family_two">Common illness diagnosis & treatment</li><li data-i18n="family_three">Preventive care, follow-ups & monitoring</li></ul><a href="#appointment" data-service="Family Medicine"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art family-art">✚</div></article>
+          <article class="service-card"><div class="service-icon"><svg><use href="#icon-flask"/></svg></div><div><h3 data-i18n="lab">Medical Laboratory</h3><p data-i18n="lab_desc">Laboratory testing and medical investigations that support clinical diagnosis.</p><ul><li data-i18n="lab_one">Laboratory Testing</li><li data-i18n="lab_two">Medical Investigations</li><li data-i18n="lab_three">Diagnostic Support</li></ul><a href="#appointment" data-service="Laboratory"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art flask-art"><svg><use href="#icon-flask"/></svg></div></article>
         </div>
       </div>
     </section>
 
     <section class="doctors section" id="doctors" aria-labelledby="doctors-title">
       <div class="shell">
-        <div class="section-heading"><div><span class="kicker" data-i18n="our_doctors">Our Doctors</span><h2 id="doctors-title" data-i18n="meet_team">Meet your care team</h2></div><p data-i18n="doctors_intro">Approved public profiles are linked directly to Healthcare Practitioner records.</p></div>
+        <div class="section-heading"><div><span class="kicker" data-i18n="our_doctors">Our Doctors</span><h2 id="doctors-title" data-i18n="meet_team">Meet your care team</h2></div><p data-i18n="doctors_intro">Professional care focused on your health, comfort and individual needs.</p></div>
         <div class="doctor-grid" id="doctor-grid">
-          <article class="doctor-card" data-fallback="farouq"><div class="doctor-photo farouq"><img src="/assets/talya/images/dr-farouq.png" alt="Dr. Farouq Ejami" loading="lazy"></div><div class="doctor-info"><span class="specialty" data-i18n="dentist">Dentist</span><h3>Dr. Farouq Ejami</h3><p data-i18n="profile_pending">Public Healthcare Practitioner mapping is awaiting clinic configuration.</p><button class="doctor-book" type="button" disabled><span data-i18n="booking_unavailable">Booking configuration required</span></button></div></article>
-          <article class="doctor-card" data-fallback="mehira"><div class="doctor-photo placeholder"><div class="avatar-mark">MF</div><span data-i18n="photo_pending">Authentic photo pending</span></div><div class="doctor-info"><span class="specialty" data-i18n="gp">General Practitioner / Family Medicine</span><h3>Dr. Mehira Fadl</h3><p data-i18n="profile_pending">Public Healthcare Practitioner mapping is awaiting clinic configuration.</p><button class="doctor-book" type="button" disabled><span data-i18n="booking_unavailable">Booking configuration required</span></button></div></article>
+          <article class="doctor-card" data-fallback="farouq"><div class="doctor-photo farouq"><img src="/assets/talya/images/dr-farouq.png" alt="Dr. Farouq Ejami" loading="lazy"></div><div class="doctor-info"><span class="specialty" data-i18n="dentist">Dentist</span><h3 data-i18n="farouq_name">Dr. Farouq Ejami</h3><p data-i18n="farouq_bio">Provides general and cosmetic dental care, including examinations, preventive care, restorations and treatment planning focused on long-term oral health.</p><button class="doctor-book" type="button" disabled><span data-i18n="booking_unavailable">Booking configuration required</span></button></div></article>
+          <article class="doctor-card" data-fallback="mehira"><div class="doctor-photo mehira"><img src="/assets/talya/images/dr-mehira-original.webp" alt="Dr. Mehira Fadl" width="720" height="900" loading="lazy"></div><div class="doctor-info"><span class="specialty" data-i18n="gp">General Practitioner</span><h3 data-i18n="mehira_name">Dr. Mehira Fadl</h3><p data-i18n="mehira_bio">A general practitioner providing comprehensive, patient-centered care through medical consultations, general health examinations, family healthcare and follow-up care.</p><button class="doctor-book" type="button" disabled><span data-i18n="booking_unavailable">Booking configuration required</span></button></div></article>
         </div>
       </div>
     </section>
@@ -105,10 +123,10 @@
       </div>
     </section>
 
-    <section class="contact section" id="contact" aria-labelledby="contact-title"><div class="shell"><div class="contact-card"><div class="contact-copy"><span class="kicker" data-i18n="our_location">Our Location</span><h2 id="contact-title" data-i18n="visit_talya">Visit Talya Medical Center</h2><p data-i18n="address">Ras Al Khaimah, Al Nakheel, near Action Hotel, UAE.</p><div class="contact-links"><a href="tel:+971522207872"><svg><use href="#icon-phone"/></svg><span><small data-i18n="call_us">Call us</small><bdi class="talya-phone" dir="ltr">+971 52 220 7872</bdi></span></a><a href="mailto:talyamedicalrak@gmail.com"><svg><use href="#icon-mail"/></svg><span><small data-i18n="email_us">Email us</small><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></span></a></div><div class="contact-buttons"><a class="button button-primary" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="open_maps">Open Google Maps</span></a><a class="button button-whatsapp" href="https://wa.me/971522207872" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">Chat on WhatsApp</span></a></div></div><a class="map-visual" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener" aria-label="Open Talya Medical Center in Google Maps"><div class="map-grid"></div><span class="map-road road-one"></span><span class="map-road road-two"></span><div class="map-pin"><svg><use href="#icon-pin"/></svg></div><div class="map-label"><img src="/assets/talya/images/talya-mark.svg" alt=""><b>Talya Medical Center</b><small>Al Nakheel · Ras Al Khaimah</small></div></a></div></div></section>
+    <section class="contact section" id="contact" aria-labelledby="contact-title"><div class="shell"><div class="contact-card"><div class="contact-copy"><span class="kicker" data-i18n="our_location">Our Location</span><h2 id="contact-title" data-i18n="visit_talya">Visit Talya Medical Center</h2><div class="about-copy"><p data-i18n="about_one">Talya Medical Center provides professional, compassionate healthcare in Ras Al Khaimah, offering general medical consultations, dental care, and medical laboratory services.</p><p data-i18n="about_two">Our focus is patient comfort, personalized attention, and quality care for individuals and families.</p></div><p class="contact-address" data-i18n="address">Ras Al Khaimah, Al Nakheel, near Action Hotel, UAE.</p><div class="contact-links"><a href="tel:+971522207872"><svg><use href="#icon-phone"/></svg><span><small data-i18n="call_us">Call us</small><bdi class="talya-phone" dir="ltr">+971 52 220 7872</bdi></span></a><a href="tel:+971504087963"><svg><use href="#icon-phone"/></svg><span><small data-i18n="additional_phone">Additional phone</small><bdi class="talya-phone" dir="ltr">+971 50 408 7963</bdi></span></a><a href="mailto:talyamedicalrak@gmail.com"><svg><use href="#icon-mail"/></svg><span><small data-i18n="email_us">Email us</small><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></span></a></div><div class="contact-buttons"><a class="button button-primary" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="open_maps">Open Google Maps</span></a><a class="button button-whatsapp" href="https://wa.me/971522207872" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">Chat on WhatsApp</span></a></div></div><a class="map-visual reception-visual" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener" aria-label="Open Talya Medical Center in Google Maps"><img src="/assets/talya/images/talya-reception-styled.png" alt="Talya Medical Center reception" width="1254" height="1254" loading="lazy"><div class="map-label"><img src="/assets/talya/images/talya-mark.svg" alt=""><b>Talya Medical Center</b><small>Al Nakheel · Ras Al Khaimah</small></div></a></div></div></section>
   </main>
 
-  <footer class="site-footer"><div class="shell footer-grid"><div class="footer-brand"><img src="/assets/talya/images/talya-logo-white.svg" alt="Talya Center"><p data-i18n="tagline">Your Health. Your Smile. Our Priority.</p></div><nav aria-label="Footer"><a href="#top" data-i18n="home">Home</a><a href="#services" data-i18n="services">Services</a><a href="#doctors" data-i18n="doctors">Doctors</a><a href="#appointment" data-i18n="book">Book Appointment</a><a href="#contact" data-i18n="contact">Contact</a></nav><div class="footer-contact"><a href="https://wa.me/971522207872"><bdi class="talya-phone" dir="ltr">+971 52 220 7872</bdi></a><a href="https://www.instagram.com/p/DeeIVmUiLRp/" target="_blank" rel="noopener">Instagram</a><a href="mailto:talyamedicalrak@gmail.com"><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></a></div></div><div class="shell footer-bottom"><span>© 2026 Talya Medical Center Medicine and Dentistry LLC OPC</span><a href="#privacy" data-i18n="privacy">Privacy Policy</a></div></footer>
+  <footer class="site-footer"><div class="shell footer-grid"><div class="footer-brand"><img src="/assets/talya/images/talya-logo-white.svg" alt="Talya Center"><p data-i18n="tagline">Your Health. Your Smile. Our Priority.</p></div><nav aria-label="Footer"><a href="#top" data-i18n="home">Home</a><a href="#services" data-i18n="services">Services</a><a href="#doctors" data-i18n="doctors">Doctors</a><a href="#appointment" data-i18n="book">Book Appointment</a><a href="#contact" data-i18n="contact">Contact</a></nav><div class="footer-contact"><a href="https://wa.me/971522207872"><bdi class="talya-phone" dir="ltr">+971 52 220 7872</bdi></a><a href="tel:+971504087963"><bdi class="talya-phone" dir="ltr">+971 50 408 7963</bdi></a><a href="https://www.instagram.com/p/DeeIVmUiLRp/" target="_blank" rel="noopener">Instagram</a><a href="mailto:talyamedicalrak@gmail.com"><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></a></div></div><div class="shell footer-bottom"><span>© 2026 Talya Medical Center Medicine and Dentistry LLC OPC</span><a href="#privacy" data-i18n="privacy">Privacy Policy</a></div></footer>
 
   <svg class="svg-sprite" aria-hidden="true"><defs>
     <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M7 2v3M17 2v3M3 9h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Zm3 9h3v3H8v-3Z"/></symbol>
@@ -118,10 +136,13 @@
     <symbol id="icon-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M3 3h4M13 3h4M10 13v3a5 5 0 0 0 10 0v-3"/><circle cx="20" cy="11" r="2"/></symbol>
     <symbol id="icon-flask" viewBox="0 0 24 24"><path d="M9 2h6M10 2v6l-6 11c-.5 1 .2 2 1.3 2h13.4c1.1 0 1.8-1 1.3-2L14 8V2M7.5 15h9"/></symbol>
     <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5.5-3.5 9-8 11-4.5-2-8-5.5-8-11V5l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></symbol>
+    <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 21v-2a6 6 0 0 1 12 0v2M16 4a3 3 0 0 1 0 6M21 21v-2a6 6 0 0 0-4-5.7"/></symbol>
+    <symbol id="icon-heart-shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5.5-3.5 9-8 11-4.5-2-8-5.5-8-11V5l8-3Z"/><path d="M12 15.5 8.6 12a2.4 2.4 0 0 1 3.4-3.4 2.4 2.4 0 0 1 3.4 3.4L12 15.5Z"/></symbol>
     <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M7 3 4 5c-.8.6-.8 1.7-.4 2.7 2.3 5.9 6.8 10.4 12.7 12.7 1 .4 2.1.4 2.7-.4l2-3-4.5-3-2 2c-2.8-1.2-5.3-3.7-6.5-6.5l2-2L7 3Z"/></symbol>
     <symbol id="icon-mail" viewBox="0 0 24 24"><path d="M3 5h18v14H3V5Z"/><path d="m3 6 9 7 9-7"/></symbol>
     <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
   </defs></svg>
 </div>
 <script src="/assets/talya/js/talya.js" defer></script>
+<script src="/assets/talya/js/hero-slider.js" defer></script>
 {% endblock %}
