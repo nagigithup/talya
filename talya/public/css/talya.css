@@ -30,6 +30,9 @@
 .talya-site[dir=rtl] .service-card a b { display: inline-block; transform: scaleX(-1); }
 .talya-site[dir=rtl] .contact-links > a > span { text-align: start; }
 .talya-site[dir=rtl] .form-grid input[dir=ltr] { text-align: left; }
+/* RTL direction does not override the inherited left text alignment. */
+.talya-site[dir=rtl] .section-heading,
+.talya-site[dir=rtl] .booking-aside { text-align: start; }
 /* Mirror layout, but preserve the portrait and the lettering on the coat. */
 .talya-site[dir=rtl] .hero-visual > img { transform: none; }
 @media(max-width:860px) {
