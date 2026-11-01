@@ -131,3 +131,39 @@
 @media(prefers-reduced-motion:reduce) {
   .hero-slide .hero-portrait { animation: none; }
 }
+
+/* Reorder the single existing statistics row only in the stacked hero layout. */
+@media(max-width:860px) {
+  .hero { min-height: 0; }
+  .hero .hero-grid {
+    padding-block: 62px max(28px, env(safe-area-inset-bottom, 0px));
+  }
+  .hero .hero-copy { display: contents; }
+  .hero .hero-actions { margin-block-start: 16px; }
+  .hero .hero-slider {
+    order: 1;
+    height: 484px;
+    min-width: 0;
+  }
+  /* The final 64px belong to controls, outside both portrait/info slide layers. */
+  .hero .hero-slide { inset-block-end: 64px; }
+  .hero .hero-ring { bottom: 69px; }
+  .hero .hero-slider-controls {
+    inset: auto auto 8px 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 100%;
+    margin: 0;
+  }
+  .hero .trust-row {
+    order: 2;
+    justify-content: center;
+    column-gap: 0;
+    margin-block: 24px 0;
+  }
+  .hero .trust-row > div { justify-content: center; }
+}
+@media(max-width:540px) {
+  .hero .hero-grid { padding-block-start: 44px; }
+  .hero .hero-slider { height: 434px; }
+}
