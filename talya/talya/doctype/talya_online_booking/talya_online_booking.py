@@ -1,7 +1,9 @@
+import datetime
+
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import getdate, now_datetime
+from frappe.utils import cint, get_time, getdate, now_datetime
 
 
 class TalyaOnlineBooking(Document):
@@ -21,36 +23,65 @@ class TalyaOnlineBooking(Document):
 			frappe.throw(_("Privacy consent is required."))
 		if self.is_new() and self.booking_status != "Pending":
 			frappe.throw(_("New website bookings must be pending."))
+		old = self.get_doc_before_save()
+		if old and (self.patient_name != old.patient_name or self.mobile_number != old.mobile_number):
+			from talya.recipients import normalize_phone
+
+			if self.patient_name != old.patient_name or normalize_phone(
+				self.mobile_number
+			) != normalize_phone(old.mobile_number):
+				if old.booking_status == "Confirmed":
+					frappe.throw(_("Change confirmed visit details on the Patient Appointment."))
+				# Keep the inquiry's history intact. A changed booking recipient must
+				# go through explicit verification again, even on a shared number.
+				self.linked_patient = None
+		if old and self.booking_status != old.booking_status:
+			frappe.throw(_("Manage booking status through the reception actions."))
+		if (
+			old
+			and old.booking_status == "Confirmed"
+			and any(
+				self.get(field) != old.get(field)
+				for field in ("healthcare_practitioner", "appointment_type", "service_unit")
+			)
+		):
+			frappe.throw(_("Change confirmed visit details on the Patient Appointment."))
+		if self.appointment_type and self.preferred_time:
+			minutes = cint(frappe.db.get_value("Appointment Type", self.appointment_type, "default_duration"))
+			self.appointment_end_time = (
+				datetime.datetime.combine(getdate(self.preferred_date), get_time(self.preferred_time))
+				+ datetime.timedelta(minutes=minutes)
+			).time()
 
 	def _require_reception(self):
 		if not ({"System Manager", "Talya Receptionist"} & set(frappe.get_roles())):
 			frappe.throw(_("Not permitted"), frappe.PermissionError)
 
 	@frappe.whitelist(methods=["POST"])
-	def confirm_booking(self):
-		self._require_reception()
-		# Same lock order as the inquiry booking action; refreshed state prevents retries.
-		if frappe.db.exists("DocType", "Talya Patient Inquiry"):
-			inquiry = frappe.db.get_value("Talya Patient Inquiry", {"website_booking": self.name}, "name")
-			if inquiry:
-				frappe.db.get_value("Talya Patient Inquiry", inquiry, "name", for_update=True)
-		frappe.db.get_value(self.doctype, self.name, "name", for_update=True)
-		self.reload()
-		if self.booking_status != "Pending":
-			frappe.throw(_("Only pending bookings can be confirmed."))
-		if not self.linked_patient:
-			frappe.throw(_("Link a verified Patient record before confirmation."))
-		if self.linked_patient_appointment:
-			frappe.throw(_("This request is already linked to an appointment."))
+	def confirm_booking(
+		self,
+		patient=None,
+		patient_data=None,
+		identity_verified=False,
+		reviewed_matches=False,
+		expected_modified=None,
+	):
+		from talya.online_booking import confirm
 
-		from talya.booking import create_patient_appointment
+		return confirm(
+			self.name,
+			patient=patient,
+			patient_data=patient_data,
+			identity_verified=identity_verified,
+			reviewed_matches=reviewed_matches,
+			expected_modified=expected_modified,
+		)
 
-		appointment = create_patient_appointment(self)
-		self.db_set({"linked_patient_appointment": appointment.name, "booking_status": "Confirmed"})
-		from talya.inquiries import sync_booking
+	@frappe.whitelist(methods=["POST"])
+	def link_verified_patient(self, patient, identity_verified=False, expected_modified=None):
+		from talya.online_booking import link_patient
 
-		sync_booking(self)
-		return appointment.name
+		return link_patient(self.name, patient, identity_verified, expected_modified)
 
 	@frappe.whitelist(methods=["POST"])
 	def reject_booking(self, reason=None):

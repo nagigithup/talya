@@ -95,6 +95,7 @@ def get_service_unit_for_slot(practitioner_name, date, time):
 
 
 def create_patient_appointment(booking):
+	from talya.internal_booking import availability
 	from talya.recipients import assert_patient_recipient, normalize_phone
 
 	assert_patient_recipient(
@@ -110,26 +111,20 @@ def create_patient_appointment(booking):
 		frappe.get_doc(dt, value).check_permission("read")
 		frappe.db.get_value(dt, value, "name", for_update=True)
 	validate_public_practitioner(booking.healthcare_practitioner, booking.medical_department)
-	configured_slots = get_available_slots(booking.healthcare_practitioner, booking.preferred_date)
-	if not configured_slots or str(booking.preferred_time)[:5] not in configured_slots:
-		frappe.throw(_("The requested slot is no longer available. Please select another slot."))
-	appointment_type = frappe.db.get_single_value("Healthcare Settings", "default_appointment_type")
+	appointment_type = booking.get("appointment_type") or frappe.db.get_single_value(
+		"Healthcare Settings", "default_appointment_type"
+	)
 	if not appointment_type:
 		frappe.throw(_("Configure the default Healthcare appointment type before confirming requests."))
 	appointment_for = frappe.db.get_value("Appointment Type", appointment_type, "allow_booking_for")
 	if appointment_for != "Practitioner":
 		frappe.throw(_("The default Healthcare appointment type must allow Practitioner booking."))
-	service_unit = get_service_unit_for_slot(
-		booking.healthcare_practitioner, booking.preferred_date, booking.preferred_time
-	)
-	if not service_unit:
-		frappe.throw(_("No Healthcare Service Unit is configured for the selected slot."))
-	frappe.db.get_value("Healthcare Service Unit", service_unit, "name", for_update=True)
-	# Healthcare remains responsible for final overlap and unavailability checks.
+	frappe.get_doc("Appointment Type", appointment_type).check_permission("read")
+	frappe.has_permission("Patient Appointment", "create", throw=True)
+	service_unit = booking.get("service_unit")
 	company = frappe.defaults.get_user_default("company") or frappe.db.get_single_value(
 		"Global Defaults", "default_company"
 	)
-	company = frappe.db.get_value("Healthcare Service Unit", service_unit, "company") or company
 	doc = frappe.new_doc("Patient Appointment")
 	doc.update(
 		{
@@ -147,5 +142,32 @@ def create_patient_appointment(booking):
 			"reference_docname": booking.name,
 		}
 	)
+	if not service_unit:
+		units = availability(doc)["service_units"]
+		if not units:
+			frappe.throw(_("No Healthcare Service Unit is configured for the selected slot."))
+		if len(units) != 1:
+			frappe.throw(_("Select a service unit before confirming."))
+		service_unit = doc.service_unit = units[0]
+	frappe.db.get_value("Healthcare Service Unit", service_unit, "name", for_update=True)
+	doc.company = frappe.db.get_value("Healthcare Service Unit", service_unit, "company") or company
+	if not doc.company:
+		frappe.throw(_("Configure the company for this Healthcare service unit."))
+	frappe.get_doc("Company", doc.company).check_permission("read")
+	choice = next(
+		(
+			row
+			for row in availability(doc, lock=True)["slots"]
+			if get_time(row["time"]) == get_time(booking.preferred_time)
+			and row["service_unit"] == service_unit
+		),
+		None,
+	)
+	if not choice:
+		frappe.throw(_("The requested slot is no longer available. Please select another slot."))
+	doc.duration = choice["duration"]
 	doc.insert()
+	# Only this newly created event is changed; no reminder is enabled by confirmation.
+	if doc.event:
+		frappe.db.set_value("Event", doc.event, "send_reminder", 0, update_modified=False)
 	return doc

@@ -1,7 +1,5 @@
 """Reception workflow. Healthcare and the official WhatsApp app own their records."""
 
-import datetime
-
 import frappe
 from frappe import _
 from frappe.utils import cint, get_time, getdate, now_datetime
@@ -31,7 +29,7 @@ def permitted(name, write=False, lock=False):
 	require_reception()
 	if lock:
 		frappe.db.get_value(INQUIRY, name, "name", for_update=True)
-	doc = frappe.get_doc(INQUIRY, name)
+	doc = frappe.get_doc(INQUIRY, name, for_update=lock)
 	doc.check_permission("write" if write else "read")
 	return doc
 
@@ -50,7 +48,7 @@ def sync_booking(doc, method=None, backfill_only=False):
 	name = frappe.db.get_value(INQUIRY, {"website_booking": doc.name}, "name")
 	if name and backfill_only:
 		return name
-	row = frappe.get_doc(INQUIRY, name) if name else frappe.new_doc(INQUIRY)
+	row = frappe.get_doc(INQUIRY, name, for_update=True) if name else frappe.new_doc(INQUIRY)
 	before = row.as_dict()
 	if not name:
 		row.update(
@@ -273,50 +271,23 @@ def _appointment(doc, patient, practitioner, date, appointment_type):
 
 
 def available_slots(appointment):
-	from healthcare.healthcare.doctype.patient_appointment.patient_appointment import get_availability_data
+	from talya.internal_booking import availability
 
-	data = get_availability_data(appointment.appointment_date, appointment.practitioner, appointment)
-	duration = cint(frappe.db.get_value("Appointment Type", appointment.appointment_type, "default_duration"))
-	if duration <= 0:
-		frappe.throw(_("Configure a positive appointment duration."))
-	result = []
-	for group in data["slot_details"]:
-		for window in group.get("avail_slot", []):
-			start = datetime.datetime.combine(
-				getdate(appointment.appointment_date), get_time(window.get("from_time"))
-			)
-			end = datetime.datetime.combine(
-				getdate(appointment.appointment_date), get_time(window.get("to_time"))
-			)
-			while start + datetime.timedelta(minutes=duration) <= end:
-				finish = start + datetime.timedelta(minutes=duration)
-				conflict = any(
-					start
-					< datetime.datetime.combine(
-						getdate(appointment.appointment_date), get_time(a["appointment_time"])
-					)
-					+ datetime.timedelta(minutes=cint(a.get("duration") or duration))
-					and finish
-					> datetime.datetime.combine(
-						getdate(appointment.appointment_date), get_time(a["appointment_time"])
-					)
-					for a in group.get("appointments", [])
-				)
-				if not conflict and start > now_datetime():
-					result.append(
-						{
-							"time": start.strftime("%H:%M"),
-							"service_unit": group.get("service_unit") or "",
-							"duration": duration,
-						}
-					)
-				start = finish
-	return result
+	return availability(appointment)["slots"]
 
 
 @frappe.whitelist(methods=["GET"])
-def slots(name, patient, practitioner, date, appointment_type):
-	return available_slots(_appointment(permitted(name), patient, practitioner, date, appointment_type))
+def slots(name, patient, practitioner, date, appointment_type, service_unit=None):
+	return slot_options(name, patient, practitioner, date, appointment_type, service_unit)["slots"]
+
+
+@frappe.whitelist(methods=["GET"])
+def slot_options(name, patient, practitioner, date, appointment_type, service_unit=None):
+	from talya.internal_booking import availability
+
+	appointment = _appointment(permitted(name), patient, practitioner, date, appointment_type)
+	appointment.service_unit = service_unit
+	return availability(appointment)
 
 
 @frappe.whitelist(methods=["POST"])

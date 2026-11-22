@@ -1,6 +1,9 @@
 """Reception UI translation keys, also shipped in translations/ar.csv."""
 
 LABELS = [
+	"Service Unit",
+	"Select service unit",
+	"End Time",
 	"Changing the recipient clears consent and Patient verification. Linked appointments require a new inquiry.",
 	"Configure a valid default country calling code before entering phone numbers.",
 	"Confirm the patient's identity and authorization to use this number before linking.",

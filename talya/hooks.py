@@ -37,6 +37,7 @@ fixtures = [
 
 doctype_js = {
 	"Talya Online Booking": "public/js/talya_online_booking.js",
+	"Patient Appointment": "public/js/talya_patient_appointment.js",
 }
 doctype_list_js = {
 	"Talya Online Booking": "public/js/talya_online_booking_list.js",
@@ -50,6 +51,7 @@ doc_events = {
 		"on_update": "talya.inquiries.sync_booking",
 	},
 	"Patient Appointment": {
+		"before_validate": "talya.internal_booking.validate_appointment",
 		"on_update": "talya.inquiries.appointment_changed",
 		"on_cancel": "talya.inquiries.appointment_changed",
 	},

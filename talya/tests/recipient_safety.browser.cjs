@@ -54,7 +54,7 @@ print(json.dumps({lang: template.render(language=lang, direction='rtl' if lang =
               assert.equal(args.identity_verified, true);
               assert.equal(args.patient, doc.linked_patient);
               doc.patient_verified_at = '2030-01-01 09:00:00'; result = doc.name;
-            } else if (method === 'slots') result = [{ time: '09:00', service_unit: 'SYNTHETIC-ROOM', duration: 30 }];
+            } else if (method === 'slot_options') result = {slots:[{time:'09:00',end_time:'09:30',service_unit:'SYNTHETIC-ROOM',duration:30}],service_units:['SYNTHETIC-ROOM'],duration:30};
             else if (method === 'book') {
               assert.equal(args.identity_verified, true);
               assert.equal(args.patient, 'SYNTHETIC-PATIENT-A');
@@ -88,6 +88,7 @@ print(json.dumps({lang: template.render(language=lang, direction='rtl' if lang =
           await page.locator('#booking-form [name=appointment_type]').selectOption('SYNTHETIC-TYPE');
           await page.locator('#load-slots').click();
           await page.locator('#booking-form [name=slot]').selectOption('0');
+          assert.equal(await page.locator('#booking-form [name=end_time]').inputValue(), '09:30');
           await page.locator('#booking-form button[type=submit]').click();
           assert.equal(posts.filter(p => p.method === 'book').length, 0, 'Unchecked confirmation must block submission');
           await identity.check();

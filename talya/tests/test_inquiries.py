@@ -530,6 +530,8 @@ def run_local():
 	"""Only talya.localhost; synthetic transactions, outbound transport blocked."""
 	if frappe.local.site != "talya.localhost":
 		raise RuntimeError("Talya local tests are restricted to talya.localhost")
+	from talya.tests.test_internal_booking import TestInternalBooking
+	from talya.tests.test_online_booking_desk import TestOnlineBookingDesk
 	from talya.tests.test_public_booking import TestTalyaPublicBooking
 	from talya.tests.test_recipient_safety import TestRecipientSafety
 
@@ -551,6 +553,8 @@ def run_local():
 		[
 			unittest.defaultTestLoader.loadTestsFromTestCase(TestPatientInquiries),
 			unittest.defaultTestLoader.loadTestsFromTestCase(TestRecipientSafety),
+			unittest.defaultTestLoader.loadTestsFromTestCase(TestInternalBooking),
+			unittest.defaultTestLoader.loadTestsFromTestCase(TestOnlineBookingDesk),
 		]
 	)
 	# Reuse the public-booking assertions without invoking Frappe's fixture-creating

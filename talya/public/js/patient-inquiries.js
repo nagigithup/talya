@@ -207,34 +207,48 @@
       <label>${esc(t('Doctor'))}<select name="practitioner" required><option value="">${esc(t('Select doctor'))}</option>${options(doctors,doc.healthcare_practitioner)}</select></label>
       ${field('date','Appointment Date',doc.preferred_date || new Date().toLocaleDateString('en-CA'),'date','required dir="ltr"')}
       <label class="full">${esc(t('Appointment Type'))}<select name="appointment_type" required><option value="">${esc(t('Select appointment type'))}</option>${options(types)}</select></label>
+      <label class="full">${esc(t('Service Unit'))}<select name="service_unit" required><option value="">${esc(t('Select service unit'))}</option></select></label>
       <button id="load-slots" type="button" class="secondary full">${esc(t('Check Available Times'))}</button>
       <label class="full">${esc(t('Available Time'))}<select name="slot" required><option value="">${esc(t('Check availability first'))}</option></select></label>
+      ${field('end_time','End Time','','text','readonly dir="ltr"')}
       <p class="hint full" id="slot-status" role="status"></p>
       <label class="full">${esc(t('Notes'))}<textarea name="notes" maxlength="1000" dir="auto"></textarea></label>
       </div><div class="form-footer"><button type="submit">${esc(t('Confirm Booking'))}</button></div></form>`;
-    const form = $('#booking-form'); let slots = [], slotSequence = 0;
+    const form = $('#booking-form'); let slots = [], slotSequence = 0, previous = null;
     if (patients.length === 1) form.patient.value = patients[0].name;
-    $('#patient-search-button').onclick = async () => { try { const result = await call('lookup',{doctype:'Patient',search:form.patient_search.value}); form.patient.innerHTML = `<option value="">${esc(t('Select verified patient'))}</option>` + options(result); form.identity_verified.checked = false; } catch (error) { toast(errorText(error)); } };
+    $('#patient-search-button').onclick = async () => { try { const result = await call('lookup',{doctype:'Patient',search:form.patient_search.value}); form.patient.innerHTML = `<option value="">${esc(t('Select verified patient'))}</option>` + options(result); form.identity_verified.checked = false; reset(); } catch (error) { toast(errorText(error)); } };
     $('#create-patient').onclick = async event => {
       if (!confirm(t('Create a new Patient after checking existing matches?'))) return;
       event.target.disabled = true;
-      try { const patient = await call('create_patient',{name:doc.name,sex:form.sex.value,identity_verified:form.identity_verified.checked},true); form.patient.add(new Option(patient,patient)); form.patient.value = patient; reset(); }
+      try { const patient = await call('create_patient',{name:doc.name,sex:form.sex.value,identity_verified:form.identity_verified.checked},true); form.patient.add(new Option(patient,patient)); form.patient.value = patient; reset(); loadSlots(); }
       catch (error) { toast(errorText(error)); } finally { event.target.disabled = false; }
     };
-    const bookingArgs = () => ({name:doc.name,patient:form.patient.value,practitioner:form.practitioner.value,date:form.date.value,appointment_type:form.appointment_type.value});
-    const reset = () => { slotSequence++; slots = []; form.slot.innerHTML = `<option value="">${esc(t('Check availability first'))}</option>`; };
-    ['patient','practitioner','date','appointment_type'].forEach(name => form[name].addEventListener('change',reset));
+    const bookingArgs = () => ({name:doc.name,patient:form.patient.value,practitioner:form.practitioner.value,date:form.date.value,appointment_type:form.appointment_type.value,service_unit:form.service_unit.value || undefined});
+    const reset = () => { previous = slots[Number(form.slot.value)] || previous; slotSequence++; slots = []; form.slot.innerHTML = `<option value="">${esc(t('Check availability first'))}</option>`; form.end_time.value = ''; };
+    ['patient','practitioner','date','appointment_type','service_unit'].forEach(name => form[name].addEventListener('change',() => {
+      reset(); if (name === 'practitioner') form.service_unit.value = ''; loadSlots();
+    }));
     form.patient.addEventListener('change',() => { form.identity_verified.checked = false; });
-    $('#load-slots').onclick = async event => {
-      const sequence = ++slotSequence; event.target.disabled = true; $('#slot-status').textContent = t('Loading…');
+    async function loadSlots() {
+      const sequence = ++slotSequence;
+      if (!form.patient.value || !form.practitioner.value || !form.date.value || !form.appointment_type.value) return;
+      $('#load-slots').disabled = true; $('#slot-status').textContent = t('Loading…');
       try {
-        const result = await call('slots',bookingArgs());
+        const result = await call('slot_options',bookingArgs());
         if (sequence !== slotSequence) return;
-        slots = result;
+        const oldUnit = form.service_unit.value;
+        form.service_unit.innerHTML = `<option value="">${esc(t('Select service unit'))}</option>` + options(result.service_units,oldUnit);
+        if (!form.service_unit.value && result.service_units.length === 1) form.service_unit.value = result.service_units[0];
+        if (oldUnit && form.service_unit.value !== oldUnit) { await loadSlots(); return; }
+        slots = result.slots;
         form.slot.innerHTML = `<option value="">${esc(t('Select time'))}</option>` + slots.map((slot,index) => `<option value="${index}">${esc(slot.time)}${slot.service_unit ? ' · ' + esc(slot.service_unit) : ''}</option>`).join('');
+        const index = previous ? slots.findIndex(slot => slot.time === previous.time && slot.service_unit === previous.service_unit) : -1;
+        form.slot.value = index < 0 ? '' : String(index); previous = index < 0 ? null : slots[index]; form.end_time.value = previous?.end_time || '';
         $('#slot-status').textContent = slots.length ? t('Choose an available time.') : t('No available times. Choose another date.');
-      } catch (error) { $('#slot-status').textContent = errorText(error); } finally { event.target.disabled = false; }
-    };
+      } catch (error) { if (sequence === slotSequence) $('#slot-status').textContent = errorText(error); } finally { if (sequence === slotSequence) $('#load-slots').disabled = false; }
+    }
+    form.slot.addEventListener('change',() => { previous = form.slot.value === '' ? null : slots[Number(form.slot.value)]; form.end_time.value = previous?.end_time || ''; });
+    $('#load-slots').onclick = () => { reset(); loadSlots(); };
     form.onsubmit = event => { event.preventDefault(); busy(form,async () => {
       const slot = slots[Number(form.slot.value)]; if (!slot || form.slot.value === '') throw new Error(t('Check availability first'));
       const appointment = await call('book',{...bookingArgs(),time:slot.time,service_unit:slot.service_unit,notes:form.notes.value,identity_verified:form.identity_verified.checked},true);

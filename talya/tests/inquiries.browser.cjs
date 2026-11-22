@@ -90,7 +90,7 @@ const inquiryNames = new Set(), files = new Set();
       return route.fulfill({json:{message:data[dt] || []}});
     });
     await page.route('**/api/method/talya.inquiries.matching_patients?*',r => r.fulfill({json:{message:[{name:'Mock Patient',label:'UI fixture patient'}]}}));
-    await page.route('**/api/method/talya.inquiries.slots?*',r => r.fulfill({json:{message:[{time:'09:00',service_unit:'UI fixture room',duration:30}]}}));
+    await page.route('**/api/method/talya.inquiries.slot_options?*',r => r.fulfill({json:{message:{slots:[{time:'09:00',end_time:'09:30',service_unit:'UI fixture room',duration:30}],service_units:['UI fixture room'],duration:30}}}));
     for (const lang of ['ar','en']) {
       for (const width of [360,375,390,430,768,1024,1440]) {
         await page.setViewportSize({width,height:900});
