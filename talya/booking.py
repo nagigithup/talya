@@ -2,7 +2,7 @@ import datetime
 
 import frappe
 from frappe import _
-from frappe.utils import getdate, get_time
+from frappe.utils import get_time, getdate
 
 
 def get_available_slots(practitioner_name, date):
@@ -53,7 +53,13 @@ def validate_public_practitioner(name, department=None):
 	values = frappe.db.get_value(
 		"Healthcare Practitioner",
 		name,
-		["name", "department", "status", "custom_show_on_talya_website", "custom_enable_talya_online_booking"],
+		[
+			"name",
+			"department",
+			"status",
+			"custom_show_on_talya_website",
+			"custom_enable_talya_online_booking",
+		],
 		as_dict=True,
 	)
 	if not values or values.status != "Active" or not values.custom_show_on_talya_website:
@@ -89,6 +95,20 @@ def get_service_unit_for_slot(practitioner_name, date, time):
 
 
 def create_patient_appointment(booking):
+	from talya.recipients import assert_patient_recipient, normalize_phone
+
+	assert_patient_recipient(
+		frappe._dict(normalized_phone=normalize_phone(booking.mobile_number)), booking.linked_patient
+	)
+	inquiry = frappe.db.get_value("Talya Patient Inquiry", {"website_booking": booking.name}, "name")
+	if inquiry:
+		assert_patient_recipient(frappe.get_doc("Talya Patient Inquiry", inquiry), booking.linked_patient)
+	for dt, value in (
+		("Patient", booking.linked_patient),
+		("Healthcare Practitioner", booking.healthcare_practitioner),
+	):
+		frappe.get_doc(dt, value).check_permission("read")
+		frappe.db.get_value(dt, value, "name", for_update=True)
 	validate_public_practitioner(booking.healthcare_practitioner, booking.medical_department)
 	configured_slots = get_available_slots(booking.healthcare_practitioner, booking.preferred_date)
 	if not configured_slots or str(booking.preferred_time)[:5] not in configured_slots:
@@ -104,9 +124,12 @@ def create_patient_appointment(booking):
 	)
 	if not service_unit:
 		frappe.throw(_("No Healthcare Service Unit is configured for the selected slot."))
+	frappe.db.get_value("Healthcare Service Unit", service_unit, "name", for_update=True)
+	# Healthcare remains responsible for final overlap and unavailability checks.
 	company = frappe.defaults.get_user_default("company") or frappe.db.get_single_value(
 		"Global Defaults", "default_company"
 	)
+	company = frappe.db.get_value("Healthcare Service Unit", service_unit, "company") or company
 	doc = frappe.new_doc("Patient Appointment")
 	doc.update(
 		{

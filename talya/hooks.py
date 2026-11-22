@@ -15,17 +15,23 @@ fixtures = [
 	{"dt": "Role", "filters": [["role_name", "=", "Talya Receptionist"]]},
 	{
 		"dt": "Custom Field",
-		"filters": [["name", "in", [
-			"Healthcare Practitioner-custom_show_on_talya_website",
-			"Healthcare Practitioner-custom_talya_display_name_en",
-			"Healthcare Practitioner-custom_talya_display_name_ar",
-			"Healthcare Practitioner-custom_talya_specialty_en",
-			"Healthcare Practitioner-custom_talya_specialty_ar",
-			"Healthcare Practitioner-custom_talya_bio_en",
-			"Healthcare Practitioner-custom_talya_bio_ar",
-			"Healthcare Practitioner-custom_talya_display_order",
-			"Healthcare Practitioner-custom_enable_talya_online_booking",
-		]]],
+		"filters": [
+			[
+				"name",
+				"in",
+				[
+					"Healthcare Practitioner-custom_show_on_talya_website",
+					"Healthcare Practitioner-custom_talya_display_name_en",
+					"Healthcare Practitioner-custom_talya_display_name_ar",
+					"Healthcare Practitioner-custom_talya_specialty_en",
+					"Healthcare Practitioner-custom_talya_specialty_ar",
+					"Healthcare Practitioner-custom_talya_bio_en",
+					"Healthcare Practitioner-custom_talya_bio_ar",
+					"Healthcare Practitioner-custom_talya_display_order",
+					"Healthcare Practitioner-custom_enable_talya_online_booking",
+				],
+			]
+		],
 	},
 ]
 
@@ -35,6 +41,26 @@ doctype_js = {
 doctype_list_js = {
 	"Talya Online Booking": "public/js/talya_online_booking_list.js",
 }
+
+before_request = ["talya.communication.before_request"]
+whatsapp_access_guard = ["talya.inquiries.require_reception"]
+doc_events = {
+	"Talya Online Booking": {
+		"after_insert": "talya.inquiries.sync_booking",
+		"on_update": "talya.inquiries.sync_booking",
+	},
+	"Patient Appointment": {
+		"on_update": "talya.inquiries.appointment_changed",
+		"on_cancel": "talya.inquiries.appointment_changed",
+	},
+	"WA Message": {
+		"before_insert": "talya.communication.incoming",
+		"validate": "talya.communication.message_policy",
+		"before_submit": "talya.communication.message_policy",
+		"on_submit": "talya.communication.notify_message",
+	},
+}
+scheduler_events = {"cron": {"*/15 * * * *": ["talya.communication.reminders"]}}
 
 # Apps
 # ------------------
@@ -307,4 +333,3 @@ doctype_list_js = {
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-

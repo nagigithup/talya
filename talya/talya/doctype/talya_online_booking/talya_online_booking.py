@@ -29,6 +29,13 @@ class TalyaOnlineBooking(Document):
 	@frappe.whitelist(methods=["POST"])
 	def confirm_booking(self):
 		self._require_reception()
+		# Same lock order as the inquiry booking action; refreshed state prevents retries.
+		if frappe.db.exists("DocType", "Talya Patient Inquiry"):
+			inquiry = frappe.db.get_value("Talya Patient Inquiry", {"website_booking": self.name}, "name")
+			if inquiry:
+				frappe.db.get_value("Talya Patient Inquiry", inquiry, "name", for_update=True)
+		frappe.db.get_value(self.doctype, self.name, "name", for_update=True)
+		self.reload()
 		if self.booking_status != "Pending":
 			frappe.throw(_("Only pending bookings can be confirmed."))
 		if not self.linked_patient:
@@ -40,13 +47,24 @@ class TalyaOnlineBooking(Document):
 
 		appointment = create_patient_appointment(self)
 		self.db_set({"linked_patient_appointment": appointment.name, "booking_status": "Confirmed"})
+		from talya.inquiries import sync_booking
+
+		sync_booking(self)
 		return appointment.name
 
 	@frappe.whitelist(methods=["POST"])
 	def reject_booking(self, reason=None):
 		self._require_reception()
+		inquiry = frappe.db.get_value("Talya Patient Inquiry", {"website_booking": self.name}, "name")
+		if inquiry:
+			frappe.db.get_value("Talya Patient Inquiry", inquiry, "name", for_update=True)
+		frappe.db.get_value(self.doctype, self.name, "name", for_update=True)
+		self.reload()
 		if self.booking_status != "Pending":
 			frappe.throw(_("Only pending bookings can be rejected."))
 		if not (reason or self.rejection_reason):
 			frappe.throw(_("A rejection reason is required."))
 		self.db_set({"rejection_reason": reason or self.rejection_reason, "booking_status": "Rejected"})
+		from talya.inquiries import sync_booking
+
+		sync_booking(self)

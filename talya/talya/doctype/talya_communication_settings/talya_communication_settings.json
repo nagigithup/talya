@@ -1,0 +1,80 @@
+{
+ "doctype": "DocType",
+ "name": "Talya Communication Settings",
+ "module": "Talya",
+ "engine": "InnoDB",
+ "autoname": "hash",
+ "field_order": [
+  "country_calling_code",
+  "default_language",
+  "confirmation_template",
+  "reminder_template",
+  "reminders_enabled",
+  "reminder_hours",
+  "require_consent"
+ ],
+ "fields": [
+  {
+   "fieldname": "country_calling_code",
+   "fieldtype": "Data",
+   "label": "Default Country Calling Code",
+   "default": "971",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_language",
+   "fieldtype": "Select",
+   "label": "Default Message Language",
+   "options": "ar\nen",
+   "default": "ar",
+   "reqd": 1
+  },
+  {
+   "fieldname": "confirmation_template",
+   "fieldtype": "Data",
+   "label": "Appointment Confirmation Template"
+  },
+  {
+   "fieldname": "reminder_template",
+   "fieldtype": "Data",
+   "label": "Appointment Reminder Template"
+  },
+  {
+   "fieldname": "reminders_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Appointment Reminders",
+   "default": "0"
+  },
+  {
+   "fieldname": "reminder_hours",
+   "fieldtype": "Int",
+   "label": "Reminder Hours Before Appointment",
+   "default": "24"
+  },
+  {
+   "fieldname": "require_consent",
+   "fieldtype": "Check",
+   "label": "Require WhatsApp Consent",
+   "default": "1",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  },
+  {
+   "role": "Talya Receptionist",
+   "read": 1
+  }
+ ],
+ "track_changes": 1,
+ "issingle": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

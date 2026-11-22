@@ -5,7 +5,6 @@ import frappe
 
 from talya.api import _public_practitioners
 
-
 no_cache = 1
 
 
@@ -21,8 +20,11 @@ def get_context(context):
 	context.asset_versions = {
 		asset: sha256(Path(frappe.get_app_path("talya", "public", asset)).read_bytes()).hexdigest()[:12]
 		for asset in (
-			"css/talya.css", "js/talya.js", "js/hero-slider.js",
-			"images/dr-farouq.png", "images/dr-mehira-original.webp",
+			"css/talya.css",
+			"js/talya.js",
+			"js/hero-slider.js",
+			"images/dr-farouq.png",
+			"images/dr-mehira-original.webp",
 		)
 	}
 	return context

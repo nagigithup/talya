@@ -1,18 +1,9 @@
 // TALYA_PLAYWRIGHT_PATH=/absolute/path/to/playwright TALYA_BROWSER=webkit node talya/tests/hero_slider.browser.cjs
-// Optional TALYA_BASE_URL can target a read-only cloud page. No bookings are submitted.
+// Restricted to the local site; no bookings are submitted.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {createRequire} = require('node:module');
-let playwright;
-if (process.env.TALYA_PLAYWRIGHT_PATH) {
-  playwright = require(process.env.TALYA_PLAYWRIGHT_PATH);
-} else {
-  // Reuse the Bench's browser-test dependency, without adding a carousel/build dependency.
-  try { playwright = require('playwright'); }
-  catch (_) { playwright = createRequire(path.resolve(__dirname, '../../../pos_next/package.json'))('playwright'); }
-}
-const base = process.env.TALYA_BASE_URL || 'http://talya.localhost:8000/';
+const {base, playwright} = require('./browser_support.cjs');
 const engine = process.env.TALYA_BROWSER || 'chromium';
 const portraits = ['dr-farouq.png', 'dr-mehira-original.webp'];
 

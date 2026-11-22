@@ -1,7 +1,6 @@
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
-
 ROLE = "Talya Receptionist"
 
 
@@ -82,8 +81,40 @@ def ensure_practitioner_fields():
 def after_install():
 	ensure_role()
 	ensure_practitioner_fields()
+	ensure_reception_permissions()
 
 
 def after_migrate():
 	ensure_role()
 	ensure_practitioner_fields()
+	ensure_reception_permissions()
+	backfill_booking_inquiries()
+	if "whatsapp" in frappe.get_installed_apps():
+		frappe.db.add_unique("WA Message", ["message_id"])
+
+
+def backfill_booking_inquiries():
+	if frappe.db.exists("DocType", "Talya Patient Inquiry"):
+		from talya.inquiries import sync_booking
+
+		for name in frappe.get_all("Talya Online Booking", pluck="name"):
+			sync_booking(frappe.get_doc("Talya Online Booking", name), backfill_only=True)
+
+
+def ensure_reception_permissions():
+	from talya.permissions import ensure_reception_permissions as apply_permissions
+
+	apply_permissions()
+
+
+def apply_p0_local_configuration():
+	"""Explicit local-only application; never touches official WhatsApp credentials."""
+	if frappe.local.site != "talya.localhost":
+		raise RuntimeError("P0 local configuration is restricted to talya.localhost")
+	frappe.only_for("System Manager")
+	settings = frappe.get_single("Talya Communication Settings")
+	settings.country_calling_code = "971"
+	settings.save()
+	ensure_reception_permissions()
+	frappe.db.commit()
+	return {"country_calling_code": "971", "reception_permissions": "restricted"}

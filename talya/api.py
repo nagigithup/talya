@@ -6,7 +6,7 @@ from frappe.rate_limiter import rate_limit
 from frappe.utils import getdate, now_datetime, validate_email_address
 
 from talya.booking import get_available_slots, validate_public_practitioner
-
+from talya.recipients import normalize_phone
 
 PHONE_RE = re.compile(r"^\+?[0-9][0-9\s()-]{7,19}$")
 
@@ -22,9 +22,17 @@ def _public_practitioners():
 		"Healthcare Practitioner",
 		filters={"status": "Active", "custom_show_on_talya_website": 1},
 		fields=[
-			"name", "department", "image", "custom_talya_display_name_en", "custom_talya_display_name_ar",
-			"custom_talya_specialty_en", "custom_talya_specialty_ar", "custom_talya_bio_en",
-			"custom_talya_bio_ar", "custom_talya_display_order", "custom_enable_talya_online_booking",
+			"name",
+			"department",
+			"image",
+			"custom_talya_display_name_en",
+			"custom_talya_display_name_ar",
+			"custom_talya_specialty_en",
+			"custom_talya_specialty_ar",
+			"custom_talya_bio_en",
+			"custom_talya_bio_ar",
+			"custom_talya_display_order",
+			"custom_enable_talya_online_booking",
 		],
 		order_by="custom_talya_display_order asc, practitioner_name asc",
 	)
@@ -64,7 +72,7 @@ def submit_booking(**payload):
 	if _clean(payload.get("website"), 200):
 		frappe.throw(_("Unable to process this request."))
 	patient_name = _clean(payload.get("patient_name"), 140)
-	mobile = _clean(payload.get("mobile_number"), 30)
+	mobile = normalize_phone(_clean(payload.get("mobile_number"), 30))
 	email = _clean(payload.get("email"), 140)
 	department = _clean(payload.get("medical_department"), 140)
 	practitioner = _clean(payload.get("healthcare_practitioner"), 140)
@@ -91,7 +99,9 @@ def submit_booking(**payload):
 		frappe.throw(_("Please enter a valid preferred time."))
 
 	# Serialize duplicate checks for this practitioner/slot. A request remains pending, never confirmed here.
-	frappe.db.sql("SELECT name FROM `tabTalya Online Booking` WHERE healthcare_practitioner=%s FOR UPDATE", practitioner)
+	frappe.db.sql(
+		"SELECT name FROM `tabTalya Online Booking` WHERE healthcare_practitioner=%s FOR UPDATE", practitioner
+	)
 	duplicate = frappe.db.exists(
 		"Talya Online Booking",
 		{

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Talya Desk</title>
+</head>
+<body style="font:16px/1.7 system-ui,sans-serif;color:#092e56;padding:24px">
+  <p role="status">Opening Talya Desk… <span lang="ar" dir="rtl">جارٍ فتح مكتب تاليا…</span></p>
+  <p><a href="{{ target }}">Continue / <span lang="ar">متابعة</span></a></p>
+  <script>
+    try {
+      const keys = Object.keys(localStorage).filter(key =>
+        key.startsWith('_page:') || key.startsWith('_doctype:') ||
+        ['session_last_route', 'route_options', 'page_info', 'last_visited',
+         '_version_number', 'metadata_version', '_last_load'].includes(key)
+      );
+      keys.forEach(key => localStorage.removeItem(key));
+    } catch (error) {
+      // A browser denying storage access can still open the fresh server-rendered Desk.
+    }
+    window.location.replace({{ target | tojson }});
+  </script>
+</body>
+</html>

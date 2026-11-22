@@ -17,7 +17,18 @@ class TestTalyaPublicBooking(IntegrationTestCase):
 		data = get_public_data()
 		self.assertIn("practitioners", data)
 		self.assertIn("departments", data)
-		allowed = {"id", "department", "image", "name_en", "name_ar", "specialty_en", "specialty_ar", "bio_en", "bio_ar", "booking_enabled"}
+		allowed = {
+			"id",
+			"department",
+			"image",
+			"name_en",
+			"name_ar",
+			"specialty_en",
+			"specialty_ar",
+			"bio_en",
+			"bio_ar",
+			"booking_enabled",
+		}
 		for practitioner in data["practitioners"]:
 			self.assertEqual(set(practitioner), allowed)
 			self.assertNotIn("mobile_phone", practitioner)

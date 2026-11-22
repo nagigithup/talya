@@ -1,0 +1,57 @@
+{
+ "doctype": "DocType",
+ "name": "Talya Message Dispatch",
+ "module": "Talya",
+ "engine": "InnoDB",
+ "autoname": "hash",
+ "field_order": [
+  "inquiry",
+  "request_key",
+  "message_name",
+  "state"
+ ],
+ "fields": [
+  {
+   "fieldname": "inquiry",
+   "fieldtype": "Link",
+   "label": "Patient Inquiry",
+   "options": "Talya Patient Inquiry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "request_key",
+   "fieldtype": "Data",
+   "label": "Request Key",
+   "unique": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "message_name",
+   "fieldtype": "Data",
+   "label": "WhatsApp Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Select",
+   "label": "State",
+   "options": "Reserved\nCompleted",
+   "default": "Reserved",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  }
+ ],
+ "track_changes": 1,
+ "issingle": 0,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

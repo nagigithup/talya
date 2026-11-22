@@ -53,3 +53,14 @@ jspm_packages/
 
 # Aider AI Chat
 .aider*
+
+# Local site data, credentials, generated caches and browser artifacts
+/sites/
+/site_config.json
+/common_site_config.json
+/logs/
+/backups/
+/test-results/
+/playwright-report/
+.ruff_cache/
+.pytest_cache/

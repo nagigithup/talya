@@ -1,0 +1,190 @@
+{
+ "doctype": "DocType",
+ "name": "Talya Patient Inquiry",
+ "module": "Talya",
+ "engine": "InnoDB",
+ "autoname": "hash",
+ "field_order": [
+  "patient_name",
+  "mobile_number",
+  "normalized_phone",
+  "healthcare_practitioner",
+  "requested_service",
+  "preferred_date",
+  "preferred_time",
+  "source",
+  "status",
+  "notes",
+  "website_booking",
+  "linked_patient",
+  "linked_patient_appointment",
+  "whatsapp_consent",
+  "consent_recorded_at",
+  "opt_out",
+  "import_key",
+  "wa_profile",
+  "consent_phone",
+  "recipient_changed_at",
+  "patient_verified_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "patient_name",
+   "fieldtype": "Data",
+   "label": "Patient Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile / WhatsApp",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "normalized_phone",
+   "fieldtype": "Data",
+   "label": "Normalized Phone",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "healthcare_practitioner",
+   "fieldtype": "Link",
+   "label": "Doctor",
+   "options": "Healthcare Practitioner"
+  },
+  {
+   "fieldname": "requested_service",
+   "fieldtype": "Data",
+   "label": "Requested Service"
+  },
+  {
+   "fieldname": "preferred_date",
+   "fieldtype": "Date",
+   "label": "Preferred Date"
+  },
+  {
+   "fieldname": "preferred_time",
+   "fieldtype": "Time",
+   "label": "Preferred Time"
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "Source",
+   "options": "Website\nImport\nManual\nWhatsApp",
+   "default": "Manual",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "New\nContacted\nAwaiting Reply\nBooked\nClosed",
+   "default": "New",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "website_booking",
+   "fieldtype": "Link",
+   "label": "Website Booking",
+   "options": "Talya Online Booking",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "linked_patient",
+   "fieldtype": "Link",
+   "label": "Linked Patient",
+   "options": "Patient",
+   "read_only": 1
+  },
+  {
+   "fieldname": "linked_patient_appointment",
+   "fieldtype": "Link",
+   "label": "Linked Patient Appointment",
+   "options": "Patient Appointment",
+   "read_only": 1
+  },
+  {
+   "fieldname": "whatsapp_consent",
+   "fieldtype": "Check",
+   "label": "WhatsApp Consent",
+   "default": "0"
+  },
+  {
+   "fieldname": "consent_recorded_at",
+   "fieldtype": "Datetime",
+   "label": "Consent Recorded At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "opt_out",
+   "fieldtype": "Check",
+   "label": "Opt Out",
+   "default": "0"
+  },
+  {
+   "fieldname": "import_key",
+   "fieldtype": "Data",
+   "label": "Import Key",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "wa_profile",
+   "fieldtype": "Data",
+   "label": "WhatsApp Profile",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "consent_phone",
+   "fieldtype": "Data",
+   "label": "Consent Recipient",
+   "read_only": 1
+  },
+  {
+   "fieldname": "recipient_changed_at",
+   "fieldtype": "Datetime",
+   "label": "Recipient Changed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "patient_verified_at",
+   "fieldtype": "Datetime",
+   "label": "Patient Identity Verified At",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  },
+  {
+   "role": "Talya Receptionist",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  }
+ ],
+ "track_changes": 1,
+ "issingle": 0,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

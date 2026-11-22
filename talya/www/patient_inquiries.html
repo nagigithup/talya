@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="{{ language }}" dir="{{ direction }}">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="robots" content="noindex,nofollow"><title>{{ labels['Patient Inquiries'] }} · Talya</title>
+ <link rel="icon" href="/assets/talya/images/talya-mark.svg">
+ <link rel="stylesheet" href="/assets/talya/css/patient-inquiries.css?v={{ versions.css }}">
+</head>
+<body>
+ <header class="topbar"><a href="/patient_inquiries" aria-label="Talya"><img src="/assets/talya/images/talya-logo.svg" width="190" height="48" alt="Talya Medical Center"></a>
+ <nav><a href="?lang={{ 'en' if language == 'ar' else 'ar' }}" lang="{{ 'en' if language == 'ar' else 'ar' }}">{{ 'English' if language == 'ar' else 'العربية' }}</a><a href="/desk">{{ labels['Desk'] }}</a></nav></header>
+ <main id="inquiry-app">
+ <div class="page-heading"><div><p class="eyebrow">{{ labels['Talya reception'] }}</p><h1>{{ labels['Patient Inquiries'] }}</h1><p>{{ labels['Receive an inquiry. Start a conversation. Book care.'] }}</p></div>
+ <div class="actions"><button id="settings-button" class="quiet">{{ labels['Communication Settings'] }}</button><button id="import-button" class="secondary">{{ labels['Import'] }}</button><button id="new-button">＋ {{ labels['New Inquiry'] }}</button></div></div>
+ <div id="integration-banner" class="notice" role="status"></div>
+ <section class="inbox" aria-label="{{ labels['Patient Inquiries'] }}">
+ <form id="filters" class="filters"><label class="search">{{ labels['Search'] }}<input name="search" placeholder="{{ labels['Name or mobile number'] }}" type="search"></label>
+ <label>{{ labels['Status'] }}<select name="status"><option value="">{{ labels['All statuses'] }}</option>{% for status in ['New','Contacted','Awaiting Reply','Booked','Closed'] %}<option value="{{ status }}">{{ labels[status] }}</option>{% endfor %}</select></label>
+ <label>{{ labels['Source'] }}<select name="source"><option value="">{{ labels['All sources'] }}</option>{% for source in ['Website','Manual','WhatsApp','Import'] %}<option value="{{ source }}">{{ labels[source] }}</option>{% endfor %}</select></label>
+ <button class="secondary" type="submit">{{ labels['Apply'] }}</button></form>
+ <div class="list-heading"><h2>{{ labels['All inquiries'] }}</h2><span id="result-count"></span></div>
+ <div id="inquiry-list" aria-live="polite"></div><div class="pagination"><button id="previous" class="quiet">{{ labels['Previous'] }}</button><button id="next" class="quiet">{{ labels['Next'] }}</button></div>
+ </section>
+ </main>
+ <div id="toast" role="status" aria-live="polite" hidden></div>
+ <dialog id="detail-dialog" class="wide"><div class="dialog-heading"><div><p class="eyebrow">{{ labels['Patient Inquiries'] }}</p><h2 id="detail-title"></h2></div><button type="button" class="close quiet" data-close aria-label="{{ labels['Close'] }}">×</button></div><div id="detail-content"></div></dialog>
+ <dialog id="action-dialog"><div class="dialog-heading"><h2 id="action-title"></h2><button type="button" class="close quiet" data-close aria-label="{{ labels['Close'] }}">×</button></div><div id="action-content"></div></dialog>
+ <script id="talya-config" type="application/json">{{ {'labels': labels, 'language': language, 'csrf': csrf_token, 'site': sitename, 'socketPort': socket_port, 'development': development, 'manager': manager}|tojson }}</script>
+ <script src="/assets/frappe/node_modules/socket.io/client-dist/socket.io.js" defer></script>
+ <script src="/assets/talya/js/patient-inquiries.js?v={{ versions.js }}" defer></script>
+</body></html>
