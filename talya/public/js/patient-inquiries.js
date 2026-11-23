@@ -196,42 +196,54 @@
 
   async function openBooking(doc) {
     openAction('Book Appointment',`<p>${esc(t('Loading…'))}</p>`);
-    const [matches, doctors, types, genders] = await Promise.all([call('matching_patients',{name:doc.name}),lookups(),call('lookup',{doctype:'Appointment Type'}),call('lookup',{doctype:'Gender'})]);
-    const patients = doc.linked_patient && !matches.some(row => row.name === doc.linked_patient) ? [...matches,{name:doc.linked_patient}] : matches;
+    const [context, doctors, types, genders] = await Promise.all([call('patient_context',{name:doc.name}),lookups(),call('lookup',{doctype:'Appointment Type'}),call('lookup',{doctype:'Gender'})]);
+    const visit = context.visit || {};
+    const patientField = df => {
+      const value = context.defaults[df.fieldname] ?? '';
+      const required = df.reqd ? 'required' : '';
+      if (df.fieldname === 'sex') return `<label>${esc(df.label)}<select name="patient_${esc(df.fieldname)}" ${required}><option value="">${esc(t('Select gender'))}</option>${options(genders,value)}</select></label>`;
+      if (df.fieldtype === 'Select') return `<label>${esc(df.label)}<select name="patient_${esc(df.fieldname)}" ${required}>${options(String(df.options || '').split('\n'),value)}</select></label>`;
+      if (df.fieldtype === 'Check') return `<label class="check"><input name="patient_${esc(df.fieldname)}" type="checkbox" ${value ? 'checked':''}>${esc(df.label)}</label>`;
+      const type = df.fieldtype === 'Date' ? 'date' : ['Int','Float'].includes(df.fieldtype) ? 'number' : 'text';
+      return `<label>${esc(df.label)}<input name="patient_${esc(df.fieldname)}" type="${type}" value="${esc(value)}" ${required} dir="auto"></label>`;
+    };
+    const matchMarkup = rows => rows.length ? rows.map(row => `<label class="patient-match"><input type="radio" name="patient" value="${esc(row.name)}" ${row.name === doc.linked_patient ? 'checked':''}><span><strong>${esc(row.patient_name || row.name)}</strong><small>${esc([row.mobile || row.phone,row.dob,row.sex,row.identity_hint].filter(Boolean).join(' · '))}</small><small>${esc(t(row.identity_match ? 'Identity number match' : row.phone_match ? 'Same contact number — verify the person' : 'Name match — verify the person'))}</small></span></label>`).join('') : `<p class="hint">${esc(t('No possible matches found. Search again or create a Patient.'))}</p>`;
     $('#action-content').innerHTML = `<form id="booking-form"><div class="form-grid">
-      <label class="full">${esc(t('Patient'))}<select name="patient" required><option value="">${esc(t('Select verified patient'))}</option>${options(patients,doc.linked_patient)}</select></label>
-      <label class="full">${esc(t('Find existing patient'))}<input name="patient_search" type="search" placeholder="${esc(t('Search patient name'))}"></label>
-      <button type="button" class="secondary" id="patient-search-button">${esc(t('Search'))}</button><label>${esc(t('Gender for new Patient'))}<select name="sex"><option value="">${esc(t('Select gender'))}</option>${options(genders)}</select></label><button type="button" class="quiet" id="create-patient">${esc(t('Create Patient'))}</button>
+      <section class="full patient-resolution"><h3>${esc(t('Find or Create Patient'))}</h3>
+      <label>${esc(t('Find existing patient'))}<input name="patient_search" type="search" placeholder="${esc(t(context.identity_search_available ? 'Patient name, mobile, or identity number' : 'Patient name or mobile number'))}"></label>
+      <button type="button" class="secondary" id="patient-search-button">${esc(t('Search'))}</button>
+      <div id="patient-matches" class="patient-matches">${matchMarkup(context.matches)}</div>
+      ${context.more_matches ? `<p class="hint">${esc(t('More matches exist. Narrow your search.'))}</p>`:''}
+      <button type="button" class="quiet" id="create-patient" ${context.can_create ? '' : 'disabled'}>${esc(t('Create Patient'))}</button>
+      ${context.creation_error ? `<p class="error">${esc(context.creation_error)}</p>`:''}
+      <div id="new-patient-fields" class="form-grid" hidden>${context.patient_fields.map(patientField).join('')}<label class="check full"><input name="reviewed_matches" type="checkbox">${esc(t('I reviewed the possible matches and none is the correct Patient.'))}</label></div></section>
       <p class="hint full">${esc(t('Verify patient identity before linking. Shared phone numbers may match several patients.'))}</p>
       <label class="check full"><input name="identity_verified" type="checkbox" required>${esc(t('I verified the Patient and their authorization to use this phone number.'))}</label>
-      <label>${esc(t('Doctor'))}<select name="practitioner" required><option value="">${esc(t('Select doctor'))}</option>${options(doctors,doc.healthcare_practitioner)}</select></label>
-      ${field('date','Appointment Date',doc.preferred_date || new Date().toLocaleDateString('en-CA'),'date','required dir="ltr"')}
-      <label class="full">${esc(t('Appointment Type'))}<select name="appointment_type" required><option value="">${esc(t('Select appointment type'))}</option>${options(types)}</select></label>
-      <label class="full">${esc(t('Service Unit'))}<select name="service_unit" required><option value="">${esc(t('Select service unit'))}</option></select></label>
+      <label>${esc(t('Doctor'))}<select name="practitioner" required ${visit.locked?'disabled':''}><option value="">${esc(t('Select doctor'))}</option>${options(doctors,visit.practitioner || doc.healthcare_practitioner)}</select></label>
+      ${field('date','Appointment Date',visit.date || doc.preferred_date || new Date().toLocaleDateString('en-CA'),'date',`required dir="ltr" ${visit.locked?'readonly':''}`)}
+      <label class="full">${esc(t('Appointment Type'))}<select name="appointment_type" required ${visit.locked?'disabled':''}><option value="">${esc(t('Select appointment type'))}</option>${options(types,visit.appointment_type)}</select></label>
+      <label class="full">${esc(t('Service Unit'))}<select name="service_unit" required ${visit.locked?'disabled':''}><option value="">${esc(t('Select service unit'))}</option>${visit.service_unit ? options([visit.service_unit],visit.service_unit):''}</select></label>
+      ${visit.locked ? `<p class="notice full">${esc(t('This website request keeps its doctor, visit type, date, and time. Availability is checked again when you confirm.'))}</p>`:''}
       <button id="load-slots" type="button" class="secondary full">${esc(t('Check Available Times'))}</button>
       <label class="full">${esc(t('Available Time'))}<select name="slot" required><option value="">${esc(t('Check availability first'))}</option></select></label>
       ${field('end_time','End Time','','text','readonly dir="ltr"')}
       <p class="hint full" id="slot-status" role="status"></p>
       <label class="full">${esc(t('Notes'))}<textarea name="notes" maxlength="1000" dir="auto"></textarea></label>
       </div><div class="form-footer"><button type="submit">${esc(t('Confirm Booking'))}</button></div></form>`;
-    const form = $('#booking-form'); let slots = [], slotSequence = 0, previous = null;
-    if (patients.length === 1) form.patient.value = patients[0].name;
-    $('#patient-search-button').onclick = async () => { try { const result = await call('lookup',{doctype:'Patient',search:form.patient_search.value}); form.patient.innerHTML = `<option value="">${esc(t('Select verified patient'))}</option>` + options(result); form.identity_verified.checked = false; reset(); } catch (error) { toast(errorText(error)); } };
-    $('#create-patient').onclick = async event => {
-      if (!confirm(t('Create a new Patient after checking existing matches?'))) return;
-      event.target.disabled = true;
-      try { const patient = await call('create_patient',{name:doc.name,sex:form.sex.value,identity_verified:form.identity_verified.checked},true); form.patient.add(new Option(patient,patient)); form.patient.value = patient; reset(); loadSlots(); }
-      catch (error) { toast(errorText(error)); } finally { event.target.disabled = false; }
-    };
-    const bookingArgs = () => ({name:doc.name,patient:form.patient.value,practitioner:form.practitioner.value,date:form.date.value,appointment_type:form.appointment_type.value,service_unit:form.service_unit.value || undefined});
+    const form = $('#booking-form'); let slots = [], slotSequence = 0, previous = null, createMode = false;
+    const newFields = $('#new-patient-fields');
+    const setCreateMode = enabled => { createMode = enabled; newFields.hidden = !enabled; newFields.querySelectorAll('input,select,textarea').forEach(control => { control.disabled = !enabled; }); if (enabled) form.reviewed_matches.required = true; };
+    setCreateMode(false);
+    const selectedPatient = () => form.querySelector('[name=patient]:checked')?.value || '';
+    $('#patient-search-button').onclick = async () => { try { const result = await call('patient_context',{name:doc.name,search:form.patient_search.value}); $('#patient-matches').innerHTML = matchMarkup(result.matches); setCreateMode(false); form.identity_verified.checked = false; reset(); } catch (error) { toast(errorText(error)); } };
+    $('#patient-matches').addEventListener('change',() => { setCreateMode(false); form.identity_verified.checked = false; reset(); });
+    $('#create-patient').onclick = () => { setCreateMode(true); form.querySelectorAll('[name=patient]').forEach(input => { input.checked = false; }); form.identity_verified.checked = false; reset(); };
+    const bookingArgs = () => ({name:doc.name,patient:createMode ? undefined : selectedPatient(),new_patient:createMode ? 1 : 0,practitioner:form.practitioner.value,date:form.date.value,appointment_type:form.appointment_type.value,service_unit:form.service_unit.value || undefined});
     const reset = () => { previous = slots[Number(form.slot.value)] || previous; slotSequence++; slots = []; form.slot.innerHTML = `<option value="">${esc(t('Check availability first'))}</option>`; form.end_time.value = ''; };
-    ['patient','practitioner','date','appointment_type','service_unit'].forEach(name => form[name].addEventListener('change',() => {
-      reset(); if (name === 'practitioner') form.service_unit.value = ''; loadSlots();
-    }));
-    form.patient.addEventListener('change',() => { form.identity_verified.checked = false; });
+    ['practitioner','date','appointment_type','service_unit'].forEach(name => form[name].addEventListener('change',() => { reset(); if (name === 'practitioner') form.service_unit.value = ''; loadSlots(); }));
     async function loadSlots() {
       const sequence = ++slotSequence;
-      if (!form.patient.value || !form.practitioner.value || !form.date.value || !form.appointment_type.value) return;
+      if ((!selectedPatient() && !createMode) || !form.practitioner.value || !form.date.value || !form.appointment_type.value) return;
       $('#load-slots').disabled = true; $('#slot-status').textContent = t('Loading…');
       try {
         const result = await call('slot_options',bookingArgs());
@@ -242,7 +254,8 @@
         if (oldUnit && form.service_unit.value !== oldUnit) { await loadSlots(); return; }
         slots = result.slots;
         form.slot.innerHTML = `<option value="">${esc(t('Select time'))}</option>` + slots.map((slot,index) => `<option value="${index}">${esc(slot.time)}${slot.service_unit ? ' · ' + esc(slot.service_unit) : ''}</option>`).join('');
-        const index = previous ? slots.findIndex(slot => slot.time === previous.time && slot.service_unit === previous.service_unit) : -1;
+        const wanted = previous || (visit.time ? {time:visit.time,service_unit:visit.service_unit || form.service_unit.value} : null);
+        const index = wanted ? slots.findIndex(slot => slot.time === wanted.time && (!wanted.service_unit || slot.service_unit === wanted.service_unit)) : -1;
         form.slot.value = index < 0 ? '' : String(index); previous = index < 0 ? null : slots[index]; form.end_time.value = previous?.end_time || '';
         $('#slot-status').textContent = slots.length ? t('Choose an available time.') : t('No available times. Choose another date.');
       } catch (error) { if (sequence === slotSequence) $('#slot-status').textContent = errorText(error); } finally { if (sequence === slotSequence) $('#load-slots').disabled = false; }
@@ -251,7 +264,9 @@
     $('#load-slots').onclick = () => { reset(); loadSlots(); };
     form.onsubmit = event => { event.preventDefault(); busy(form,async () => {
       const slot = slots[Number(form.slot.value)]; if (!slot || form.slot.value === '') throw new Error(t('Check availability first'));
-      const appointment = await call('book',{...bookingArgs(),time:slot.time,service_unit:slot.service_unit,notes:form.notes.value,identity_verified:form.identity_verified.checked},true);
+      if (!createMode && !selectedPatient()) throw new Error(t('Select and verify a Patient.'));
+      const patientData = createMode ? Object.fromEntries(context.patient_fields.map(df => [df.fieldname,df.fieldtype === 'Check' ? (form[`patient_${df.fieldname}`].checked ? 1 : 0) : form[`patient_${df.fieldname}`].value])) : undefined;
+      const appointment = await call('confirm',{...bookingArgs(),patient:createMode?undefined:selectedPatient(),patient_data:createMode?JSON.stringify(patientData):undefined,reviewed_matches:createMode && form.reviewed_matches.checked,identity_verified:form.identity_verified.checked,time:slot.time,service_unit:slot.service_unit,notes:form.notes.value,expected_modified:context.inquiry_modified,expected_booking_modified:visit.booking_modified},true);
       toast(t('Appointment booked')); await loadList(true); await openDetail(doc.name);
       openAction('Appointment booked',`<div class="linked-appointment"><a href="/desk/patient-appointment/${encodeURIComponent(appointment)}" target="_blank" rel="noopener">${esc(t('View Appointment'))} · ${esc(appointment)} ↗</a><p>${esc(form.date.value)} · ${esc(slot.time)}</p></div><p>${esc(t('Offer a confirmation through the WhatsApp conversation. No message has been sent automatically.'))}</p><div class="form-footer"><button id="offer-confirmation">${esc(t('WhatsApp Confirmation'))}</button></div>`);
       $('#offer-confirmation').onclick = () => { actionDialog.close(); $('.conversation')?.scrollIntoView({block:'nearest'}); if ($('#message-form')) { $('#message-form').template.value = settingsCache?.settings.confirmation_template || ''; $('#message-form').template.dispatchEvent(new Event('change')); } };

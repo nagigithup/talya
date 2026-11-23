@@ -2,7 +2,7 @@
 
 import frappe
 from frappe import _
-from frappe.utils import cint, get_time, getdate, now_datetime
+from frappe.utils import cint, get_datetime, get_time, getdate, now_datetime
 
 from talya.recipients import (
 	assert_patient_recipient,
@@ -182,14 +182,80 @@ def lookup(doctype, search=""):
 
 @frappe.whitelist(methods=["GET"])
 def matching_patients(name):
-	doc = permitted(name)
-	# Permission-filtered candidates only. Never auto-link an ambiguous family/shared number.
-	rows = frappe.get_list("Patient", fields=["name", "patient_name", "mobile", "phone"], page_length=0)
 	return [
-		{"name": row.name, "label": row.patient_name}
-		for row in rows
-		if patient_matches_phone(row, doc.normalized_phone)
+		{"name": row["name"], "label": row.get("patient_name") or row["name"]}
+		for row in patient_context(name)["matches"]
+		if row.get("phone_match")
 	]
+
+
+@frappe.whitelist(methods=["GET"])
+def patient_context(name, search=None):
+	"""Use the Desk patient-resolution policy, filtered by this user's Patient field access."""
+	doc = permitted(name)
+	from talya import online_booking
+
+	subject = frappe._dict(
+		patient_name=doc.patient_name,
+		mobile_number=doc.mobile_number,
+		linked_patient=doc.linked_patient,
+		email=None,
+	)
+	result = online_booking._matches(subject, search)
+	can_create = bool(frappe.has_permission("Patient", "create"))
+	fields, creation_error = [], None
+	if can_create:
+		try:
+			fields = online_booking._patient_fields()
+		except online_booking.PatientSetupError as error:
+			frappe.clear_last_message()
+			can_create, creation_error = False, str(error)
+	verified = bool(
+		doc.linked_patient
+		and doc.patient_verified_at
+		and doc.normalized_phone == normalize_phone(doc.mobile_number)
+	)
+	visit = {
+		"practitioner": doc.healthcare_practitioner,
+		"date": doc.preferred_date,
+		"time": str(doc.preferred_time or "")[:5],
+		"appointment_type": None,
+		"service_unit": None,
+		"locked": False,
+		"booking_modified": None,
+	}
+	if doc.website_booking:
+		booking = frappe.get_doc("Talya Online Booking", doc.website_booking)
+		booking.check_permission("read")
+		visit.update(
+			{
+				"practitioner": booking.healthcare_practitioner,
+				"date": booking.preferred_date,
+				"time": str(booking.preferred_time or "")[:5],
+				"appointment_type": booking.appointment_type
+				or frappe.db.get_single_value("Healthcare Settings", "default_appointment_type"),
+				"service_unit": booking.service_unit,
+				"locked": True,
+				"booking_modified": booking.modified,
+			}
+		)
+	elif doc.requested_service and frappe.db.exists("Appointment Type", doc.requested_service):
+		visit["appointment_type"] = doc.requested_service
+	result.update(
+		{
+			"patient_fields": fields,
+			"can_create": can_create,
+			"creation_error": creation_error,
+			"verified": verified,
+			"defaults": {
+				"first_name": doc.patient_name,
+				"mobile": normalize_phone(doc.mobile_number),
+			},
+			"visit": visit,
+			"inquiry_modified": doc.modified,
+		}
+	)
+	return result
 
 
 @frappe.whitelist(methods=["POST"])
@@ -236,13 +302,15 @@ def verify_patient(name, patient, identity_verified=False):
 
 
 def _appointment(doc, patient, practitioner, date, appointment_type):
-	assert_patient_recipient(doc, patient)
+	if patient:
+		assert_patient_recipient(doc, patient)
 	for doctype, value in (
 		("Patient", patient),
 		("Healthcare Practitioner", practitioner),
 		("Appointment Type", appointment_type),
 	):
-		frappe.get_doc(doctype, value).check_permission("read")
+		if value:
+			frappe.get_doc(doctype, value).check_permission("read")
 	frappe.has_permission("Patient Appointment", "create", throw=True)
 	if getdate(date) < getdate():
 		frappe.throw(_("Appointment date cannot be in the past."))
@@ -282,46 +350,20 @@ def slots(name, patient, practitioner, date, appointment_type, service_unit=None
 
 
 @frappe.whitelist(methods=["GET"])
-def slot_options(name, patient, practitioner, date, appointment_type, service_unit=None):
+def slot_options(
+	name, patient=None, practitioner=None, date=None, appointment_type=None, service_unit=None, new_patient=False
+):
 	from talya.internal_booking import availability
 
+	if not patient and str(new_patient).lower() not in {"1", "true"}:
+		frappe.throw(_("Find and verify the correct Patient before checking availability."))
 	appointment = _appointment(permitted(name), patient, practitioner, date, appointment_type)
 	appointment.service_unit = service_unit
 	return availability(appointment)
 
 
-@frappe.whitelist(methods=["POST"])
-def book(
-	name,
-	patient,
-	practitioner,
-	date,
-	time,
-	appointment_type,
-	service_unit=None,
-	notes=None,
-	identity_verified=False,
-):
-	doc = permitted(name, write=True, lock=True)
+def _book_locked(doc, patient, practitioner, date, time, appointment_type, service_unit=None, notes=None):
 	assert_patient_recipient(doc, patient)
-	if doc.linked_patient_appointment:
-		appointment = frappe.get_doc("Patient Appointment", doc.linked_patient_appointment)
-		appointment.check_permission("read")
-		if appointment.patient != patient:
-			frappe.throw(
-				_("The linked appointment belongs to a different Patient. Verify the inquiry first.")
-			)
-		return doc.linked_patient_appointment
-	require_identity_confirmation(identity_verified)
-	if doc.status == "Closed":
-		frappe.throw(_("Reopen the inquiry before booking."))
-	booking = None
-	if doc.website_booking:
-		frappe.db.get_value("Talya Online Booking", doc.website_booking, "name", for_update=True)
-		booking = frappe.get_doc("Talya Online Booking", doc.website_booking)
-		booking.check_permission("write")
-		if booking.booking_status != "Pending":
-			frappe.throw(_("Only pending bookings can be confirmed."))
 	# Lock real shared resources, even when there are no appointments yet.
 	for dt, value in (
 		("Patient", patient),
@@ -351,7 +393,7 @@ def book(
 			"notes": (notes or "")[:1000],
 		}
 	)
-	appointment.insert()  # Healthcare validates patient, overlaps, unavailability and billing.
+	appointment.insert()
 	doc.update(
 		{
 			"linked_patient": patient,
@@ -365,15 +407,118 @@ def book(
 	doc.flags.integration_update = True
 	doc.flags.verify_patient = True
 	doc.save()
-	if booking:
-		booking.db_set(
-			{
-				"linked_patient": patient,
-				"linked_patient_appointment": appointment.name,
-				"booking_status": "Confirmed",
-			}
-		)
 	return appointment.name
+
+
+@frappe.whitelist(methods=["POST"])
+def confirm(
+	name,
+	patient=None,
+	patient_data=None,
+	reviewed_matches=False,
+	identity_verified=False,
+	practitioner=None,
+	date=None,
+	time=None,
+	appointment_type=None,
+	service_unit=None,
+	notes=None,
+	expected_modified=None,
+	expected_booking_modified=None,
+):
+	"""Atomically resolve a Patient and confirm, so retries cannot create partial duplicates."""
+	from talya import online_booking
+
+	current = permitted(name)
+	if current.website_booking:
+		# Website requests use exactly the same confirmation path as Desk.
+		return online_booking.confirm(
+			current.website_booking,
+			patient=patient,
+			patient_data=patient_data,
+			identity_verified=identity_verified,
+			reviewed_matches=reviewed_matches,
+			expected_modified=expected_booking_modified,
+		)
+	with online_booking._atomic():
+		doc = permitted(name, write=True, lock=True)
+		if expected_modified and not doc.linked_patient_appointment and get_datetime(expected_modified) != get_datetime(doc.modified):
+			frappe.throw(_("This inquiry changed. Reload it and verify the details again."))
+		if doc.linked_patient_appointment:
+			appointment = frappe.get_doc("Patient Appointment", doc.linked_patient_appointment)
+			appointment.check_permission("read")
+			if patient and appointment.patient != patient:
+				frappe.throw(_("The linked appointment belongs to a different Patient. Verify the inquiry first."))
+			return appointment.name
+		if doc.status == "Closed":
+			frappe.throw(_("Reopen the inquiry before booking."))
+		online_booking._assert_silent_configuration(creating=bool(patient_data))
+		if patient_data:
+			if patient or doc.linked_patient:
+				frappe.throw(_("This inquiry already has a Patient. Use the verified Patient record."))
+			subject = frappe._dict(patient_name=doc.patient_name, mobile_number=doc.mobile_number)
+			patient = online_booking._new_patient(
+				subject, patient_data, identity_verified, reviewed_matches
+			)
+		elif not patient:
+			patient = doc.linked_patient
+		if not patient:
+			frappe.throw(_("Find and verify the correct Patient before confirming this booking."))
+		verify_patient(doc.name, patient, identity_verified=identity_verified)
+		doc = frappe.get_doc(INQUIRY, doc.name, for_update=True)
+		return _book_locked(
+			doc, patient, practitioner, date, time, appointment_type, service_unit, notes
+		)
+
+
+@frappe.whitelist(methods=["POST"])
+def book(
+	name,
+	patient,
+	practitioner,
+	date,
+	time,
+	appointment_type,
+	service_unit=None,
+	notes=None,
+	identity_verified=False,
+):
+	# Compatibility for existing callers. The portal uses confirm(), which routes
+	# website requests through the Desk confirmation implementation.
+	from talya import online_booking
+
+	with online_booking._atomic():
+		doc = permitted(name, write=True, lock=True)
+		if doc.linked_patient_appointment:
+			appointment = frappe.get_doc("Patient Appointment", doc.linked_patient_appointment)
+			appointment.check_permission("read")
+			if appointment.patient != patient:
+				frappe.throw(_("The linked appointment belongs to a different Patient. Verify the inquiry first."))
+			return appointment.name
+		require_identity_confirmation(identity_verified)
+		if doc.status == "Closed":
+			frappe.throw(_("Reopen the inquiry before booking."))
+		booking = None
+		if doc.website_booking:
+			frappe.db.get_value("Talya Online Booking", doc.website_booking, "name", for_update=True)
+			booking = frappe.get_doc("Talya Online Booking", doc.website_booking)
+			booking.check_permission("write")
+			if booking.booking_status != "Pending":
+				frappe.throw(_("Only pending bookings can be confirmed."))
+		verify_patient(doc.name, patient, identity_verified=True)
+		doc = frappe.get_doc(INQUIRY, doc.name, for_update=True)
+		appointment = _book_locked(
+			doc, patient, practitioner, date, time, appointment_type, service_unit, notes
+		)
+		if booking:
+			booking.db_set(
+				{
+					"linked_patient": patient,
+					"linked_patient_appointment": appointment,
+					"booking_status": "Confirmed",
+				}
+			)
+		return appointment
 
 
 def appointment_changed(doc, method=None):

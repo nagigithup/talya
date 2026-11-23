@@ -116,16 +116,51 @@ def _patient_fields():
 
 def _matches(booking, search=None):
 	frappe.has_permission("Patient", "read", throw=True)
-	permitted = frappe.get_meta("Patient").get_permitted_fieldnames(permission_type="read")
-	fields = ["name", *[f for f in MATCH_FIELDS if f in permitted]]
+	meta = frappe.get_meta("Patient")
+	permitted = meta.get_permitted_fieldnames(permission_type="read")
+	identity_fields = [
+		df.fieldname
+		for df in meta.fields
+		if df.fieldname in permitted
+		and df.fieldtype == "Data"
+		and not df.hidden
+		and any(
+			key in " ".join((df.fieldname or "", df.label or "")).casefold()
+			for key in ("identity", "identification", "emirates", "national id", "passport", "uid")
+		)
+	]
+	fields = ["name", *[f for f in MATCH_FIELDS if f in permitted], *identity_fields]
 	phone = normalize_phone(booking.mobile_number)
-	query = _name(search or booking.patient_name)
+	query_value = str(search or "").strip()
+	query = _name(query_value or booking.patient_name)
+	query_phone = ""
+	if any(c.isdigit() for c in query_value):
+		try:
+			query_phone = normalize_phone(query_value)
+		except frappe.ValidationError:
+			frappe.clear_last_message()
+	query_identity = "".join(c for c in query_value.casefold() if c.isalnum())
 	rows = frappe.get_list("Patient", fields=fields, page_length=0)
 	result = []
 	for row in rows:
 		phone_match = patient_matches_phone(row, phone)
 		name_match = bool(query and (query in _name(row.get("patient_name")) or query == _name(row.name)))
-		if not (_contact_matches(row, phone) or name_match or row.name == booking.linked_patient):
+		search_phone_match = bool(query_phone and _contact_matches(row, query_phone))
+		identity_match = bool(
+			query_value
+			and query_identity
+			and any(
+				query_identity == "".join(c for c in str(row.get(field) or "").casefold() if c.isalnum())
+				for field in identity_fields
+			)
+		)
+		if not (
+			_contact_matches(row, phone)
+			or name_match
+			or search_phone_match
+			or identity_match
+			or row.name == booking.linked_patient
+		):
 			continue
 		patient = frappe.get_doc("Patient", row.name)
 		if not frappe.has_permission("Patient", "read", doc=patient):
@@ -141,6 +176,13 @@ def _matches(booking, search=None):
 				},
 				"phone_match": phone_match,
 				"name_match": name_match,
+				"search_phone_match": search_phone_match,
+				"identity_match": identity_match,
+				"identity_hint": (
+					"••••" + str(next((row.get(f) for f in identity_fields if row.get(f)), ""))[-4:]
+					if identity_match
+					else None
+				),
 			}
 		)
 	result.sort(
@@ -150,7 +192,11 @@ def _matches(booking, search=None):
 			row.get("patient_name") or row["name"],
 		)
 	)
-	return {"matches": result[:30], "more_matches": len(result) > 30}
+	return {
+		"matches": result[:30],
+		"more_matches": len(result) > 30,
+		"identity_search_available": bool(identity_fields),
+	}
 
 
 @frappe.whitelist(methods=["GET"])

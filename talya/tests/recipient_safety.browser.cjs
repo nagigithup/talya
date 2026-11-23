@@ -48,14 +48,14 @@ print(json.dumps({lang: template.render(language=lang, direction='rtl' if lang =
             if (method === 'list_inquiries') result = [doc];
             else if (method === 'get_settings') result = { settings: { country_calling_code: '971' }, integration: { configured: false }, templates: [] };
             else if (method === 'lookup') result = lookup[args.doctype] || [];
-            else if (method === 'matching_patients') result = lookup.Patient;
+            else if (method === 'patient_context') result = {matches:[{name:'SYNTHETIC-PATIENT-A',patient_name:'Synthetic A',mobile:'+12025550123',phone_match:true},{name:'SYNTHETIC-PATIENT-B',patient_name:'Synthetic B',mobile:'+12025550123',phone_match:true}],more_matches:false,identity_search_available:false,patient_fields:[{fieldname:'first_name',fieldtype:'Data',label:'First Name',reqd:1},{fieldname:'sex',fieldtype:'Link',label:'Gender',reqd:1},{fieldname:'mobile',fieldtype:'Data',label:'Mobile',reqd:0}],can_create:true,creation_error:null,verified:Boolean(doc.patient_verified_at),defaults:{first_name:doc.patient_name,mobile:doc.mobile_number},visit:{practitioner:'SYNTHETIC-DOCTOR',date:'2030-01-02',time:'09:00',appointment_type:'SYNTHETIC-TYPE',service_unit:'SYNTHETIC-ROOM',locked:false},inquiry_modified:'2030-01-01 08:00:00'};
             else if (method === 'detail') result = { inquiry: doc, integration: { configured: false }, conversation: { messages: [], templates: [], contact_allowed: false, fallback: 'https://wa.me/12025550123' } };
             else if (method === 'verify_patient') {
               assert.equal(args.identity_verified, true);
               assert.equal(args.patient, doc.linked_patient);
               doc.patient_verified_at = '2030-01-01 09:00:00'; result = doc.name;
             } else if (method === 'slot_options') result = {slots:[{time:'09:00',end_time:'09:30',service_unit:'SYNTHETIC-ROOM',duration:30}],service_units:['SYNTHETIC-ROOM'],duration:30};
-            else if (method === 'book') {
+            else if (method === 'confirm') {
               assert.equal(args.identity_verified, true);
               assert.equal(args.patient, 'SYNTHETIC-PATIENT-A');
               result = 'SYNTHETIC-APPOINTMENT';
@@ -81,16 +81,16 @@ print(json.dumps({lang: template.render(language=lang, direction='rtl' if lang =
           const label = await identity.locator('..').textContent();
           assert(lang === 'ar' ? /تحققت/.test(label) : /I verified/.test(label));
           await identity.check();
-          await page.locator('#booking-form [name=patient]').selectOption('SYNTHETIC-PATIENT-B');
+          await page.locator('#booking-form [name=patient][value="SYNTHETIC-PATIENT-B"]').check();
           assert.equal(await identity.isChecked(), false, 'Changing Patient must clear confirmation');
-          await page.locator('#booking-form [name=patient]').selectOption('SYNTHETIC-PATIENT-A');
+          await page.locator('#booking-form [name=patient][value="SYNTHETIC-PATIENT-A"]').check();
           await page.locator('#booking-form [name=practitioner]').selectOption('SYNTHETIC-DOCTOR');
           await page.locator('#booking-form [name=appointment_type]').selectOption('SYNTHETIC-TYPE');
           await page.locator('#load-slots').click();
           await page.locator('#booking-form [name=slot]').selectOption('0');
           assert.equal(await page.locator('#booking-form [name=end_time]').inputValue(), '09:30');
           await page.locator('#booking-form button[type=submit]').click();
-          assert.equal(posts.filter(p => p.method === 'book').length, 0, 'Unchecked confirmation must block submission');
+          assert.equal(posts.filter(p => p.method === 'confirm').length, 0, 'Unchecked confirmation must block submission');
           await identity.check();
           const overflow = await page.evaluate(() => ({
             page: document.documentElement.scrollWidth > innerWidth + 1,
@@ -100,7 +100,7 @@ print(json.dumps({lang: template.render(language=lang, direction='rtl' if lang =
           if ([390, 1440].includes(width)) await page.screenshot({ path: `${artifacts}/${engine}-${lang}-${width}-identity.png` });
           await page.locator('#booking-form button[type=submit]').click();
           await page.locator('#offer-confirmation').waitFor();
-          assert.equal(posts.filter(p => p.method === 'book').length, 1);
+          assert.equal(posts.filter(p => p.method === 'confirm').length, 1);
           assert.deepEqual(errors, []);
           console.log(`${engine} ${lang} ${width}: identity confirmation, booking guard, RTL/LTR and overflow PASS`);
         } finally { await page.close(); }

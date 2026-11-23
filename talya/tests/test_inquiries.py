@@ -235,6 +235,96 @@ class TestPatientInquiries(TalyaIsolationTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			api.create_patient(doc.name, "Other", identity_verified=True)
 
+	def test_portal_patient_search_is_manual_and_identity_is_permission_filtered(self):
+		fixture = healthcare_fixture()
+		patient = frappe.get_doc("Patient", fixture.patient)
+		patient.uid = "784-SYNTHETIC-0001"
+		patient.save()
+		doc = self.inquiry(patient_name="Unrelated search", mobile_number="+971501234567")
+		admin = api.patient_context(doc.name, search=patient.uid)
+		self.assertTrue(admin["identity_search_available"])
+		self.assertEqual([row["name"] for row in admin["matches"]], [patient.name])
+		self.assertEqual(admin["matches"][0]["identity_hint"], "••••0001")
+		self.assertNotIn("uid", admin["matches"][0])
+		self.assertFalse(doc.reload().linked_patient)
+
+		user = frappe.get_doc(
+			{
+				"doctype": "User",
+				"email": "talya-portal-reception@example.invalid",
+				"first_name": "Portal Reception",
+				"send_welcome_email": 0,
+				"roles": [{"role": "Talya Receptionist"}],
+			}
+		).insert()
+		frappe.set_user(user.name)
+		reception = api.patient_context(doc.name, search=patient.uid)
+		self.assertFalse(reception["identity_search_available"])
+		self.assertFalse(reception["matches"])
+
+	def test_portal_new_patient_confirmation_is_atomic_and_retry_safe(self):
+		fixture = healthcare_fixture()
+		doc = self.inquiry(patient_name="Synthetic portal patient", mobile_number="+971501234567")
+		preview = api.slot_options(
+			doc.name,
+			new_patient=True,
+			practitioner=fixture.practitioner,
+			date=fixture.date,
+			appointment_type=fixture.appointment_type,
+			service_unit=fixture.service_unit,
+		)
+		self.assertTrue(any(slot["time"] == "09:00" for slot in preview["slots"]))
+		values = {
+			"first_name": "Synthetic portal patient",
+			"sex": "Other",
+			"mobile": "+971501234567",
+		}
+		before_patients = frappe.db.count("Patient")
+		appointment = api.confirm(
+			doc.name,
+			patient_data=values,
+			reviewed_matches=True,
+			identity_verified=True,
+			practitioner=fixture.practitioner,
+			date=fixture.date,
+			time="09:00",
+			appointment_type=fixture.appointment_type,
+			service_unit=fixture.service_unit,
+			expected_modified=doc.modified,
+		)
+		self.assertEqual(frappe.db.count("Patient"), before_patients + 1)
+		self.assertEqual(api.confirm(doc.name), appointment)
+		self.assertEqual(frappe.db.count("Patient Appointment", {"reference_docname": doc.name}), 1)
+		self.assertEqual(frappe.db.count("Patient"), before_patients + 1)
+
+	def test_portal_unavailable_slot_rolls_back_new_patient_and_keeps_inquiry_edits(self):
+		fixture = healthcare_fixture()
+		doc = self.inquiry(
+			patient_name="Synthetic unavailable patient",
+			mobile_number="+971501234567",
+			notes="Reception note must remain",
+		)
+		before_patients = frappe.db.count("Patient")
+		with self.assertRaises(frappe.ValidationError):
+			api.confirm(
+				doc.name,
+				patient_data={
+					"first_name": "Synthetic unavailable patient",
+					"sex": "Other",
+					"mobile": "+971501234567",
+				},
+				reviewed_matches=True,
+				identity_verified=True,
+				practitioner=fixture.practitioner,
+				date=fixture.date,
+				time="08:00",
+				appointment_type=fixture.appointment_type,
+				service_unit=fixture.service_unit,
+			)
+		self.assertEqual(frappe.db.count("Patient"), before_patients)
+		self.assertFalse(doc.reload().linked_patient)
+		self.assertEqual(doc.notes, "Reception note must remain")
+
 	def test_reception_can_book_but_cannot_configure_secrets(self):
 		fixture = healthcare_fixture()
 		user = frappe.get_doc(

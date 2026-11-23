@@ -89,7 +89,7 @@ const inquiryNames = new Set(), files = new Set();
       const data = { 'Healthcare Practitioner':[{name:'Mock Doctor',label:'UI fixture doctor'}], 'Appointment Type':[{name:'Mock Consultation'}], 'Patient':[{name:'Mock Patient',label:'UI fixture patient'}], 'Gender':[{name:'Other'}] };
       return route.fulfill({json:{message:data[dt] || []}});
     });
-    await page.route('**/api/method/talya.inquiries.matching_patients?*',r => r.fulfill({json:{message:[{name:'Mock Patient',label:'UI fixture patient'}]}}));
+    await page.route('**/api/method/talya.inquiries.patient_context?*',r => r.fulfill({json:{message:{matches:[{name:'Mock Patient',patient_name:'UI fixture patient',mobile:'+12025550123',phone_match:true}],more_matches:false,identity_search_available:false,patient_fields:[{fieldname:'first_name',fieldtype:'Data',label:'First Name',reqd:1},{fieldname:'sex',fieldtype:'Link',label:'Gender',reqd:1},{fieldname:'mobile',fieldtype:'Data',label:'Mobile',reqd:0}],can_create:true,creation_error:null,verified:false,defaults:{first_name:'Talya Browser Test — synthetic',mobile:'+12025550123'},visit:{practitioner:'Mock Doctor',date:'2030-01-02',time:'09:00',appointment_type:'Mock Consultation',service_unit:'UI fixture room',locked:false},inquiry_modified:'2026-11-23 00:00:00'}}}));
     await page.route('**/api/method/talya.inquiries.slot_options?*',r => r.fulfill({json:{message:{slots:[{time:'09:00',end_time:'09:30',service_unit:'UI fixture room',duration:30}],service_units:['UI fixture room'],duration:30}}}));
     for (const lang of ['ar','en']) {
       for (const width of [360,375,390,430,768,1024,1440]) {
@@ -112,6 +112,7 @@ const inquiryNames = new Set(), files = new Set();
         }
         await page.locator('#book-detail').click();
         await page.locator('#booking-form').waitFor();
+        await page.locator('#booking-form [name=patient][value="Mock Patient"]').check();
         await page.locator('#booking-form [name=practitioner]').selectOption('Mock Doctor');
         await page.locator('#booking-form [name=appointment_type]').selectOption('Mock Consultation');
         await page.locator('#load-slots').click();
