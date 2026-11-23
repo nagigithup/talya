@@ -1,61 +1,267 @@
 {
  "actions": [],
  "autoname": "format:TLY-BKG-{YYYY}-{#####}",
- "creation": "2026-10-29 00:00:00.000000",
+ "creation": "2026-11-22 23:27:18.704717",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "contact_section", "contact_column", "patient_name", "mobile_number", "email", "linked_patient", "patient_identity_status",
-  "visit_column", "medical_department", "healthcare_practitioner", "appointment_type", "service_unit",
-  "date_column", "preferred_date", "preferred_time", "appointment_end_time", "visit_availability",
-  "request_section", "booking_reference", "booking_status", "source", "language", "patient_notes",
-  "consent_section", "consent_accepted", "consent_timestamp", "integration_section",
-  "linked_patient_appointment", "reception_notes", "rejection_reason"
+  "contact_section",
+  "contact_column",
+  "patient_name",
+  "mobile_number",
+  "email",
+  "linked_patient",
+  "patient_identity_status",
+  "visit_column",
+  "medical_department",
+  "healthcare_practitioner",
+  "appointment_type",
+  "service_unit",
+  "date_column",
+  "preferred_date",
+  "preferred_time",
+  "appointment_end_time",
+  "visit_availability",
+  "request_section",
+  "booking_reference",
+  "booking_status",
+  "source",
+  "language",
+  "patient_notes",
+  "reception_and_healthcare_integration_column",
+  "linked_patient_appointment",
+  "reception_notes",
+  "rejection_reason",
+  "privacy_consent_column",
+  "consent_accepted",
+  "consent_timestamp"
  ],
  "fields": [
-  {"fieldname":"booking_reference","fieldtype":"Data","label":"Booking Reference","read_only":1,"unique":1,"in_list_view":1,"search_index":1},
-  {"default":"Pending","fieldname":"booking_status","fieldtype":"Select","label":"Status","options":"Pending\nConfirmed\nRejected\nCancelled\nCompleted","read_only":1,"in_list_view":1,"in_standard_filter":1},
-  {"default":"Website","fieldname":"source","fieldtype":"Data","label":"Source","read_only":1},
-  {"default":"en","fieldname":"language","fieldtype":"Select","label":"Language","options":"en\nar","read_only":1},
-  {"fieldname":"contact_section","fieldtype":"Section Break","label":"Booking Details"},
-  {"fieldname":"contact_column","fieldtype":"Column Break","label":"Patient Contact"},
-  {"fieldname":"visit_column","fieldtype":"Column Break","label":"Visit & Doctor"},
-  {"fieldname":"date_column","fieldtype":"Column Break","label":"Date & Time"},
-  {"fieldname":"patient_identity_status","fieldtype":"HTML"},
-  {"fieldname":"appointment_type","fieldtype":"Link","label":"Appointment Type","options":"Appointment Type"},
-  {"fieldname":"service_unit","fieldtype":"Link","label":"Service Unit","options":"Healthcare Service Unit"},
-  {"fieldname":"appointment_end_time","fieldtype":"Time","label":"End Time","read_only":1},
-  {"fieldname":"visit_availability","fieldtype":"HTML"},
-  {"fieldname":"patient_name","fieldtype":"Data","label":"Patient Full Name","reqd":1,"in_list_view":1,"search_index":1},
-  {"fieldname":"mobile_number","fieldtype":"Data","label":"Mobile Number","reqd":1,"in_list_view":1,"search_index":1},
-  {"fieldname":"email","fieldtype":"Data","label":"Email Address","options":"Email"},
-  {"fieldname":"request_section","fieldtype":"Section Break","label":"Request Details"},
-  {"fieldname":"medical_department","fieldtype":"Link","label":"Medical Department","options":"Medical Department","reqd":1,"in_list_view":1,"in_standard_filter":1},
-  {"fieldname":"healthcare_practitioner","fieldtype":"Link","label":"Healthcare Practitioner","options":"Healthcare Practitioner","reqd":1,"in_list_view":1,"in_standard_filter":1},
-  {"fieldname":"preferred_date","fieldtype":"Date","label":"Preferred Date","reqd":1,"in_list_view":1,"in_standard_filter":1},
-  {"fieldname":"preferred_time","fieldtype":"Time","label":"Preferred Time","reqd":1},
-  {"fieldname":"patient_notes","fieldtype":"Small Text","label":"Patient Notes"},
-  {"fieldname":"consent_section","fieldtype":"Section Break","label":"Privacy Consent"},
-  {"default":"0","fieldname":"consent_accepted","fieldtype":"Check","label":"Consent Accepted","read_only":1},
-  {"fieldname":"consent_timestamp","fieldtype":"Datetime","label":"Consent Timestamp","read_only":1},
-  {"fieldname":"integration_section","fieldtype":"Section Break","label":"Reception & Healthcare Integration"},
-  {"fieldname":"linked_patient","fieldtype":"Link","label":"Linked Patient","options":"Patient","read_only":1},
-  {"fieldname":"linked_patient_appointment","fieldtype":"Link","label":"Patient Appointment","options":"Patient Appointment","read_only":1},
-  {"fieldname":"reception_notes","fieldtype":"Small Text","label":"Reception Notes"},
-  {"depends_on":"eval:doc.booking_status=='Rejected'","fieldname":"rejection_reason","fieldtype":"Small Text","label":"Rejection Reason"}
+  {
+   "fieldname": "booking_reference",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Booking Reference",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "booking_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Pending\nConfirmed\nRejected\nCancelled\nCompleted",
+   "read_only": 1
+  },
+  {
+   "default": "Website",
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "label": "Source",
+   "read_only": 1
+  },
+  {
+   "default": "en",
+   "fieldname": "language",
+   "fieldtype": "Select",
+   "label": "Language",
+   "options": "en\nar",
+   "read_only": 1
+  },
+  {
+   "fieldname": "contact_section",
+   "fieldtype": "Section Break",
+   "label": "Booking Details"
+  },
+  {
+   "fieldname": "contact_column",
+   "fieldtype": "Column Break",
+   "label": "Patient Contact"
+  },
+  {
+   "fieldname": "visit_column",
+   "fieldtype": "Column Break",
+   "label": "Visit & Doctor"
+  },
+  {
+   "fieldname": "date_column",
+   "fieldtype": "Column Break",
+   "label": "Date & Time"
+  },
+  {
+   "fieldname": "patient_identity_status",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "appointment_type",
+   "fieldtype": "Link",
+   "label": "Appointment Type",
+   "options": "Appointment Type"
+  },
+  {
+   "fieldname": "service_unit",
+   "fieldtype": "Link",
+   "label": "Service Unit",
+   "options": "Healthcare Service Unit"
+  },
+  {
+   "fieldname": "appointment_end_time",
+   "fieldtype": "Time",
+   "label": "End Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "visit_availability",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "patient_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Patient Full Name",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mobile Number",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email Address",
+   "options": "Email"
+  },
+  {
+   "fieldname": "request_section",
+   "fieldtype": "Section Break",
+   "label": "Request Details"
+  },
+  {
+   "fieldname": "medical_department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Medical Department",
+   "options": "Medical Department",
+   "reqd": 1
+  },
+  {
+   "fieldname": "healthcare_practitioner",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Healthcare Practitioner",
+   "options": "Healthcare Practitioner",
+   "reqd": 1
+  },
+  {
+   "fieldname": "preferred_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Preferred Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "preferred_time",
+   "fieldtype": "Time",
+   "label": "Preferred Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "patient_notes",
+   "fieldtype": "Small Text",
+   "label": "Patient Notes"
+  },
+  {
+   "default": "0",
+   "fieldname": "consent_accepted",
+   "fieldtype": "Check",
+   "label": "Consent Accepted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "consent_timestamp",
+   "fieldtype": "Datetime",
+   "label": "Consent Timestamp",
+   "read_only": 1
+  },
+  {
+   "fieldname": "linked_patient",
+   "fieldtype": "Link",
+   "label": "Linked Patient",
+   "options": "Patient",
+   "read_only": 1
+  },
+  {
+   "fieldname": "linked_patient_appointment",
+   "fieldtype": "Link",
+   "label": "Patient Appointment",
+   "options": "Patient Appointment",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reception_notes",
+   "fieldtype": "Small Text",
+   "label": "Reception Notes"
+  },
+  {
+   "depends_on": "eval:doc.booking_status=='Rejected'",
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "label": "Rejection Reason"
+  },
+  {
+   "fieldname": "reception_and_healthcare_integration_column",
+   "fieldtype": "Column Break",
+   "label": "Reception and Healthcare Integration"
+  },
+  {
+   "fieldname": "privacy_consent_column",
+   "fieldtype": "Column Break",
+   "label": "Privacy Consent"
+  }
  ],
- "index_web_pages_for_search": 0,
+ "link_display_mode": "Search",
  "links": [],
- "modified": "2026-10-29 00:00:00.000000",
+ "modified": "2026-11-23 06:40:56.904374",
  "modified_by": "Administrator",
  "module": "Talya",
  "name": "Talya Online Booking",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
-  {"role":"System Manager","read":1,"write":1,"create":1,"delete":1,"report":1,"export":1,"print":1,"email":1,"share":1},
-  {"role":"Talya Receptionist","read":1,"write":1,"create":1,"report":1,"export":1,"print":1,"email":1}
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Talya Receptionist",
+   "write": 1
+  }
  ],
+ "row_format": "Dynamic",
  "search_fields": "booking_reference,patient_name,mobile_number",
  "sort_field": "creation",
  "sort_order": "DESC",
