@@ -97,7 +97,7 @@ scheduler_events = {"cron": {"*/15 * * * *": ["talya.communication.reminders"]}}
 # app_include_js = "/assets/talya/js/talya.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/talya/css/talya.css"
+web_include_css = ["/assets/talya/css/website-branding.css"]
 # web_include_js = "/assets/talya/js/talya.js"
 
 # include custom scss in every website theme (without file extension ".scss")

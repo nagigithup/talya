@@ -1,0 +1,10 @@
+.navbar-brand img[src$="/assets/talya/images/talya-center-logo.jpeg"],
+.footer-logo[src$="/assets/talya/images/talya-center-logo.jpeg"],
+.page-card-head img.app-logo[src$="/assets/talya/images/talya-center-logo.jpeg"] {
+  width: 56px;
+  height: auto;
+  max-height: none;
+  min-width: 0;
+  object-fit: contain;
+  border-radius: 4px;
+}

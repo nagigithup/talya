@@ -1,6 +1,8 @@
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
+from talya.branding import sync_website_branding
+
 ROLE = "Talya Receptionist"
 
 
@@ -79,12 +81,14 @@ def ensure_practitioner_fields():
 
 
 def after_install():
+	sync_website_branding()
 	ensure_role()
 	ensure_practitioner_fields()
 	ensure_reception_permissions()
 
 
 def after_migrate():
+	sync_website_branding()
 	ensure_role()
 	ensure_practitioner_fields()
 	ensure_reception_permissions()

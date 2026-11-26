@@ -15,6 +15,8 @@ APP = Path(__file__).resolve().parents[2]
 IMAGE_NAMES = (
 	"dr-farouq.png",
 	"dr-mehira-original.webp",
+	"talya-center-logo.jpeg",
+	"talya-center-favicon.ico",
 	"talya-logo.svg",
 	"talya-logo-white.svg",
 	"talya-mark.svg",
