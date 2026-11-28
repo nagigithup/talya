@@ -77,6 +77,18 @@ def _is_verified(booking, lock=False):
 	)
 
 
+def _is_publicly_linked(booking, lock=False):
+	# A public match is only a booking association, never communication verification.
+	if not (booking.get("public_request_key") and booking.linked_patient):
+		return False
+	row = _inquiry(booking, lock=lock)
+	return bool(
+		row
+		and row.linked_patient == booking.linked_patient
+		and row.normalized_phone == normalize_phone(booking.mobile_number)
+	)
+
+
 def _patient_fields():
 	frappe.has_permission("Patient", "read", throw=True)
 	meta = frappe.get_meta("Patient")
@@ -259,6 +271,7 @@ def visit_options(name, practitioner=None):
 		"default_type": default_type if default_type in {row.name for row in types} else None,
 		"time_zone": frappe.db.get_single_value("System Settings", "time_zone"),
 		"verified": _is_verified(booking),
+		"publicly_linked": _is_publicly_linked(booking),
 	}
 
 
@@ -394,6 +407,8 @@ def confirm(
 			frappe.throw(_("This request is already linked to an appointment."))
 		if booking.booking_status != "Pending":
 			frappe.throw(_("Only pending bookings can be confirmed."))
+		if (patient or patient_data) and _is_publicly_linked(booking, lock=True):
+			frappe.throw(_("This booking is already linked to a Patient. Confirm it directly."))
 		_assert_silent_configuration(creating=bool(patient_data))
 		if patient_data:
 			if patient or booking.linked_patient:
@@ -403,7 +418,7 @@ def confirm(
 			patient = _new_patient(booking, patient_data, identity_verified, reviewed_matches)
 		if patient:
 			_verify(booking, patient, identity_verified)
-		elif not _is_verified(booking, lock=True):
+		elif not (_is_publicly_linked(booking, lock=True) or _is_verified(booking, lock=True)):
 			frappe.throw(_("Find and verify the correct Patient before confirming this booking."))
 		from talya.booking import create_patient_appointment
 

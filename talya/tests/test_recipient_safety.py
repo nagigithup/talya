@@ -1,6 +1,7 @@
 """P0 regressions: synthetic DB transactions and blocked external transport only."""
 
 import json
+import secrets
 from unittest.mock import MagicMock, patch
 
 import frappe
@@ -390,7 +391,10 @@ class TestRecipientSafety(TalyaIsolationTestCase):
 		booking = self.website_booking(fixture)
 		wrong = self.patient("+971501234567")
 		booking.linked_patient = wrong.name
-		booking.save()
+		with self.assertRaises(frappe.ValidationError):
+			booking.save()
+		# Simulate a legacy row written before the link became server-owned.
+		booking.db_set("linked_patient", wrong.name)
 		with self.assertRaises(frappe.ValidationError):
 			booking.confirm_booking()
 		self.assertEqual(frappe.db.count("Patient Appointment"), 0)
@@ -438,7 +442,9 @@ class TestRecipientSafety(TalyaIsolationTestCase):
 
 		self.assertEqual(get("Patient", patient.name)["medical_history"], patient.medical_history)
 
-	def test_public_arabic_booking_creates_one_inquiry_and_no_patient(self):
+	def test_public_arabic_booking_links_existing_patient_and_allows_another_doctor(self):
+		from talya import public_booking
+
 		fixture = healthcare_fixture()
 		department = frappe.get_doc(
 			{"doctype": "Medical Department", "department": "Synthetic Public Department"}
@@ -446,11 +452,22 @@ class TestRecipientSafety(TalyaIsolationTestCase):
 		practitioner = frappe.get_doc("Healthcare Practitioner", fixture.practitioner)
 		practitioner.department = department.name
 		practitioner.save()
-		from talya.api import submit_booking
+		second = frappe.get_doc(
+			{
+				"doctype": "Healthcare Practitioner",
+				"first_name": "Second synthetic public doctor",
+				"status": "Active",
+				"department": department.name,
+				"custom_show_on_talya_website": 1,
+				"custom_enable_talya_online_booking": 1,
+				"practitioner_schedules": [{"schedule": practitioner.practitioner_schedules[0].schedule}],
+			}
+		).insert()
 
 		payload = {
-			"patient_name": "Synthetic Public Contact",
-			"mobile_number": "٠٥٢٢٢٠٧٨٧٢",
+			"patient_mode": "existing",
+			"flow_id": secrets.token_hex(16),
+			"request_id": secrets.token_hex(16),
 			"medical_department": department.name,
 			"healthcare_practitioner": fixture.practitioner,
 			"preferred_date": fixture.date,
@@ -459,15 +476,83 @@ class TestRecipientSafety(TalyaIsolationTestCase):
 			"language": "ar",
 		}
 		patients = frappe.db.count("Patient")
-		frappe.set_user("Guest")
-		result = submit_booking(**payload)
-		with self.assertRaises(frappe.ValidationError):
-			submit_booking(**payload)
+		with patch.object(public_booking, "browser_session", return_value="synthetic-session"):
+			key = public_booking._cache_key(payload["flow_id"])
+			self.addCleanup(frappe.cache.delete_value, key)
+			frappe.set_user("Guest")
+			match = public_booking.lookup(payload["flow_id"], "mobile", "٠٥٢٢٢٠٧٨٧٢")
+			self.assertEqual(set(match), {"first_name", "booking_reference"})
+			payload["booking_reference"] = match["booking_reference"]
+			result = public_booking.submit(payload)
+			self.assertEqual(public_booking.submit(payload), result)
+			with self.assertRaises(frappe.ValidationError):
+				public_booking.submit({**payload, "request_id": secrets.token_hex(16)})
+			self.assertEqual(
+				public_booking.other_booking_notice(
+					payload["flow_id"], match["booking_reference"], second.name
+				),
+				{"has_other_booking": True},
+			)
+			other_result = public_booking.submit(
+				{**payload, "healthcare_practitioner": second.name, "request_id": secrets.token_hex(16)}
+			)
 		frappe.set_user("Administrator")
 		self.assertEqual(result["status"], "Pending")
-		self.assertEqual(frappe.db.count(api.INQUIRY), 1)
+		self.assertFalse(result["has_other_booking"])
+		self.assertEqual(other_result["status"], "Pending")
+		self.assertTrue(other_result["has_other_booking"])
+		self.assertNotEqual(result["booking_reference"], other_result["booking_reference"])
 		self.assertEqual(frappe.db.count("Patient"), patients)
+		booking = frappe.get_doc("Talya Online Booking", result["booking_reference"])
+		self.assertEqual(booking.linked_patient, fixture.patient)
+		self.assertEqual(booking.patient_type, "Existing")
 		row = frappe.get_doc(api.INQUIRY, {"website_booking": result["booking_reference"]})
 		self.assertEqual(row.normalized_phone, "+971522207872")
 		self.assertFalse(row.whatsapp_consent)
+		self.assertFalse(row.patient_verified_at)
 		self.assertTrue(row.website_booking)
+
+	def test_public_new_patient_and_booking_commit_together_or_roll_back(self):
+		from talya import public_booking
+
+		fixture = healthcare_fixture()
+		department = frappe.get_doc(
+			{"doctype": "Medical Department", "department": "Synthetic Registration Department"}
+		).insert()
+		frappe.db.set_value("Healthcare Practitioner", fixture.practitioner, "department", department.name)
+		payload = {
+			"patient_mode": "new",
+			"flow_id": secrets.token_hex(16),
+			"request_id": secrets.token_hex(16),
+			"first_name": "Synthetic New Patient",
+			"sex": "Other",
+			"mobile_number": "+12025550123",
+			"emirates_id": "784-2000-1234567-1",
+			"medical_department": department.name,
+			"healthcare_practitioner": fixture.practitioner,
+			"preferred_date": fixture.date,
+			"preferred_time": "08:00",
+			"consent_accepted": 1,
+		}
+		patient_count = frappe.db.count("Patient")
+		booking_count = frappe.db.count("Talya Online Booking")
+		with patch.object(public_booking, "browser_session", return_value="synthetic-session"):
+			frappe.set_user("Guest")
+			with self.assertRaisesRegex(frappe.ValidationError, "slot is no longer available"):
+				public_booking.submit(payload)
+			self.assertEqual(frappe.db.count("Patient"), patient_count)
+			self.assertEqual(frappe.db.count("Talya Online Booking"), booking_count)
+			payload["preferred_time"] = "09:00"
+			result = public_booking.submit(payload)
+			self.assertEqual(public_booking.submit(payload), result)
+			with self.assertRaises(frappe.ValidationError):
+				public_booking.submit(
+					{**payload, "request_id": secrets.token_hex(16), "preferred_time": "09:30"}
+				)
+		frappe.set_user("Administrator")
+		booking = frappe.get_doc("Talya Online Booking", result["booking_reference"])
+		self.assertEqual(booking.booking_status, "Pending")
+		self.assertEqual(booking.patient_type, "New")
+		self.assertEqual(frappe.db.get_value("Patient", booking.linked_patient, "uid"), "784200012345671")
+		self.assertEqual(frappe.db.count("Patient"), patient_count + 1)
+		self.assertEqual(frappe.db.count("Talya Online Booking"), booking_count + 1)

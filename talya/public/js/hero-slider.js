@@ -5,9 +5,9 @@
   slider.dataset.initialized = 'true';
 
   // Approved website profiles only; this does not alter Healthcare booking eligibility.
-  const profiles = [
+  const fallbackProfiles = [
     {
-      id: 'farouq', image: '/assets/talya/images/dr-farouq.png',
+      id: 'farouq', image: '/assets/talya/images/dr-farouq.webp',
       en: ['Dr. Farouq Ejami', 'Dentist', 'Your Health. Your Smile. Our Priority.'],
       ar: ['د. فاروق عجيمي', 'طبيب أسنان', 'صحتك.. ابتسامتك.. أولويتنا'],
     },
@@ -17,6 +17,13 @@
       ar: ['د. مهيرة فضل', 'طبيبة عامة', 'رعاية متكاملة.. خبرة تثق بها'],
     },
   ];
+  let profiles = fallbackProfiles;
+  try {
+    const published = JSON.parse(document.querySelector('#talya-hero-profiles')?.textContent || 'null');
+    if (published?.length === 2 && published.every((profile, i) => profile.id === fallbackProfiles[i].id)) {
+      profiles = published;
+    }
+  } catch (_) { /* A previous cached template keeps its existing approved profiles. */ }
   const labels = {
     en: {region: 'Our doctors', carousel: 'carousel', slide: 'slide', previous: 'Previous doctor', next: 'Next doctor', select: 'Select doctor', show: 'Show', pause: 'Pause slideshow', play: 'Start slideshow'},
     ar: {region: 'أطباؤنا', carousel: 'عرض شرائح', slide: 'شريحة', previous: 'الطبيب السابق', next: 'الطبيب التالي', select: 'اختر الطبيب', show: 'عرض', pause: 'إيقاف العرض التلقائي', play: 'بدء العرض التلقائي'},
@@ -154,7 +161,26 @@
     language = event.detail.language === 'ar' ? 'ar' : 'en';
     translate();
   });
+  // Changing language now follows a crawlable URL. Preserve the visible doctor
+  // and pause preference across that navigation, without storing booking data.
+  const languageStateKey = 'talya-hero-language-state';
+  site.querySelector('.language-switch')?.addEventListener('click', () => {
+    try { sessionStorage.setItem(languageStateKey, JSON.stringify({doctor: profiles[current].id, paused: userPaused})); }
+    catch (_) { /* Navigation still works when browser storage is disabled. */ }
+  });
   translate();
   slider.dataset.activeDoctor = profiles[current].id;
   schedule();
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(languageStateKey) || 'null');
+    sessionStorage.removeItem(languageStateKey);
+    const index = saved && profiles.findIndex(profile => profile.id === saved.doctor);
+    if (index >= 0 && typeof saved?.paused === 'boolean') {
+      show(index, true).then(() => {
+        userPaused = saved.paused;
+        updateToggle();
+        schedule();
+      });
+    }
+  } catch (_) { /* A normal visit starts with the existing first slide. */ }
 })();

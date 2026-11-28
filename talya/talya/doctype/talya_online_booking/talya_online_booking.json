@@ -11,6 +11,8 @@
   "mobile_number",
   "email",
   "linked_patient",
+  "patient_type",
+  "public_request_key",
   "patient_identity_status",
   "visit_column",
   "medical_department",
@@ -199,6 +201,22 @@
    "label": "Linked Patient",
    "options": "Patient",
    "read_only": 1
+  },
+  {
+   "fieldname": "patient_type",
+   "fieldtype": "Select",
+   "label": "Patient Type",
+   "options": "\nNew\nExisting",
+   "read_only": 1
+  },
+  {
+   "fieldname": "public_request_key",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Public Request Key",
+   "no_copy": 1,
+   "read_only": 1,
+   "unique": 1
   },
   {
    "fieldname": "linked_patient_appointment",

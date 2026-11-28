@@ -24,6 +24,17 @@ class TalyaOnlineBooking(Document):
 		if self.is_new() and self.booking_status != "Pending":
 			frappe.throw(_("New website bookings must be pending."))
 		old = self.get_doc_before_save()
+		if old and any(
+			self.get(field) != old.get(field)
+			for field in ("patient_type", "public_request_key", "linked_patient")
+		):
+			frappe.throw(_("Use the booking actions to change the Patient link."))
+		if (
+			not old
+			and not self.flags.from_public_booking
+			and (self.get("patient_type") or self.get("public_request_key"))
+		):
+			frappe.throw(_("Patient type is assigned by the website booking form."))
 		if old and (self.patient_name != old.patient_name or self.mobile_number != old.mobile_number):
 			from talya.recipients import normalize_phone
 

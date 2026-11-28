@@ -14,6 +14,7 @@ from PIL import Image
 APP = Path(__file__).resolve().parents[2]
 IMAGE_NAMES = (
 	"dr-farouq.png",
+	"dr-farouq.webp",
 	"dr-mehira-original.webp",
 	"talya-center-logo.jpeg",
 	"talya-center-favicon.ico",
@@ -21,6 +22,7 @@ IMAGE_NAMES = (
 	"talya-logo-white.svg",
 	"talya-mark.svg",
 	"talya-reception-styled.png",
+	"talya-reception-styled.webp",
 	"talya-reception.webp",
 )
 

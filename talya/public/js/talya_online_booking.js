@@ -66,7 +66,7 @@ frappe.provide('talya.booking_desk');
     const patientFields=context.patient_fields.map(field=>({...field,fieldname:'new_' + field.fieldname,
       depends_on:"eval:doc.mode==='new'",reqd:0,mandatory_depends_on:field.reqd ? "eval:doc.mode==='new'" : undefined,
       read_only:field.fieldname==='mobile' ? 1 : 0}));
-    const dialog=new frappe.ui.Dialog({title:__('Find or Create Patient'),size:'large',fields:[
+    const dialog=new frappe.ui.Dialog({title:__('Resolve Patient Link'),size:'large',fields:[
       {fieldtype:'HTML',fieldname:'explanation',options:`<p>${escape(__('A shared phone number does not identify a Patient. Verify the person before linking.'))}</p>`},
       {fieldtype:'Data',fieldname:'search',label:__('Search Patient name or ID')},
       {fieldtype:'Button',fieldname:'search_button',label:__('Search')},
@@ -138,7 +138,9 @@ frappe.provide('talya.booking_desk');
       if (!frm.doc.appointment_type && options.default_type) await frm.set_value('appointment_type',options.default_type);
       if (!frm.doc.service_unit && options.service_units.length===1) await frm.set_value('service_unit',options.service_units[0]);
     }
-    frm.fields_dict.patient_identity_status.$wrapper.text(options.verified ? __('Patient identity verified.') : __('Patient identity verification required.'));
+    frm.fields_dict.patient_identity_status.$wrapper.text(options.verified
+      ? __('Patient identity verified.')
+      : options.publicly_linked ? __('Patient linked by the website booking form.') : __('Patient identity verification required.'));
     await availability(frm);
   }
   async function availability(frm) {
@@ -174,15 +176,17 @@ frappe.provide('talya.booking_desk');
       }
       for (const field of ['appointment_type','service_unit']) frm.set_df_property(field,'reqd',frm.doc.booking_status==='Pending');
       if (frm.doc.booking_status!=='Pending' || frm.is_new()) return;
-      frm.add_custom_button(__('Find or Create Patient'),()=>talya.booking_desk.find_patient(frm));
-      frm.add_custom_button(__('Confirm & Create Appointment'),async()=>{
-        await saved(frm);
-        if (!frm.doc.linked_patient || !frm.__talya_visit_options?.verified) return talya.booking_desk.find_patient(frm);
-        frappe.confirm(__('Create the Healthcare Patient Appointment and confirm this request?'),()=>action(frm,'confirm_booking',{}));
-      });
       frm.add_custom_button(__('Reject'),()=>frappe.prompt({fieldname:'reason',fieldtype:'Small Text',label:__('Rejection Reason'),reqd:1},
         values=>frm.call('reject_booking',{reason:values.reason}).then(()=>frm.reload_doc()),__('Reject Booking')),__('Actions'));
       await visitOptions(frm);
+      if (frm.__talya_visit_options?.verified || frm.__talya_visit_options?.publicly_linked) {
+        frm.add_custom_button(__('Confirm & Create Appointment'),async()=>{
+          await saved(frm);
+          frappe.confirm(__('Create the Healthcare Patient Appointment and confirm this request?'),()=>action(frm,'confirm_booking',{}));
+        });
+      } else {
+        frm.add_custom_button(__('Resolve Patient Link'),()=>talya.booking_desk.find_patient(frm));
+      }
     },
     async healthcare_practitioner(frm) {await frm.set_value('service_unit','');await visitOptions(frm);},
     appointment_type:availability,service_unit:availability,preferred_date:availability,preferred_time:availability,

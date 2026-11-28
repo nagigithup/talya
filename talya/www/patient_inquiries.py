@@ -7,6 +7,7 @@ import frappe
 from talya.inquiries import require_reception
 
 no_cache = True
+sitemap = 0
 
 
 def get_context(context):

@@ -1,13 +1,15 @@
 import frappe
 from frappe.tests import IntegrationTestCase
 
-from talya.api import PHONE_RE, _clean, get_public_data
+from talya.api import get_public_data
+from talya.public_booking import _clean, _identity
 
 
 class TestTalyaPublicBooking(IntegrationTestCase):
-	def test_phone_validation(self):
-		self.assertTrue(PHONE_RE.fullmatch("+971 52 2207872"))
-		self.assertFalse(PHONE_RE.fullmatch("not-a-number"))
+	def test_emirates_id_normalizes_digits_and_formatting(self):
+		self.assertEqual(_identity("٧٨٤-٢٠٠٠-١٢٣٤٥٦٧-١"), "784200012345671")  # noqa: RUF001
+		with self.assertRaises(frappe.ValidationError):
+			_identity("not-an-id")
 
 	def test_clean_strips_markup_and_limits_length(self):
 		self.assertEqual(_clean("<b> Talya </b>", 20), "Talya")

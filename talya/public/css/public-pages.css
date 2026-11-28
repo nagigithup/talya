@@ -1,0 +1,94 @@
+/* Public information pages reuse the homepage's colors, typography and controls. */
+/* Use the exact existing Frappe Inter files. Optional display prevents a late
+   font swap from rewrapping the hero heading after the portrait has painted. */
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 200; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-ExtraLight.woff2') format('woff2'); }
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 400; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-Regular.woff2') format('woff2'); }
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 500; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-Medium.woff2') format('woff2'); }
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 600; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-SemiBold.woff2') format('woff2'); }
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 700; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-Bold.woff2') format('woff2'); }
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 800; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-ExtraBold.woff2') format('woff2'); }
+@font-face { font-family: "Talya Inter"; font-style: normal; font-weight: 900; font-display: optional; src: url('/assets/frappe/css/fonts/inter/Inter-Black.woff2') format('woff2'); }
+.talya-site[dir=ltr] { font-family: "Talya Inter", Arial, sans-serif; --font-stack: "Talya Inter", Arial, sans-serif; }
+.talya-site .doctor-info h3 a { color: inherit; }
+.talya-site .service-card h3 a, .talya-site .contact-copy h2 a { color: inherit; font: inherit; }
+.talya-site .text-link { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+.talya-site a:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
+.talya-site .service-card .service-details { margin-block-start: 8px; }
+.talya-site .contact-copy .contact-details-link { display: inline-block; margin-block-start: 14px; }
+.public-page .public-intro, .public-page .profile-hero { background: linear-gradient(120deg, #f7fcfe, #e8f7fb); }
+.public-page h1 { color: var(--navy); font-size: clamp(34px, 4vw, 60px); line-height: 1.2; letter-spacing: -.025em; margin-block-end: 22px; }
+.public-page .public-intro p { max-width: 780px; color: var(--muted); font-size: 19px; line-height: 1.8; }
+.public-page .profile-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 60px; align-items: center; }
+.public-page .profile-copy p { color: var(--muted); line-height: 1.8; font-size: 18px; }
+.public-page .profile-location { color: var(--teal); font-weight: 600; }
+.public-page .profile-photo { height: 430px; border-radius: var(--radius); background: linear-gradient(145deg, #e6f5fa, #c6e5ef); overflow: hidden; }
+.public-page .profile-photo img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+.public-page .content-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; align-items: start; }
+.public-page .content-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); min-width: 0; }
+.public-page .content-card h2 { color: var(--navy); font-size: 25px; margin-block: 24px 12px; }
+.public-page .content-card h2:first-child { margin-block-start: 0; }
+.public-page .content-card p, .public-page .content-card li, .public-page address { color: var(--muted); line-height: 1.85; font-style: normal; }
+.public-page .content-card li { padding-inline-start: 5px; margin-block-end: 12px; }
+.public-page .content-card ol { padding-inline-start: 24px; }
+.public-page .contact-details a { overflow-wrap: anywhere; }
+.public-page .profile-facts { display: grid; gap: 12px; }
+.public-page .profile-facts dt { color: var(--navy); font-weight: 700; }
+.public-page .profile-facts dd { margin: 4px 0 0; color: var(--muted); }
+.talya-site .doctor-summary { display: block; color: var(--teal); margin-block-end: 14px; font-size: 13px; }
+.talya-site .public-hours { color: var(--muted); line-height: 1.7; margin-block: 18px; }
+.talya-site .public-hours p { margin-block-end: 7px; }
+.public-page .service-prices { width: 100%; border-collapse: collapse; margin-block: 16px; }
+.public-page .service-prices th, .public-page .service-prices td { text-align: start; padding: 12px 8px; border-block-end: 1px solid var(--line); color: var(--navy); font-size: 14px; }
+.public-page .service-prices th[scope=row] { font-weight: 500; }
+.public-page .service-prices td { white-space: nowrap; }
+.public-page[dir=rtl] h1 { letter-spacing: 0; }
+@media (max-width: 900px) {
+  .public-page .profile-grid { gap: 30px; }
+  .public-page .profile-photo { height: 360px; }
+  .public-page .content-grid { gap: 18px; }
+  .public-page .content-card { padding: 24px; }
+}
+@media (max-width: 767px) {
+  .public-page .profile-grid, .public-page .content-grid { grid-template-columns: 1fr; }
+  .public-page .section { padding-block: 44px; }
+  .public-page .profile-photo { height: 360px; }
+  .public-page .hero-actions { gap: 10px; }
+  .public-page .hero-actions .button { flex: 1 1 180px; text-align: center; }
+  .public-page .public-intro p, .public-page .profile-copy p { font-size: 17px; }
+}
+
+.talya-site .booking-form fieldset { border: 0; padding: 0; min-inline-size: 0; }
+.talya-site .booking-form [hidden] { display: none !important; }
+.talya-site .patient-mode {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-block-end: 16px;
+}
+.talya-site .patient-mode legend {
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 700;
+  margin-block-end: 8px;
+}
+.talya-site .patient-mode label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+}
+.talya-site .patient-mode label:has(input:checked) { border-color: var(--teal); }
+.talya-site .patient-mode input { accent-color: var(--teal); }
+.talya-site .patient-lookup, .talya-site .patient-registration { margin-block-end: 16px; }
+.talya-site .patient-lookup button { border: 0; cursor: pointer; }
+.talya-site #patient-lookup-status, .talya-site .other-booking-notice {
+  color: var(--navy);
+  background: #edf8fa;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-block: 0 14px;
+}
+.talya-site .other-booking-notice { margin-block-start: 14px; }

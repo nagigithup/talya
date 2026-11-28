@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {base, playwright} = require('./browser_support.cjs');
 const engine = process.env.TALYA_BROWSER || 'chromium';
-const portraits = ['dr-farouq.png', 'dr-mehira-original.webp'];
+const portraits = ['dr-farouq.webp', 'dr-mehira-original.webp'];
 
 async function open(browser, options = {}) {
   const page = await browser.newPage({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, ...options});
@@ -35,12 +35,16 @@ async function assertIdentity(page, index, language = 'en') {
       loaded: slide.querySelector('img').complete && slide.querySelector('img').naturalWidth > 0,
       name: slide.querySelector('b').textContent,
       specialty: slide.querySelector('small').textContent,
+      tagline: slide.querySelector('.hero-note p').textContent,
     }));
   });
   const names = language === 'en' ? ['Dr. Farouq Ejami', 'Dr. Mehira Fadl'] : ['د. فاروق عجيمي', 'د. مهيرة فضل'];
   const specialties = language === 'en' ? ['Dentist', 'General Practitioner'] : ['طبيب أسنان', 'طبيبة عامة'];
+  const taglines = language === 'en'
+    ? ['Your Health. Your Smile. Our Priority.', 'Comprehensive Care. Experience You Can Trust.']
+    : ['صحتك.. ابتسامتك.. أولويتنا', 'رعاية متكاملة.. خبرة تثق بها'];
   assert.deepEqual(actual, [{id: ['farouq', 'mehira'][index], active: true, accessible: 'false', inert: false,
-    image: portraits[index], loaded: true, name: names[index], specialty: specialties[index]}]);
+    image: portraits[index], loaded: true, name: names[index], specialty: specialties[index], tagline: taglines[index]}]);
 }
 
 async function monitorFrames(page) {
@@ -56,6 +60,17 @@ async function monitorFrames(page) {
     }
     requestAnimationFrame(sample);
   });
+}
+
+async function switchLanguage(page, index, language) {
+  // The language control is now a real crawlable link. The carousel carries its
+  // visible doctor across that navigation while both HTML variants stay useful.
+  await Promise.all([
+    page.waitForURL(url => url.pathname === (language === 'ar' ? '/ar' : '/en')),
+    page.click('.language-switch'),
+  ]);
+  await page.waitForFunction(id => document.querySelector('.hero-slider')?.dataset.activeDoctor === id, ['farouq', 'mehira'][index]);
+  await monitorFrames(page);
 }
 
 async function rotations(browser) {
@@ -80,13 +95,13 @@ async function rotations(browser) {
       await assertIdentity(page, 1);
       await page.clock.runFor(150);
       await assertIdentity(page, 1); // Catches the original overlapping opacity transition.
-      await page.click('.language-switch');
+      await switchLanguage(page, 1, 'ar');
       await assertIdentity(page, 1, 'ar');
       await page.click('.hero-slider-prev');
       await assertIdentity(page, 0, 'ar');
       await page.locator('.hero-slider-dot').nth(1).click();
       await assertIdentity(page, 1, 'ar');
-      await page.click('.language-switch');
+      await switchLanguage(page, 1, 'en');
       await assertIdentity(page, 1);
       await page.evaluate(() => {
         for (let i = 0; i < 21; i++) document.querySelector('.hero-slider-next').click();
@@ -132,7 +147,7 @@ async function loadingAndTimers(browser) {
       await assertIdentity(page, 0); // A stale decoded callback must not win.
       await page.click('.hero-slider-next');
       await assertIdentity(page, failure ? 0 : 1);
-      await page.click('.language-switch');
+      await switchLanguage(page, failure ? 0 : 1, 'ar');
       await assertIdentity(page, failure ? 0 : 1, 'ar');
       console.log(`${engine}: ${failure ? 'failed' : 'delayed'} image, stale callbacks and language change PASS`);
     } finally { release(); await page.close(); }

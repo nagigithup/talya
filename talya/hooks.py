@@ -1,3 +1,5 @@
+from talya.website_content import PUBLIC_ROUTES
+
 app_name = "talya"
 app_title = "Talya"
 app_publisher = "Talya"
@@ -43,7 +45,21 @@ doctype_list_js = {
 	"Talya Online Booking": "public/js/talya_online_booking_list.js",
 }
 
-before_request = ["talya.communication.before_request"]
+before_request = ["talya.communication.before_request", "talya.seo.before_request"]
+after_request = ["talya.seo.after_request"]
+website_route_rules = [
+	{"from_route": route, "to_route": "talya" if page == "home" else "talya_public"}
+	for route, (page, _language) in PUBLIC_ROUTES.items()
+]
+website_redirects = [
+	{"source": "/", "target": "/en", "redirect_http_status": 301, "forward_query_parameters": True},
+	{
+		"source": r"/talya(?:\.html)?",
+		"target": "/en",
+		"redirect_http_status": 301,
+		"forward_query_parameters": True,
+	},
+]
 whatsapp_access_guard = ["talya.inquiries.require_reception"]
 doc_events = {
 	"Talya Online Booking": {

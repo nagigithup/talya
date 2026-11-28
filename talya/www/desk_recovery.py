@@ -3,6 +3,7 @@
 import frappe
 
 no_cache = True
+sitemap = 0
 
 
 def get_context(context):

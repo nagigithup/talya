@@ -326,3 +326,222 @@
 "Find and verify the correct Patient before checking availability.","ابحث عن ملف المريض الصحيح وتحقق من هويته قبل التحقق من التوفر."
 "This inquiry changed. Reload it and verify the details again.","تم تعديل هذا الاستفسار. أعد تحميله وتحقق من البيانات مجدداً."
 "This inquiry already has a Patient. Use the verified Patient record.","هذا الاستفسار مرتبط بملف مريض. استخدم الملف الذي تم التحقق منه."
+Menu,القائمة
+Home,الرئيسية
+Services,خدماتنا
+Doctors,من الأطباء
+Contact,تواصل معنا
+Talya Medical Center,مركز تاليا الطبي
+Medicine & Dentistry,الطب العام وطب الأسنان
+Chat on WhatsApp,تواصل عبر واتساب
+Open Location,موقعنا
+Care Areas,مجالات رعاية
+Care with Compassion & Privacy,رعاية باهتمام وخصوصية
+Our Services,خدماتنا
+Complete care for every family,رعاية متكاملة لكل عائلة
+"Focused medical and dental care, delivered with clarity and compassion.",رعاية طبية وطب أسنان مركزة، بوضوح واهتمام.
+Dental Clinic,عيادة طب الأسنان
+Request appointment,اطلب موعداً
+General Medicine,الطب العام
+General consultations & checkups,الاستشارات العامة والفحوصات الشاملة
+Common illness diagnosis & treatment,تشخيص وعلاج الأمراض الشائعة
+"Preventive care, follow-ups & monitoring",الرعاية الوقائية والمتابعة ومراقبة الحالات
+Medical Laboratory,المختبر الطبي
+Our Doctors,أطباؤنا
+Meet your care team,تعرّف على فريق رعايتك
+"Professional care focused on your health, comfort and individual needs.",رعاية مهنية تركز على صحتك وراحتك واحتياجاتك الفردية.
+Dentist,طبيب أسنان
+Dr. Farouq Ejami,د. فاروق عجيمي
+Booking configuration required,يلزم إعداد الحجز
+General Practitioner,طبيبة عامة
+Dr. Mehira Fadl,د. مهيرة فضل
+Appointment Request,طلب موعد
+Take the first step toward better care,ابدأ خطوتك الأولى نحو رعاية أفضل
+Send a preferred appointment request. Our team will contact you to confirm it—submitting this form does not create a confirmed appointment.,أرسل طلب موعد مفضل. سيتواصل فريقنا معك لتأكيده — إرسال النموذج لا يعني تأكيد الموعد.
+Secure request handling,معالجة آمنة للطلب
+Schedule-aware availability,مواعيد مرتبطة بالجدول
+Confirmed by our reception team,تأكيد من فريق الاستقبال
+Need help?,هل تحتاج مساعدة؟
+Requests remain pending until reception confirms.,يبقى الطلب معلقاً حتى يؤكده الاستقبال.
+Quick · Easy · Private,سريع · سهل · خاص
+Online booking setup is in progress,إعداد الحجز الإلكتروني جارٍ
+No approved Healthcare Practitioner is enabled yet. Please call or WhatsApp the clinic.,لا يوجد ممارس رعاية صحية معتمد ومفعّل بعد. يرجى الاتصال أو التواصل عبر واتساب.
+Full Name,الاسم الكامل
+Clinic / Specialty,العيادة / التخصص
+Select clinic,اختر العيادة
+Choose a doctor and date to view configured availability.,اختر الطبيب والتاريخ لعرض المواعيد المتاحة.
+Notes (Optional),ملاحظات (اختياري)
+I consent to Talya Medical Center using these details to process and contact me about this appointment request.,أوافق على استخدام مركز تاليا الطبي لهذه البيانات لمعالجة طلبي والتواصل معي بخصوصه.
+Submit Appointment Request,إرسال طلب الموعد
+Our Location,موقعنا
+Visit Talya Medical Center,قم بزيارة مركز تاليا الطبي
+"Our focus is patient comfort, personalized attention, and quality care for individuals and families.",نهتم براحة المرضى والرعاية الشخصية وتقديم خدمات صحية ذات جودة للأفراد والعائلات.
+"Ras Al Khaimah, Al Nakheel, near Action Hotel, UAE.",رأس الخيمة، النخيل، بالقرب من فندق أكشن، الإمارات العربية المتحدة.
+Call us,اتصل بنا
+Additional phone,هاتف إضافي
+Email us,راسلنا
+Open Google Maps,افتح خرائط Google
+Your Health. Your Smile. Our Priority.,صحتك.. ابتسامتك.. أولويتنا
+Privacy Policy,سياسة الخصوصية
+Anything our team should know...,أي معلومات تود إبلاغ فريقنا بها...
+No configured slots are available on this date.,لا توجد مواعيد متاحة في هذا التاريخ.
+Loading availability…,جارٍ تحميل المواعيد...
+Your appointment request has been received successfully. Our team will contact you to confirm your appointment.,تم استلام طلب حجز موعدك بنجاح. سيتواصل معك فريق المركز لتأكيد الموعد.
+We could not submit the request. Please review the details or contact us.,تعذر إرسال الطلب. يرجى مراجعة البيانات أو التواصل معنا.
+"Medicine & Dentistry in Al Nakheel, Ras Al Khaimah",الطب وطب الأسنان في النخيل، رأس الخيمة
+"General medicine and dental care in Al Nakheel, Ras Al Khaimah, with personal attention for individuals and families.",رعاية في الطب العام وطب الأسنان في النخيل، رأس الخيمة، باهتمام باحتياجات الأفراد والعائلات.
+"Dental consultations and care planning in Al Nakheel, Ras Al Khaimah.",استشارات طب الأسنان وتخطيط الرعاية في النخيل، رأس الخيمة.
+Dental consultations,استشارات طب الأسنان
+Oral health assessment,تقييم صحة الفم والأسنان
+Discuss your treatment plan,مناقشة خطة العلاج
+General medical consultations with Dr. Mehira Fadl in Al Nakheel.,استشارات الطب العام مع د. مهيرة فضل في النخيل.
+Contact reception to confirm requested tests and how they are arranged.,تواصل مع الاستقبال لتأكيد توفر الفحوصات المطلوبة وكيفية إجرائها.
+Discuss requested tests,الاستفسار عن الفحوصات المطلوبة
+Confirm availability with reception,تأكيد التوفر مع الاستقبال
+Ask about test preparation,الاستفسار عن التحضير للفحوصات
+"Dr. Farouq Ejami provides dental consultations at Talya Medical Center in Al Nakheel, Ras Al Khaimah.",يقدم د. فاروق عجيمي استشارات طب الأسنان في مركز تاليا الطبي بالنخيل، رأس الخيمة.
+"Dr. Mehira Fadl is a general practitioner at Talya Medical Center in Al Nakheel, Ras Al Khaimah.",د. مهيرة فضل طبيبة عامة في مركز تاليا الطبي بالنخيل، رأس الخيمة.
+"Talya Medical Center offers general medicine and dental consultations in Al Nakheel, Ras Al Khaimah, near Action Hotel. Contact reception for directions and information about requested laboratory tests.",يقدم مركز تاليا الطبي استشارات الطب العام وطب الأسنان في النخيل، رأس الخيمة، بالقرب من فندق أكشن. تواصل مع الاستقبال لمعرفة الاتجاهات والاستفسار عن الفحوصات المخبرية المطلوبة.
+Skip to content,انتقل إلى المحتوى
+Main navigation,القائمة الرئيسية
+Footer navigation,قائمة تذييل الصفحة
+العربية,English
+View doctor profile,عرض ملف الطبيب
+About this service,عن هذه الخدمة
+Location and contact details,الموقع وبيانات التواصل
+Meet our doctors in Al Nakheel,تعرّف على أطبائنا في النخيل
+"Talya Medical Center | Al Nakheel, Ras Al Khaimah",مركز تاليا الطبي | النخيل، رأس الخيمة
+"General medicine and dental consultations at Talya Medical Center in Al Nakheel, Ras Al Khaimah. Meet Dr. Mehira and Dr. Farouq and request an appointment.",استشارات الطب العام وطب الأسنان في مركز تاليا الطبي بالنخيل، رأس الخيمة. تعرّف على د. مهيرة ود. فاروق واطلب موعداً مع فريق المركز.
+"{0} | GP in Al Nakheel, Ras Al Khaimah",{0} | طبيبة عامة في النخيل، رأس الخيمة
+"Meet {0}, general practitioner at Talya Medical Center in Al Nakheel, Ras Al Khaimah. View her profile and request an appointment.",تعرّف على {0}، طبيبة عامة في مركز تاليا الطبي بالنخيل، رأس الخيمة. اطلع على ملفها واطلب موعداً.
+"{0} | Dentist in Al Nakheel, Ras Al Khaimah",{0} | طبيب أسنان في النخيل، رأس الخيمة
+"Meet {0}, dentist at Talya Medical Center in Al Nakheel, Ras Al Khaimah. View his profile and request a dental appointment.",تعرّف على {0}، طبيب أسنان في مركز تاليا الطبي بالنخيل، رأس الخيمة. اطلع على ملفه واطلب موعد أسنان.
+"General Medicine in Al Nakheel, Ras Al Khaimah | Talya",الطب العام في النخيل، رأس الخيمة | مركز تاليا الطبي
+"Find general medical consultations with Dr. Mehira Fadl at Talya Medical Center in Al Nakheel, Ras Al Khaimah. View the doctor and request a GP appointment.",استشارات الطب العام مع د. مهيرة فضل في مركز تاليا الطبي بالنخيل، رأس الخيمة. تعرّف على الطبيبة واطلب موعد طب عام.
+"General medicine in Al Nakheel, Ras Al Khaimah",الطب العام في النخيل، رأس الخيمة
+Looking for a general practitioner in Al Nakheel? Talya Medical Center provides general medical consultations in Ras Al Khaimah with Dr. Mehira Fadl.,هل تبحث عن طبيبة عامة في النخيل؟ يقدم مركز تاليا الطبي استشارات الطب العام في رأس الخيمة مع د. مهيرة فضل.
+A general medicine visit is an opportunity to discuss your health concerns with the doctor and agree on the next steps in your care. Share the reason for your visit when requesting an appointment so reception can help arrange the consultation.,تتيح لك زيارة الطب العام مناقشة ما يشغلك بشأن صحتك مع الطبيبة والاتفاق على الخطوات التالية للرعاية. اذكر سبب الزيارة عند طلب الموعد ليساعدك الاستقبال في ترتيب الاستشارة.
+Planning your GP consultation,التخطيط لاستشارة الطب العام
+"Bring relevant previous medical reports and a current medication list for your consultation. If you need a particular test or procedure, contact reception to confirm whether it can be arranged and ask about preparation and fees before visiting.",أحضر التقارير الطبية السابقة ذات الصلة وقائمة الأدوية الحالية للاستشارة. إذا كنت تحتاج إلى فحص أو إجراء محدد، فتواصل مع الاستقبال لتأكيد إمكانية ترتيبه والاستفسار عن التحضير والتكلفة قبل الزيارة.
+"Dental Clinic in Al Nakheel, Ras Al Khaimah | Talya",عيادة أسنان في النخيل، رأس الخيمة | مركز تاليا الطبي
+"Dental consultations with Dr. Farouq Ejami at Talya Medical Center in Al Nakheel, Ras Al Khaimah. Meet the dentist and request an appointment.",استشارات طب الأسنان مع د. فاروق عجيمي في مركز تاليا الطبي بالنخيل، رأس الخيمة. تعرّف على الطبيب واطلب موعد أسنان.
+"Dental clinic in Al Nakheel, Ras Al Khaimah",عيادة طب الأسنان في النخيل، رأس الخيمة
+"Find dental consultations with Dr. Farouq Ejami at Talya Medical Center in Al Nakheel, Ras Al Khaimah.",استشارات طب الأسنان مع د. فاروق عجيمي في مركز تاليا الطبي بالنخيل، رأس الخيمة.
+Talk to the dentist about your oral health concerns and the care you are looking for. The consultation helps the doctor assess your needs and discuss a suitable treatment plan.,ناقش مع طبيب الأسنان ما يشغلك بشأن صحة الفم والرعاية التي تبحث عنها. تساعد الاستشارة الطبيب على تقييم احتياجاتك ومناقشة خطة علاج مناسبة.
+Planning your dental visit,التخطيط لزيارة طبيب الأسنان
+"For a specific dental procedure or a price estimate, contact reception before visiting. The doctor will discuss treatment options after assessing your needs; a booking request does not promise a particular procedure or fee.",للاستفسار عن إجراء محدد للأسنان أو تقدير التكلفة، تواصل مع الاستقبال قبل الزيارة. يناقش الطبيب خيارات العلاج بعد تقييم احتياجاتك؛ ولا يعني طلب الموعد ضمان إجراء محدد أو تكلفة معينة.
+"Contact Talya Medical Center | Al Nakheel, Ras Al Khaimah",تواصل مع مركز تاليا الطبي | النخيل، رأس الخيمة
+"Find Talya Medical Center in Al Nakheel, Ras Al Khaimah, near Action Hotel. Get directions, call reception, or request a medical or dental appointment.",اعثر على مركز تاليا الطبي بالنخيل، رأس الخيمة، بالقرب من فندق أكشن. اطلع على الاتجاهات واتصل بالاستقبال أو اطلب موعد طب عام أو أسنان.
+Visit Talya Medical Center in Al Nakheel,زيارة مركز تاليا الطبي في النخيل
+"Our medical center is in Al Nakheel, Ras Al Khaimah, near Action Hotel. Use the Google Maps link for directions or call reception for help finding the clinic.",يقع مركزنا الطبي في النخيل، رأس الخيمة، بالقرب من فندق أكشن. استخدم رابط خرائط Google لمعرفة الاتجاهات أو اتصل بالاستقبال للمساعدة في الوصول إلى العيادة.
+Opening hours and visits,ساعات العمل والزيارات
+Contact reception to confirm clinic opening hours and walk-in availability before travelling. Doctor appointment times shown in the booking form are separate from the clinic opening hours.,تواصل مع الاستقبال لتأكيد ساعات عمل المركز وإمكانية الزيارة دون موعد قبل التوجه إليه. تختلف مواعيد الأطباء المعروضة في نموذج الحجز عن ساعات عمل المركز.
+Doctor appointment availability,المواعيد المتاحة للطبيب
+Choose a date in the booking form to see the doctor's current available appointment times in Asia/Dubai. Reception confirms each request; sending the form does not create a confirmed appointment.,اختر تاريخاً في نموذج الحجز للاطلاع على المواعيد المتاحة حالياً للطبيب بتوقيت دبي. يؤكد الاستقبال كل طلب؛ ولا يعني إرسال النموذج إنشاء موعد مؤكد.
+About the doctor,عن الطبيب
+Consultation languages,لغات الاستشارة
+Nationality,الجنسية
+Experience,الخبرة
+Clinic location,موقع العيادة
+Related care at Talya,رعاية ذات صلة في مركز تاليا
+How to request an appointment,كيفية طلب موعد
+"Choose the doctor, date, and an available time in the booking form.",اختر الطبيب والتاريخ ووقتاً متاحاً في نموذج الحجز.
+Provide your contact details and submit the appointment request.,أدخل بيانات التواصل وأرسل طلب الموعد.
+Wait for reception to contact you and confirm the appointment.,انتظر تواصل الاستقبال معك لتأكيد الموعد.
+Contact reception,تواصل مع الاستقبال
+"Al Nakheel, Ras Al Khaimah",النخيل، رأس الخيمة
+"Al Nakheel, near Action Hotel",النخيل، بالقرب من فندق أكشن
+Ras Al Khaimah,رأس الخيمة
+United Arab Emirates,الإمارات العربية المتحدة
+Request an appointment,اطلب موعداً
+Page not found,الصفحة غير موجودة
+Medicine & Dentistry in Ras Al Khaimah,الطب وطب الأسنان في رأس الخيمة
+"Professional, compassionate healthcare for individuals and families.",رعاية صحية مهنية وإنسانية للأفراد والعائلات.
+"Consultations and preventive, restorative and cosmetic dental care.",استشارات ورعاية وقائية وترميمية وتجميلية للأسنان.
+"Examinations, cleaning & gum care",الفحوصات والتنظيف والعناية باللثة
+"Fillings, restorations & root canal care",الحشوات والترميمات وعلاج الجذور
+"Cosmetic dentistry, whitening & implants",تجميل الأسنان والتبييض والزراعة
+"Patient-centered consultations, checkups and ongoing family healthcare.",استشارات وفحوصات ورعاية صحية مستمرة تتمحور حول المريض والأسرة.
+Laboratory testing and medical investigations that support clinical diagnosis.,فحوصات مخبرية وتحقيقات طبية لدعم التشخيص السريري.
+Laboratory Testing,الفحوصات المخبرية
+Medical Investigations,التحقيقات الطبية
+Diagnostic Support,دعم التشخيص
+"Provides general and cosmetic dental care, including examinations, preventive care, restorations and treatment planning focused on long-term oral health.",يقدم رعاية في طب الأسنان العام والتجميلي، تشمل الفحوصات والرعاية الوقائية والترميمات وخطط العلاج مع التركيز على صحة الفم على المدى الطويل.
+"A general practitioner providing comprehensive, patient-centered care through medical consultations, general health examinations, family healthcare and follow-up care.",طبيبة عامة تقدم رعاية شاملة تتمحور حول المريض، وتشمل الاستشارات الطبية والفحوصات الصحية العامة والرعاية الأسرية والمتابعة.
+"Talya Medical Center provides professional, compassionate healthcare in Ras Al Khaimah, offering general medical consultations, dental care, and medical laboratory services.",يقدم مركز تاليا الطبي خدمات الرعاية الصحية في رأس الخيمة، بما يشمل الطب العام وطب الأسنان والخدمات المخبرية، مع التركيز على جودة الرعاية وراحة المرضى والاهتمام باحتياجات كل فرد من أفراد الأسرة.
+Talya’s team includes Arabic-speaking Sudanese doctors with over 10 years of experience in UAE government hospitals.,يضم مركز تاليا أطباء سودانيين يتحدثون العربية، بخبرة تزيد على 10 سنوات في مستشفيات حكومية في الإمارات.
+"Meet {0}, an Arabic-speaking Sudanese general practitioner at Talya Medical Center in Al Nakheel, Ras Al Khaimah. Request an appointment.",تعرّف على {0}، طبيبة عامة سودانية تتحدث العربية في مركز تاليا الطبي بالنخيل، رأس الخيمة. اطلع على ملفها واطلب موعداً.
+"Meet {0}, an Arabic-speaking Sudanese dentist at Talya Medical Center in Al Nakheel, Ras Al Khaimah. Request a dental appointment.",تعرّف على {0}، طبيب أسنان سوداني يتحدث العربية في مركز تاليا الطبي بالنخيل، رأس الخيمة. اطلع على ملفه واطلب موعد أسنان.
+"Dental checkups, cleaning, fillings and treatment planning in Al Nakheel.",فحوصات الأسنان والتنظيف والحشوات وتخطيط العلاج في النخيل.
+Checkups and dental cleaning,فحوصات الأسنان وتنظيفها
+Cavity fillings,حشوات تسوس الأسنان
+Crowns and bridges,التيجان والجسور
+GP consultations,استشارات الطب العام
+Discuss your health concerns,مناقشة ما يشغلك بشأن صحتك
+Chronic disease follow-up,متابعة الأمراض المزمنة
+"GP consultations and chronic disease follow-up with Dr. Mehira Fadl at Talya Medical Center in Al Nakheel, Ras Al Khaimah. Request an appointment.",استشارات الطب العام ومتابعة الأمراض المزمنة مع د. مهيرة فضل في مركز تاليا الطبي بالنخيل، رأس الخيمة. تعرّف على الطبيبة واطلب موعداً.
+"Talya Medical Center provides GP consultations and chronic disease follow-up with Dr. Mehira Fadl in Al Nakheel, Ras Al Khaimah.",يقدم مركز تاليا الطبي استشارات الطب العام ومتابعة الأمراض المزمنة مع د. مهيرة فضل في النخيل، رأس الخيمة.
+Discuss your health concerns and ongoing conditions with the general practitioner. Dr. Mehira Fadl speaks Arabic and provides GP consultations and chronic disease follow-up at Talya Medical Center.,ناقش ما يشغلك بشأن صحتك وحالاتك المستمرة مع الطبيبة العامة. تتحدث د. مهيرة فضل العربية وتقدم استشارات الطب العام ومتابعة الأمراض المزمنة في مركز تاليا الطبي.
+"Dr. Farouq Ejami speaks Arabic and provides dental care at Talya Medical Center. Services include checkups, professional cleaning, cavity fillings, zirconia and porcelain crowns and bridges, whitening, veneers, braces, and gum care.",يتحدث د. فاروق عجيمي العربية ويقدم رعاية طب الأسنان في مركز تاليا الطبي. تشمل الخدمات فحوصات الأسنان والتنظيف وحشوات التسوس وتيجان وجسور الزيركون والبورسلان وتبييض الأسنان والفينير والتقويم والعناية باللثة.
+"Dental care with Dr. Farouq Ejami in Al Nakheel, Ras Al Khaimah. Professional cleaning and cavity fillings at AED 150 each. Request an appointment at Talya.",رعاية الأسنان مع د. فاروق عجيمي بالنخيل، رأس الخيمة. تنظيف الأسنان وحشوات التسوس بسعر 150 درهماً لكل خدمة. اطلب موعداً في مركز تاليا الطبي.
+Contact reception for details and price quotations for other dental services. The dentist will assess your needs and discuss the treatment options with you.,تواصل مع الاستقبال لمعرفة التفاصيل وطلب عرض سعر لخدمات الأسنان الأخرى. يقيّم طبيب الأسنان احتياجاتك ويناقش معك خيارات العلاج.
+"The clinic is open daily, including Fridays, from 4:00 PM to midnight. Walk-ins are welcome and online booking is available. Doctor appointment times shown in the booking form are separate from the public clinic hours.",يفتح المركز يومياً، بما في ذلك أيام الجمعة، من الساعة 4 مساءً حتى منتصف الليل. نستقبل الزيارات دون موعد مسبق، كما يتوفر الحجز الإلكتروني. مواعيد الأطباء المعروضة في نموذج الحجز منفصلة عن ساعات عمل المركز المعلنة.
+Clinic opening hours,ساعات عمل المركز
+"Daily, including Fridays, from 4:00 PM to midnight.",يومياً، بما في ذلك أيام الجمعة، من الساعة 4 مساءً حتى منتصف الليل.
+Walk-ins are welcome. Online booking is also available.,نستقبل الزيارات دون موعد مسبق، كما يتوفر الحجز الإلكتروني.
+Asia/Dubai,بتوقيت دبي
+Sudan,السودان
+Sudanese female doctor,طبيبة سودانية
+Sudanese dentist,طبيب أسنان سوداني
+Sudanese,سوداني
+Sudanese nationality,الجنسية السودانية
+Dental services and prices,خدمات الأسنان والأسعار
+Service,الخدمة
+Price,السعر
+AED,درهم
+Professional dental cleaning,تنظيف الأسنان
+Zirconia crowns and bridges,تيجان وجسور الزيركون
+Porcelain crowns and bridges,تيجان وجسور البورسلان
+Dental checkups,فحوصات الأسنان
+Teeth whitening,تبييض الأسنان
+Veneers,فينير الأسنان
+Braces,تقويم الأسنان
+Gum care,العناية باللثة
+"For other dental services, contact reception for a price quotation.",للاستفسار عن أسعار خدمات الأسنان الأخرى، تواصل مع الاستقبال لطلب عرض سعر.
+Comprehensive Care. Experience You Can Trust.,رعاية متكاملة.. خبرة تثق بها
+Patient type,نوع المريض
+Existing patient,مريض مسجل
+New patient,مريض جديد
+Look up by,البحث باستخدام
+Emirates ID,رقم الهوية الإماراتية
+Emirates ID (optional),رقم الهوية الإماراتية (اختياري)
+Find my record,ابحث عن سجلي
+"Welcome, {0}",مرحباً، {0}
+No patient record was found. Enter your details to continue.,لم نجد سجل مريض مطابقاً. أدخل بياناتك للمتابعة.
+More than one patient uses this number. Enter your Emirates ID to continue.,يستخدم أكثر من مريض هذا الرقم. أدخل رقم هويتك الإماراتية للمتابعة.
+Contact reception for help finding your patient record.,تواصل مع الاستقبال للمساعدة في العثور على سجل المريض.
+Enter your mobile number or Emirates ID.,أدخل رقم هاتفك المحمول أو رقم هويتك الإماراتية.
+You already have an upcoming booking with another doctor. You can continue with this request.,لديك حجز قادم مع طبيب آخر. يمكنك متابعة طلب الحجز الحالي.
+Too many attempts. Please try again later.,محاولات كثيرة. يرجى المحاولة مرة أخرى لاحقاً.
+Reference,رقم الطلب
+Reload the appointment form and try again.,أعد تحميل نموذج الموعد وحاول مرة أخرى.
+Enter a valid Emirates ID.,أدخل رقم هوية إماراتية صالحاً.
+Choose mobile number or Emirates ID.,اختر رقم الهاتف المحمول أو رقم الهوية الإماراتية.
+Enter a valid mobile number or Emirates ID.,أدخل رقم هاتف محمول أو رقم هوية إماراتية صالحاً.
+Look up your patient record again to continue.,ابحث عن سجل المريض مرة أخرى للمتابعة.
+Enter your first name.,أدخل اسمك الأول.
+Select your gender.,اختر جنسك.
+A matching patient record may already exist. Use Existing patient or contact reception.,قد يكون لديك سجل مريض مطابق بالفعل. اختر مريض مسجل أو تواصل مع الاستقبال.
+Contact reception to register as a new patient.,تواصل مع الاستقبال للتسجيل كمريض جديد.
+We could not save this request. Try again or contact reception.,تعذر حفظ الطلب. حاول مرة أخرى أو تواصل مع الاستقبال.
+Choose a valid appointment date.,اختر تاريخ موعد صالحاً.
+Choose Existing patient or New patient.,اختر مريض مسجل أو مريض جديد.
+Contact reception to complete this booking.,تواصل مع الاستقبال لإكمال هذا الحجز.
+Patient Type,نوع المريض
+Public Request Key,مفتاح الطلب الإلكتروني
+Existing,مسجل
+Resolve Patient Link,معالجة ربط المريض
+Patient linked by the website booking form.,تم ربط المريض من خلال نموذج الحجز الإلكتروني.
+This booking is already linked to a Patient. Confirm it directly.,هذا الحجز مرتبط بمريض بالفعل. أكّد الحجز مباشرةً.
+Use the booking actions to change the Patient link.,استخدم إجراءات الحجز لتغيير ربط المريض.
+Patient type is assigned by the website booking form.,يحدد نموذج الحجز الإلكتروني نوع المريض.

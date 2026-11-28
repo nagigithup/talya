@@ -1,0 +1,19 @@
+  <header class="site-header" id="site-header">
+    <div class="shell nav-shell">
+      <a class="brand" href="{{ home_path }}" aria-label="{{ labels.clinic_name | e }}">
+        <img src="/assets/talya/images/talya-center-logo.jpeg" width="72" height="72" alt="{{ labels.clinic_name | e }}">
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span><b data-i18n="menu">{{ labels.menu | e }}</b></button>
+      <nav class="main-nav" id="main-nav" aria-label="{{ labels.main_navigation | e }}">
+        <a class="active" href="{{ home_path }}#top" data-i18n="home">{{ labels.home | e }}</a>
+        <a href="{{ home_path }}#services" data-i18n="services">{{ labels.services | e }}</a>
+        <a href="{{ home_path }}#doctors" data-i18n="doctors">{{ labels.doctors | e }}</a>
+        <a href="{{ home_path }}#appointment" data-i18n="book">{{ labels.book | e }}</a>
+        <a href="{{ home_path }}#contact" data-i18n="contact">{{ labels.contact | e }}</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="language-switch" href="{{ alternate_path }}" hreflang="{{ 'en-AE' if language == 'ar' else 'ar-AE' }}" aria-label="{{ labels.switch_language | e }}"><span class="lang-en {{ 'active' if language == 'en' else '' }}">EN</span><i></i><span class="lang-ar {{ 'active' if language == 'ar' else '' }}">عربي</span></a>
+        <a class="whatsapp-pill" href="{{ whatsapp_url | e }}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#icon-whatsapp"/></svg><span><bdi class="talya-phone" dir="ltr">{{ whatsapp_display | e }}</bdi></span></a>
+      </div>
+    </div>
+  </header>

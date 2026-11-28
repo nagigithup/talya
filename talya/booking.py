@@ -5,24 +5,26 @@ from frappe import _
 from frappe.utils import get_time, getdate
 
 
-def get_available_slots(practitioner_name, date):
+def get_available_slots(practitioner_name, date, lock=False):
 	date = getdate(date)
 	if date < getdate():
 		return []
-	practitioner = frappe.get_doc("Healthcare Practitioner", practitioner_name)
+	practitioner = frappe.get_doc("Healthcare Practitioner", practitioner_name, for_update=lock)
 	if practitioner.status != "Active":
 		return []
 	weekday = date.strftime("%A")
 	booked = {
 		(datetime.datetime.min + value).time().strftime("%H:%M")
-		for value in frappe.get_all(
+		for value in frappe.db.get_values(
 			"Patient Appointment",
 			filters={
 				"practitioner": practitioner.name,
 				"appointment_date": date,
 				"status": ["not in", ["Cancelled", "Closed"]],
 			},
-			pluck="appointment_time",
+			fieldname="appointment_time",
+			pluck=True,
+			for_update=lock,
 		)
 		if value
 	}
@@ -49,7 +51,9 @@ def get_available_slots(practitioner_name, date):
 	return sorted(set(slots))
 
 
-def validate_public_practitioner(name, department=None):
+def validate_public_practitioner(name, department=None, lock=False):
+	if not name:
+		frappe.throw(_("The selected practitioner is not available for public booking."))
 	values = frappe.db.get_value(
 		"Healthcare Practitioner",
 		name,
@@ -61,6 +65,7 @@ def validate_public_practitioner(name, department=None):
 			"custom_enable_talya_online_booking",
 		],
 		as_dict=True,
+		for_update=lock,
 	)
 	if not values or values.status != "Active" or not values.custom_show_on_talya_website:
 		frappe.throw(_("The selected practitioner is not available for public booking."))

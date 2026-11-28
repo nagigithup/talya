@@ -1,71 +1,35 @@
-{% extends "templates/web.html" %}
-{% block navbar %}{% endblock %}
-{% block footer %}{% endblock %}
-{% block favicon %}
-<link rel="icon" href="/assets/talya/images/talya-center-favicon.ico" type="image/x-icon">
-{% endblock %}
-{% block head_include %}
-{{ super() }}
-<meta name="description" content="Professional, compassionate general medicine, dental care and medical laboratory services in Ras Al Khaimah.">
-<meta property="og:title" content="Talya Medical Center">
-<meta property="og:description" content="Your Health. Your Smile. Our Priority.">
-<meta property="og:type" content="website">
-<meta name="csrf-token" content="{{ csrf_token }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/talya/css/talya.css?v={{ asset_versions['css/talya.css'] }}">
-<link rel="preload" as="image" href="/assets/talya/images/dr-farouq.png?v={{ asset_versions['images/dr-farouq.png'] }}">
-{% endblock %}
+{% extends "templates/talya_base.html" %}
 {% block page_container %}
-<div class="talya-site" id="top" data-practitioners='{{ practitioners | tojson | e }}'>
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <header class="site-header" id="site-header">
-    <div class="shell nav-shell">
-      <a class="brand" href="#top" aria-label="Talya Medical Center home">
-        <img src="/assets/talya/images/talya-center-logo.jpeg" width="72" height="72" alt="Talya Center">
-      </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span><b data-i18n="menu">Menu</b></button>
-      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-        <a class="active" href="#top" data-i18n="home">Home</a>
-        <a href="#services" data-i18n="services">Services</a>
-        <a href="#doctors" data-i18n="doctors">Doctors</a>
-        <a href="#appointment" data-i18n="book">Book Appointment</a>
-        <a href="#contact" data-i18n="contact">Contact</a>
-      </nav>
-      <div class="nav-actions">
-        <button class="language-switch" type="button" aria-label="Switch language"><span class="lang-en active">EN</span><i></i><span class="lang-ar">عربي</span></button>
-        <a class="whatsapp-pill" href="https://wa.me/971588698578" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#icon-whatsapp"/></svg><span><bdi class="talya-phone" dir="ltr">+971 58 869 8578</bdi></span></a>
-      </div>
-    </div>
-  </header>
+<div class="talya-site" id="top" lang="{{ language }}" dir="{{ direction }}" data-practitioners='{{ practitioners | tojson | e }}' data-selected-doctor="{{ selected_doctor | e }}">
+  <a class="skip-link" href="#main-content">{{ labels.skip_content | e }}</a>
+  {% include "templates/includes/talya_header.html" %}
 
   <main id="main-content">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-shape hero-shape-one"></div><div class="hero-shape hero-shape-two"></div>
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow"><span></span><b data-i18n="eyebrow">Medicine & Dentistry in Ras Al Khaimah</b></div>
-          <h1 id="hero-title"><span data-i18n="hero_title">Talya Medical Center</span><em data-i18n="hero_subtitle">Medicine & Dentistry</em></h1>
-          <p data-i18n="hero_description">Professional, compassionate healthcare for individuals and families.</p>
+          <div class="eyebrow"><span></span><b data-i18n="eyebrow">{{ labels.eyebrow | e }}</b></div>
+          <h1 id="hero-title"><span data-i18n="hero_title">{{ labels.hero_title | e }}</span><em data-i18n="hero_subtitle">{{ labels.hero_subtitle | e }}</em></h1>
+          <p data-i18n="hero_description">{{ labels.hero_description | e }}</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#appointment"><svg><use href="#icon-calendar"/></svg><span data-i18n="book">Book Appointment</span></a>
-            <a class="button button-whatsapp" href="https://wa.me/971588698578" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">Chat on WhatsApp</span></a>
-            <a class="button button-light" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="location">Open Location</span></a>
+            <a class="button button-primary" href="#appointment"><svg><use href="#icon-calendar"/></svg><span data-i18n="book">{{ labels.book | e }}</span></a>
+            <a class="button button-whatsapp" href="{{ whatsapp_url | e }}" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">{{ labels.whatsapp | e }}</span></a>
+            <a class="button button-light" href="{{ maps_url | e }}" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="location">{{ labels.location | e }}</span></a>
           </div>
-          <div class="trust-row"><div><strong dir="ltr">3</strong><span data-i18n="care_areas">Care Areas</span></div><div><svg aria-hidden="true"><use href="#icon-users"/></svg><strong dir="ltr">2</strong><span data-i18n="hero_doctors">Doctors</span></div><div><svg aria-hidden="true"><use href="#icon-heart-shield"/></svg><span data-i18n="hero_compassion">Care with Compassion &amp; Privacy</span></div></div>
+          <div class="trust-row"><div><strong dir="ltr">3</strong><span data-i18n="care_areas">{{ labels.care_areas | e }}</span></div><div><svg aria-hidden="true"><use href="#icon-users"/></svg><strong dir="ltr">2</strong><span data-i18n="hero_doctors">{{ labels.hero_doctors | e }}</span></div><div><svg aria-hidden="true"><use href="#icon-heart-shield"/></svg><span data-i18n="hero_compassion">{{ labels.hero_compassion | e }}</span></div></div>
         </div>
-        <div class="hero-visual hero-slider" role="region" aria-roledescription="carousel" aria-label="Our doctors" tabindex="0">
+        <div class="hero-visual hero-slider" role="region" aria-roledescription="carousel" aria-label="{{ labels.our_doctors | e }}" tabindex="0">
           <div class="hero-ring"></div><div class="hero-cross">+</div>
           <div class="hero-slide is-active" data-doctor="farouq" role="group" aria-roledescription="slide" aria-label="1 / 2" aria-hidden="false">
-            <img class="hero-portrait" src="/assets/talya/images/dr-farouq.png?v={{ asset_versions['images/dr-farouq.png'] }}" alt="Dr. Farouq Ejami" width="1050" height="1400" fetchpriority="high">
-            <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-tooth"/></svg></span><div><b data-hero-text="farouq_name">Dr. Farouq Ejami</b><small data-hero-text="farouq_specialty">Dentist</small></div></div>
-            <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="farouq_tagline">Your Health. Your Smile. Our Priority.</p></div>
+            <img class="hero-portrait" src="/assets/talya/images/dr-farouq.webp?v={{ asset_versions['images/dr-farouq.webp'] }}" alt="{{ profiles.farouq.name | e }}" width="1182" height="1330" fetchpriority="high">
+            <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-tooth"/></svg></span><div><b data-hero-text="farouq_name">{{ profiles.farouq.name | e }}</b><small data-hero-text="farouq_specialty">{{ profiles.farouq.specialty | e }}</small></div></div>
+            <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="farouq_tagline">{{ labels.tagline | e }}</p></div>
           </div>
           <div class="hero-slide hero-slide-mehira" data-doctor="mehira" role="group" aria-roledescription="slide" aria-label="2 / 2" aria-hidden="true" inert>
-            <img class="hero-portrait hero-portrait-mehira" src="/assets/talya/images/dr-mehira-original.webp?v={{ asset_versions['images/dr-mehira-original.webp'] }}" alt="Dr. Mehira Fadl" width="720" height="900" decoding="async">
-            <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-stethoscope"/></svg></span><div><b data-hero-text="mehira_name">Dr. Mehira Fadl</b><small data-hero-text="mehira_specialty">General Practitioner</small></div></div>
-            <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="mehira_tagline">Comprehensive Care. Experience You Can Trust.</p></div>
+            <img class="hero-portrait hero-portrait-mehira" src="/assets/talya/images/dr-mehira-original.webp?v={{ asset_versions['images/dr-mehira-original.webp'] }}" alt="{{ profiles.mehira.name | e }}" width="720" height="900" decoding="async">
+            <div class="doctor-badge"><span class="badge-icon"><svg aria-hidden="true"><use href="#icon-stethoscope"/></svg></span><div><b data-hero-text="mehira_name">{{ profiles.mehira.name | e }}</b><small data-hero-text="mehira_specialty">{{ profiles.mehira.specialty | e }}</small></div></div>
+            <div class="hero-note"><span aria-hidden="true">“</span><p data-hero-text="mehira_tagline">{{ labels.mehira_tagline | e }}</p></div>
           </div>
           <div class="hero-slider-controls">
             <button class="hero-slider-prev" type="button" aria-label="Previous doctor"><span aria-hidden="true">‹</span></button>
@@ -83,69 +47,91 @@
 
     <section class="services section" id="services" aria-labelledby="services-title">
       <div class="shell">
-        <div class="section-heading"><div><span class="kicker" data-i18n="our_services">Our Services</span><h2 id="services-title" data-i18n="care_for_family">Complete care for every family</h2></div><p data-i18n="services_intro">Focused medical and dental care, delivered with clarity and compassion.</p></div>
+        <div class="section-heading"><div><span class="kicker" data-i18n="our_services">{{ labels.our_services | e }}</span><h2 id="services-title" data-i18n="care_for_family">{{ labels.care_for_family | e }}</h2></div><p data-i18n="services_intro">{{ labels.services_intro | e }}</p></div>
         <div class="service-grid">
-          <article class="service-card"><div class="service-icon"><svg><use href="#icon-tooth"/></svg></div><div><h3 data-i18n="dental">Dental Clinic</h3><p data-i18n="dental_desc">Consultations and preventive, restorative and cosmetic dental care.</p><ul><li data-i18n="dental_one">Examinations, cleaning & gum care</li><li data-i18n="dental_two">Fillings, restorations & root canal care</li><li data-i18n="dental_three">Cosmetic dentistry, whitening & implants</li></ul><a href="#appointment" data-service="Dentistry"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art tooth-art"><svg><use href="#icon-tooth"/></svg></div></article>
-          <article class="service-card"><div class="service-icon"><svg><use href="#icon-stethoscope"/></svg></div><div><h3 data-i18n="family">General Medicine</h3><p data-i18n="family_desc">Patient-centered consultations, checkups and ongoing family healthcare.</p><ul><li data-i18n="family_one">General consultations & checkups</li><li data-i18n="family_two">Common illness diagnosis & treatment</li><li data-i18n="family_three">Preventive care, follow-ups & monitoring</li></ul><a href="#appointment" data-service="Family Medicine"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art family-art">✚</div></article>
-          <article class="service-card"><div class="service-icon"><svg><use href="#icon-flask"/></svg></div><div><h3 data-i18n="lab">Medical Laboratory</h3><p data-i18n="lab_desc">Laboratory testing and medical investigations that support clinical diagnosis.</p><ul><li data-i18n="lab_one">Laboratory Testing</li><li data-i18n="lab_two">Medical Investigations</li><li data-i18n="lab_three">Diagnostic Support</li></ul><a href="#appointment" data-service="Laboratory"><span data-i18n="request_appointment">Request appointment</span><b>→</b></a></div><div class="card-art flask-art"><svg><use href="#icon-flask"/></svg></div></article>
+          <article class="service-card"><div class="service-icon"><svg><use href="#icon-tooth"/></svg></div><div><h3><a href="{{ service_paths.dental }}" data-i18n="dental">{{ labels.dental | e }}</a></h3><p data-i18n="dental_desc">{{ labels.dental_desc | e }}</p><ul><li data-i18n="dental_one">{{ labels.dental_one | e }}</li><li data-i18n="dental_two">{{ labels.dental_two | e }}</li><li data-i18n="dental_three">{{ labels.dental_three | e }}</li></ul><a href="#appointment" data-service="Dentistry"><span data-i18n="request_appointment">{{ labels.request_appointment | e }}</span><b>→</b></a></div><div class="card-art tooth-art"><svg><use href="#icon-tooth"/></svg></div></article>
+          <article class="service-card"><div class="service-icon"><svg><use href="#icon-stethoscope"/></svg></div><div><h3><a href="{{ service_paths.general_medicine }}" data-i18n="family">{{ labels.family | e }}</a></h3><p data-i18n="family_desc">{{ labels.family_desc | e }}</p><ul><li data-i18n="family_one">{{ labels.family_one | e }}</li><li data-i18n="family_two">{{ labels.family_two | e }}</li><li data-i18n="family_three">{{ labels.family_three | e }}</li></ul><a href="#appointment" data-service="General Practice"><span data-i18n="request_appointment">{{ labels.request_appointment | e }}</span><b>→</b></a></div><div class="card-art family-art">✚</div></article>
+          <article class="service-card"><div class="service-icon"><svg><use href="#icon-flask"/></svg></div><div><h3 data-i18n="lab">{{ labels.lab | e }}</h3><p data-i18n="lab_desc">{{ labels.lab_desc | e }}</p><ul><li data-i18n="lab_one">{{ labels.lab_one | e }}</li><li data-i18n="lab_two">{{ labels.lab_two | e }}</li><li data-i18n="lab_three">{{ labels.lab_three | e }}</li></ul><a href="#appointment" data-service="Laboratory"><span data-i18n="request_appointment">{{ labels.request_appointment | e }}</span><b>→</b></a></div><div class="card-art flask-art"><svg><use href="#icon-flask"/></svg></div></article>
         </div>
       </div>
     </section>
 
     <section class="doctors section" id="doctors" aria-labelledby="doctors-title">
       <div class="shell">
-        <div class="section-heading"><div><span class="kicker" data-i18n="our_doctors">Our Doctors</span><h2 id="doctors-title" data-i18n="meet_team">Meet your care team</h2></div><p data-i18n="doctors_intro">Professional care focused on your health, comfort and individual needs.</p></div>
+        <div class="section-heading"><div><span class="kicker" data-i18n="our_doctors">{{ labels.our_doctors | e }}</span><h2 id="doctors-title" data-i18n="meet_team">{{ labels.meet_team | e }}</h2></div><p data-i18n="doctors_intro">{{ labels.doctors_intro | e }}</p></div>
         <div class="doctor-grid" id="doctor-grid">
-          <article class="doctor-card" data-fallback="farouq"><div class="doctor-photo farouq"><img src="/assets/talya/images/dr-farouq.png" alt="Dr. Farouq Ejami" loading="lazy"></div><div class="doctor-info"><span class="specialty" data-i18n="dentist">Dentist</span><h3 data-i18n="farouq_name">Dr. Farouq Ejami</h3><p data-i18n="farouq_bio">Provides general and cosmetic dental care, including examinations, preventive care, restorations and treatment planning focused on long-term oral health.</p><button class="doctor-book" type="button" disabled><span data-i18n="booking_unavailable">Booking configuration required</span></button></div></article>
-          <article class="doctor-card" data-fallback="mehira"><div class="doctor-photo mehira"><img src="/assets/talya/images/dr-mehira-original.webp" alt="Dr. Mehira Fadl" width="720" height="900" loading="lazy"></div><div class="doctor-info"><span class="specialty" data-i18n="gp">General Practitioner</span><h3 data-i18n="mehira_name">Dr. Mehira Fadl</h3><p data-i18n="mehira_bio">A general practitioner providing comprehensive, patient-centered care through medical consultations, general health examinations, family healthcare and follow-up care.</p><button class="doctor-book" type="button" disabled><span data-i18n="booking_unavailable">Booking configuration required</span></button></div></article>
+          {% for key in ['farouq', 'mehira'] %}{% set profile = profiles[key] %}
+          <article class="doctor-card" data-profile="{{ key }}"><div class="doctor-photo {{ key }}"><img src="{{ profile.image_url }}" alt="{{ profile.name | e }}" width="{{ profile.width }}" height="{{ profile.height }}" loading="lazy" decoding="async"></div><div class="doctor-info"><span class="specialty">{{ profile.specialty | e }}</span><h3><a href="{{ profile.path }}">{{ profile.name | e }}</a></h3><p>{{ profile.bio | e }}</p><small class="doctor-summary">{{ profile.language_names | join('، ' if language == 'ar' else ', ') | e }} · {{ profile.summary | e }}</small><button class="doctor-book {{ 'enabled' if profile.booking_enabled else '' }}" data-practitioner="{{ profile.practitioner | e }}" type="button" {{ '' if profile.booking_enabled else 'disabled' }}>{{ labels.book if profile.booking_enabled else labels.booking_unavailable }}</button></div></article>
+          {% endfor %}
         </div>
       </div>
     </section>
 
     <section class="booking section" id="appointment" aria-labelledby="booking-title">
       <div class="shell booking-grid">
-        <div class="booking-aside"><span class="kicker light" data-i18n="appointment_request">Appointment Request</span><h2 id="booking-title" data-i18n="start_care">Take the first step toward better care</h2><p data-i18n="booking_intro">Send a preferred appointment request. Our team will contact you to confirm it—submitting this form does not create a confirmed appointment.</p><div class="booking-points"><div><svg><use href="#icon-shield"/></svg><span data-i18n="secure_request">Secure request handling</span></div><div><svg><use href="#icon-calendar"/></svg><span data-i18n="schedule_aware">Schedule-aware availability</span></div><div><svg><use href="#icon-phone"/></svg><span data-i18n="human_confirmation">Confirmed by our reception team</span></div></div><div class="callout"><strong data-i18n="need_help">Need help?</strong><a href="tel:+971522207872"><bdi class="talya-phone" dir="ltr">+971 52 220 7872</bdi></a></div></div>
+        <div class="booking-aside"><span class="kicker light" data-i18n="appointment_request">{{ labels.appointment_request | e }}</span><h2 id="booking-title" data-i18n="start_care">{{ labels.start_care | e }}</h2><p data-i18n="booking_intro">{{ labels.booking_intro | e }}</p><div class="booking-points"><div><svg><use href="#icon-shield"/></svg><span data-i18n="secure_request">{{ labels.secure_request | e }}</span></div><div><svg><use href="#icon-calendar"/></svg><span data-i18n="schedule_aware">{{ labels.schedule_aware | e }}</span></div><div><svg><use href="#icon-phone"/></svg><span data-i18n="human_confirmation">{{ labels.human_confirmation | e }}</span></div></div><div class="callout"><strong data-i18n="need_help">{{ labels.need_help | e }}</strong><a href="tel:{{ phone | e }}"><bdi class="talya-phone" dir="ltr">{{ phone_display | e }}</bdi></a></div></div>
         <form class="booking-form" id="booking-form" novalidate>
-          <div class="form-head"><div><span class="form-icon"><svg><use href="#icon-calendar"/></svg></span><div><h3 data-i18n="book_appointment">Book Appointment</h3><p data-i18n="pending_note">Requests remain pending until reception confirms.</p></div></div><span class="step-badge" data-i18n="easy">Quick · Easy · Private</span></div>
-          <div class="configuration-alert" id="configuration-alert" hidden><svg><use href="#icon-info"/></svg><div><strong data-i18n="setup_needed">Online booking setup is in progress</strong><p data-i18n="setup_explainer">No approved Healthcare Practitioner is enabled yet. Please call or WhatsApp the clinic.</p></div></div>
-          <div class="form-grid">
-            <label><span data-i18n="full_name">Full Name</span><b>*</b><input name="patient_name" dir="auto" autocomplete="name" maxlength="140" required></label>
-            <label><span data-i18n="mobile">Mobile Number</span><b>*</b><input name="mobile_number" type="tel" dir="ltr" autocomplete="tel" placeholder="+971 50 123 4567" maxlength="30" required></label>
-            <label><span data-i18n="email">Email Address</span><input name="email" type="email" dir="ltr" autocomplete="email" maxlength="140"></label>
-            <label><span data-i18n="clinic">Clinic / Specialty</span><b>*</b><select name="medical_department" id="department-select" required><option value="" data-i18n="select_clinic">Select clinic</option></select></label>
-            <label><span data-i18n="doctor">Doctor</span><b>*</b><select name="healthcare_practitioner" id="practitioner-select" required><option value="" data-i18n="select_doctor">Select doctor</option></select></label>
-            <label><span data-i18n="preferred_date">Preferred Date</span><b>*</b><input name="preferred_date" id="preferred-date" type="date" dir="ltr" required></label>
-            <label><span data-i18n="preferred_time">Preferred Time</span><b>*</b><select name="preferred_time" id="preferred-time" dir="ltr" required><option value="" data-i18n="select_time">Select time</option></select><small id="time-help" data-i18n="choose_doctor_date">Choose a doctor and date to view configured availability.</small></label>
-            <label class="wide"><span data-i18n="notes">Notes (Optional)</span><textarea name="patient_notes" dir="auto" maxlength="1000" rows="3" data-i18n-placeholder="notes_placeholder" placeholder="Anything our team should know..."></textarea></label>
-            <label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
-            <label class="consent wide"><input name="consent_accepted" type="checkbox" value="1" required><span data-i18n="consent">I consent to Talya Medical Center using these details to process and contact me about this appointment request.</span></label>
-          </div>
+          <div class="form-head"><div><span class="form-icon"><svg><use href="#icon-calendar"/></svg></span><div><h3 data-i18n="book_appointment">{{ labels.book_appointment | e }}</h3><p data-i18n="pending_note">{{ labels.pending_note | e }}</p></div></div><span class="step-badge" data-i18n="easy">{{ labels.easy | e }}</span></div>
+          <div class="configuration-alert" id="configuration-alert" hidden><svg><use href="#icon-info"/></svg><div><strong data-i18n="setup_needed">{{ labels.setup_needed | e }}</strong><p data-i18n="setup_explainer">{{ labels.setup_explainer | e }}</p></div></div>
+          <fieldset class="patient-mode" id="patient-mode">
+            <legend>{{ labels.patient_mode | e }}</legend>
+            <label><input type="radio" name="patient_mode" value="existing"> {{ labels.existing_patient | e }}</label>
+            <label><input type="radio" name="patient_mode" value="new"> {{ labels.new_patient | e }}</label>
+          </fieldset>
+
+          <fieldset class="patient-lookup form-grid" id="patient-lookup" hidden disabled>
+            <label>{{ labels.lookup_kind | e }}
+              <select id="lookup-kind">
+                <option value="mobile">{{ labels.mobile | e }}</option>
+                <option value="emirates_id">{{ labels.emirates_id | e }}</option>
+              </select>
+            </label>
+            <label><span id="lookup-label">{{ labels.mobile | e }}</span>
+              <input id="lookup-value" dir="ltr" inputmode="tel" autocomplete="off" maxlength="40">
+            </label>
+            <button class="button button-primary wide" id="lookup-patient" type="button">{{ labels.find_my_record | e }}</button>
+          </fieldset>
+          <p id="patient-lookup-status" dir="auto" role="status" aria-live="polite" hidden></p>
+
+          <fieldset class="form-grid patient-registration" id="patient-registration" hidden disabled>
+            <label>{{ labels.first_name | e }}<input name="first_name" dir="auto" autocomplete="given-name" maxlength="70" required></label>
+            <label>{{ labels.last_name | e }}<input name="last_name" dir="auto" autocomplete="family-name" maxlength="70"></label>
+            <label>{{ labels.mobile | e }}<input name="mobile_number" type="tel" dir="ltr" autocomplete="tel" maxlength="30" required></label>
+            <label>{{ labels.gender | e }}
+              <select name="sex" required>
+                <option value="">{{ labels.select_gender | e }}</option>
+                {% for gender in booking_genders %}<option value="{{ gender.value | e }}">{{ gender.label | e }}</option>{% endfor %}
+              </select>
+            </label>
+            <label>{{ labels.emirates_id_optional | e }}<input name="emirates_id" dir="ltr" inputmode="numeric" autocomplete="off" maxlength="24"></label>
+            <label>{{ labels.email | e }}<input name="email" type="email" dir="ltr" autocomplete="email" maxlength="140"></label>
+          </fieldset>
+
+          <fieldset class="form-grid appointment-fields" id="appointment-fields" hidden disabled>
+            <label><span data-i18n="clinic">{{ labels.clinic | e }}</span><b>*</b><select name="medical_department" id="department-select" required><option value="" data-i18n="select_clinic">{{ labels.select_clinic | e }}</option></select></label>
+            <label><span data-i18n="doctor">{{ labels.doctor | e }}</span><b>*</b><select name="healthcare_practitioner" id="practitioner-select" required><option value="" data-i18n="select_doctor">{{ labels.select_doctor | e }}</option></select></label>
+            <label><span data-i18n="preferred_date">{{ labels.preferred_date | e }}</span><b>*</b><input name="preferred_date" id="preferred-date" type="date" dir="ltr" required></label>
+            <label><span data-i18n="preferred_time">{{ labels.preferred_time | e }}</span><b>*</b><select name="preferred_time" id="preferred-time" dir="ltr" required><option value="" data-i18n="select_time">{{ labels.select_time | e }}</option></select><small id="time-help" data-i18n="choose_doctor_date">{{ labels.choose_doctor_date | e }}</small></label>
+            <label class="wide"><span data-i18n="notes">{{ labels.notes | e }}</span><textarea name="patient_notes" dir="auto" maxlength="1000" rows="3" data-i18n-placeholder="notes_placeholder" placeholder="{{ labels.notes_placeholder | e }}"></textarea></label>
+            <label class="honeypot" aria-hidden="true">{{ labels.website_field | e }}<input name="website" tabindex="-1" autocomplete="off"></label>
+            <label class="consent wide"><input name="consent_accepted" type="checkbox" value="1" required><span data-i18n="consent">{{ labels.consent | e }}</span></label>
+          </fieldset>
+          <p id="other-booking-notice" class="other-booking-notice" role="status" aria-live="polite" hidden>{{ labels.other_booking_notice | e }}</p>
           <div class="form-status" id="form-status" dir="auto" role="status" aria-live="polite"></div>
-          <button class="submit-button" type="submit"><svg><use href="#icon-calendar"/></svg><span data-i18n="submit_request">Submit Appointment Request</span></button>
+          <button class="submit-button" type="submit" hidden disabled><svg><use href="#icon-calendar"/></svg><span data-i18n="submit_request">{{ labels.submit_request | e }}</span></button>
         </form>
       </div>
     </section>
 
-    <section class="contact section" id="contact" aria-labelledby="contact-title"><div class="shell"><div class="contact-card"><div class="contact-copy"><span class="kicker" data-i18n="our_location">Our Location</span><h2 id="contact-title" data-i18n="visit_talya">Visit Talya Medical Center</h2><div class="about-copy"><p data-i18n="about_one">Talya Medical Center provides professional, compassionate healthcare in Ras Al Khaimah, offering general medical consultations, dental care, and medical laboratory services.</p><p data-i18n="about_two">Our focus is patient comfort, personalized attention, and quality care for individuals and families.</p></div><p class="contact-address" data-i18n="address">Ras Al Khaimah, Al Nakheel, near Action Hotel, UAE.</p><div class="contact-links"><a href="tel:+971522207872"><svg><use href="#icon-phone"/></svg><span><small data-i18n="call_us">Call us</small><bdi class="talya-phone" dir="ltr">+971 52 220 7872</bdi></span></a><a href="tel:+971504087963"><svg><use href="#icon-phone"/></svg><span><small data-i18n="additional_phone">Additional phone</small><bdi class="talya-phone" dir="ltr">+971 50 408 7963</bdi></span></a><a href="mailto:talyamedicalrak@gmail.com"><svg><use href="#icon-mail"/></svg><span><small data-i18n="email_us">Email us</small><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></span></a></div><div class="contact-buttons"><a class="button button-primary" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="open_maps">Open Google Maps</span></a><a class="button button-whatsapp" href="https://wa.me/971588698578" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">Chat on WhatsApp</span></a></div></div><a class="map-visual reception-visual" href="https://maps.app.goo.gl/wjydTejcBzmawQNWA" target="_blank" rel="noopener" aria-label="Open Talya Medical Center in Google Maps"><img src="/assets/talya/images/talya-reception-styled.png" alt="Talya Medical Center reception" width="1254" height="1254" loading="lazy"><div class="map-label"><img src="/assets/talya/images/talya-center-logo.jpeg" width="44" height="44" alt=""><b>Talya Medical Center</b><small>Al Nakheel · Ras Al Khaimah</small></div></a></div></div></section>
+    <section class="contact section" id="contact" aria-labelledby="contact-title"><div class="shell"><div class="contact-card"><div class="contact-copy"><span class="kicker" data-i18n="our_location">{{ labels.our_location | e }}</span><h2 id="contact-title"><a href="{{ contact_path }}" data-i18n="visit_talya">{{ labels.visit_talya | e }}</a></h2><div class="about-copy"><p data-i18n="about_one">{{ labels.about_one | e }}</p><p data-i18n="about_two">{{ labels.about_two | e }}</p></div><p class="contact-address" data-i18n="address">{{ labels.address | e }}</p><div class="public-hours"><p>{{ labels.clinic_hours | e }}</p><p><bdi dir="ltr">16:00–00:00</bdi> · {{ labels.dubai_timezone | e }}</p><p>{{ labels.walk_in_policy | e }}</p></div><div class="contact-links"><a href="tel:{{ phone | e }}"><svg><use href="#icon-phone"/></svg><span><small data-i18n="call_us">{{ labels.call_us | e }}</small><bdi class="talya-phone" dir="ltr">{{ phone_display | e }}</bdi></span></a><a href="tel:{{ additional_phone | e }}"><svg><use href="#icon-phone"/></svg><span><small data-i18n="additional_phone">{{ labels.additional_phone | e }}</small><bdi class="talya-phone" dir="ltr">{{ additional_phone_display | e }}</bdi></span></a><a href="mailto:talyamedicalrak@gmail.com"><svg><use href="#icon-mail"/></svg><span><small data-i18n="email_us">{{ labels.email_us | e }}</small><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></span></a></div><div class="contact-buttons"><a class="button button-primary" href="{{ maps_url | e }}" target="_blank" rel="noopener"><svg><use href="#icon-pin"/></svg><span data-i18n="open_maps">{{ labels.open_maps | e }}</span></a><a class="button button-whatsapp" href="{{ whatsapp_url | e }}" target="_blank" rel="noopener"><svg><use href="#icon-whatsapp"/></svg><span data-i18n="whatsapp">{{ labels.whatsapp | e }}</span></a></div></div><a class="map-visual reception-visual" href="{{ maps_url | e }}" target="_blank" rel="noopener" aria-label="Open Talya Medical Center in Google Maps"><img src="/assets/talya/images/talya-reception-styled.webp" alt="Talya Medical Center reception" width="1254" height="1254" loading="lazy"><div class="map-label"><img src="/assets/talya/images/talya-center-logo.jpeg" width="44" height="44" alt=""><b>{{ labels.clinic_name | e }}</b><small>{{ labels.location_short | e }}</small></div></a></div></div></section>
   </main>
 
-  <footer class="site-footer"><div class="shell footer-grid"><div class="footer-brand"><img src="/assets/talya/images/talya-center-logo.jpeg" width="124" height="124" alt="Talya Center"><p data-i18n="tagline">Your Health. Your Smile. Our Priority.</p></div><nav aria-label="Footer"><a href="#top" data-i18n="home">Home</a><a href="#services" data-i18n="services">Services</a><a href="#doctors" data-i18n="doctors">Doctors</a><a href="#appointment" data-i18n="book">Book Appointment</a><a href="#contact" data-i18n="contact">Contact</a></nav><div class="footer-contact"><a href="https://wa.me/971588698578"><bdi class="talya-phone" dir="ltr">+971 58 869 8578</bdi></a><a href="tel:+971504087963"><bdi class="talya-phone" dir="ltr">+971 50 408 7963</bdi></a><a href="https://www.instagram.com/p/DeeIVmUiLRp/" target="_blank" rel="noopener">Instagram</a><a href="mailto:talyamedicalrak@gmail.com"><bdi class="talya-email" dir="ltr">talyamedicalrak@gmail.com</bdi></a></div></div><div class="shell footer-bottom"><span>© 2026 Talya Medical Center Medicine and Dentistry LLC OPC</span><a href="#privacy" data-i18n="privacy">Privacy Policy</a></div></footer>
+  {% include "templates/includes/talya_footer.html" %}
 
-  <svg class="svg-sprite" aria-hidden="true"><defs>
-    <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M7 2v3M17 2v3M3 9h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Zm3 9h3v3H8v-3Z"/></symbol>
-    <symbol id="icon-whatsapp" viewBox="0 0 24 24"><path d="M20 11.6A8 8 0 0 1 8.1 18.5L4 20l1.5-4A8 8 0 1 1 20 11.6Z"/><path d="M8.3 7.6c.3-.3.6-.2.8 0l1.1 2c.1.3 0 .5-.2.7l-.7.8c.8 1.7 2 2.8 3.7 3.6l.8-.9c.2-.2.5-.3.7-.1l2 1c.3.1.4.4.3.7-.4 1.2-1.4 1.8-2.5 1.7-3.9-.6-7-3.6-7.6-7.5-.1-.8.4-1.6 1.6-2Z"/></symbol>
-    <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
-    <symbol id="icon-tooth" viewBox="0 0 24 24"><path d="M12 5c-2.2 0-3.1-2-5.2-2C3.5 3 2 6 2.6 9c.5 2.4 1.7 3.7 2.3 7.3.5 3 1.2 4.7 2.5 4.7 2.1 0 1.8-6.4 4.6-6.4s2.5 6.4 4.6 6.4c1.3 0 2-1.7 2.5-4.7.6-3.6 1.8-4.9 2.3-7.3.6-3-1-6-4.2-6C15.1 3 14.2 5 12 5Z"/></symbol>
-    <symbol id="icon-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M3 3h4M13 3h4M10 13v3a5 5 0 0 0 10 0v-3"/><circle cx="20" cy="11" r="2"/></symbol>
-    <symbol id="icon-flask" viewBox="0 0 24 24"><path d="M9 2h6M10 2v6l-6 11c-.5 1 .2 2 1.3 2h13.4c1.1 0 1.8-1 1.3-2L14 8V2M7.5 15h9"/></symbol>
-    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5.5-3.5 9-8 11-4.5-2-8-5.5-8-11V5l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></symbol>
-    <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 21v-2a6 6 0 0 1 12 0v2M16 4a3 3 0 0 1 0 6M21 21v-2a6 6 0 0 0-4-5.7"/></symbol>
-    <symbol id="icon-heart-shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5.5-3.5 9-8 11-4.5-2-8-5.5-8-11V5l8-3Z"/><path d="M12 15.5 8.6 12a2.4 2.4 0 0 1 3.4-3.4 2.4 2.4 0 0 1 3.4 3.4L12 15.5Z"/></symbol>
-    <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M7 3 4 5c-.8.6-.8 1.7-.4 2.7 2.3 5.9 6.8 10.4 12.7 12.7 1 .4 2.1.4 2.7-.4l2-3-4.5-3-2 2c-2.8-1.2-5.3-3.7-6.5-6.5l2-2L7 3Z"/></symbol>
-    <symbol id="icon-mail" viewBox="0 0 24 24"><path d="M3 5h18v14H3V5Z"/><path d="m3 6 9 7 9-7"/></symbol>
-    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
-  </defs></svg>
+  {% include "templates/includes/talya_icons.html" %}
 </div>
+<script type="application/json" id="talya-translations">{{ public_translations | tojson }}</script>
+<script type="application/json" id="talya-hero-profiles">{{ hero_profiles | tojson }}</script>
 <script src="/assets/talya/js/talya.js?v={{ asset_versions['js/talya.js'] }}" defer></script>
 <script src="/assets/talya/js/hero-slider.js?v={{ asset_versions['js/hero-slider.js'] }}" defer></script>
 {% endblock %}

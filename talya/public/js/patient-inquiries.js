@@ -195,6 +195,10 @@
   }
 
   async function openBooking(doc) {
+    if (doc.website_booking) {
+      location.href = '/desk/talya-online-booking/' + encodeURIComponent(doc.website_booking);
+      return;
+    }
     openAction('Book Appointment',`<p>${esc(t('Loading…'))}</p>`);
     const [context, doctors, types, genders] = await Promise.all([call('patient_context',{name:doc.name}),lookups(),call('lookup',{doctype:'Appointment Type'}),call('lookup',{doctype:'Gender'})]);
     const visit = context.visit || {};

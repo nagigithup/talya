@@ -39,3 +39,5 @@ Pre-commit is configured to use the following tools for checking and formatting 
 ## License
 
 mit
+
+The public website uses separate `/en` and `/ar` routes and the clinic-approved canonical origin `https://talyamedical.com`. See the [SEO audit and owner setup steps](docs/talya-seo-audit.md) and [keyword intent map](docs/talya-seo-keyword-map.csv) for page URLs, verified content and release checks.

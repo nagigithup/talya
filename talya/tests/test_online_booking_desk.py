@@ -268,8 +268,7 @@ class TestOnlineBookingDesk(TalyaIsolationTestCase):
 		self.assertEqual(frappe.db.count("Patient"), 2)
 
 	def test_unverified_legacy_link_cannot_confirm(self):
-		self.booking.linked_patient = self.fixture.patient
-		self.booking.save()
+		self.booking.db_set("linked_patient", self.fixture.patient)
 		with self.assertRaises(frappe.ValidationError):
 			self.booking.confirm_booking()
 		self.assert_pending()

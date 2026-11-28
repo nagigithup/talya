@@ -1,0 +1,70 @@
+{% extends "templates/talya_base.html" %}
+{% block page_container %}
+<div class="talya-site public-page" id="top" lang="{{ language }}" dir="{{ direction }}">
+  <a class="skip-link" href="#main-content">{{ labels.skip_content }}</a>
+  {% include "templates/includes/talya_header.html" %}
+  <main id="main-content">
+    {% if page_kind in ['mehira', 'farouq'] %}
+    <section class="profile-hero section">
+      <div class="shell profile-grid">
+        <div class="profile-copy">
+          <span class="kicker">{{ doctor.specialty | e }}</span>
+          <h1>{{ doctor.name | e }}</h1>
+          <p class="profile-location">{{ labels.clinic_name }} · {{ labels.location_short }}</p>
+          <p>{{ doctor.bio | e }}</p>
+          {% if doctor.languages or doctor.nationality or doctor.experience %}
+          <dl class="profile-facts">
+            {% if doctor.languages %}<div><dt>{{ labels.languages }}</dt><dd>{{ doctor.language_names | join('، ' if language == 'ar' else ', ') | e }}</dd></div>{% endif %}
+            {% if doctor.nationality %}<div><dt>{{ labels.nationality }}</dt><dd>{{ doctor.nationality_display | e }}</dd></div>{% endif %}
+            {% if doctor.experience %}<div><dt>{{ labels.experience }}</dt><dd>{{ doctor.experience | e }}</dd></div>{% endif %}
+          </dl>
+          {% endif %}
+          <div class="hero-actions">
+            <a class="button button-primary" href="{{ doctor.booking_path }}"><svg aria-hidden="true"><use href="#icon-calendar"/></svg>{{ labels.patient_request }}</a>
+            <a class="button button-light" href="{{ contact_path }}">{{ labels.contact_reception }}</a>
+          </div>
+        </div>
+        <div class="profile-photo"><img src="{{ doctor.image_url }}" alt="{{ doctor.name | e }}" width="{{ doctor.width }}" height="{{ doctor.height }}" fetchpriority="high" decoding="async"></div>
+      </div>
+    </section>
+    <section class="section public-copy"><div class="shell content-grid">
+      <article class="content-card"><h2>{{ labels.appointment_availability }}</h2><p>{{ labels.availability_body }}</p><h2>{{ labels.related_care }}</h2><a class="text-link" href="{{ service_paths[doctor.service] }}">{{ labels.family if doctor.service == 'general_medicine' else labels.dental }} · {{ labels.location_short }}</a></article>
+      {% include "templates/includes/appointment_steps.html" %}
+    </div></section>
+    {% elif page_kind in ['general_medicine', 'dental'] %}
+    {% set care = profiles.mehira if page_kind == 'general_medicine' else profiles.farouq %}
+    {% set prefix = 'gp' if page_kind == 'general_medicine' else 'dental' %}
+    <section class="public-intro section"><div class="shell">
+      <span class="kicker">{{ labels.our_services }}</span><h1>{{ labels[prefix + '_heading'] }}</h1><p>{{ labels[prefix + '_intro'] }}</p>
+      <div class="hero-actions"><a class="button button-primary" href="{{ care.booking_path }}"><svg aria-hidden="true"><use href="#icon-calendar"/></svg>{{ labels.patient_request }}</a><a class="button button-light" href="{{ care.path }}">{{ care.name | e }}</a></div>
+    </div></section>
+    <section class="section public-copy"><div class="shell content-grid">
+      <article class="content-card"><h2>{{ labels.family if page_kind == 'general_medicine' else labels.dental }}</h2><p>{{ labels[prefix + '_body'] }}</p>
+        {% if page_kind == 'dental' %}
+        <h2>{{ labels.dental_services_prices }}</h2>
+        <table class="service-prices"><thead><tr><th scope="col">{{ labels.service_column }}</th><th scope="col">{{ labels.price_column }}</th></tr></thead><tbody>
+          {% for service in dental_services %}<tr><th scope="row">{{ labels[service.label] }}</th><td>{% if service.price is not none %}{% if language == 'en' %}{{ labels.currency_aed }} {% endif %}<bdi dir="ltr">{{ service.price }}</bdi>{% if language == 'ar' %} {{ labels.currency_aed }}{% endif %}{% else %}<a href="{{ contact_path }}">{{ labels.contact_reception }}</a>{% endif %}</td></tr>{% endfor %}
+        </tbody></table><p>{{ labels.other_dental_prices }}</p>
+        {% endif %}
+        <h2>{{ labels[prefix + '_visit_heading'] }}</h2><p>{{ labels[prefix + '_visit_body'] }}</p><h2>{{ labels.our_doctors }}</h2><p><a class="text-link" href="{{ care.path }}">{{ care.name | e }}</a> · {{ care.specialty | e }}</p></article>
+      {% include "templates/includes/appointment_steps.html" %}
+    </div></section>
+    {% else %}
+    <section class="public-intro section"><div class="shell"><span class="kicker">{{ labels.our_location }}</span><h1>{{ labels.contact_heading }}</h1><p>{{ labels.contact_intro }}</p></div></section>
+    <section class="section public-copy"><div class="shell content-grid">
+      <article class="content-card contact-details"><h2>{{ labels.clinic_name }}</h2><address>{{ labels.address }}</address>
+        <p><a href="tel:{{ phone }}"><bdi dir="ltr">{{ phone_display }}</bdi></a></p>
+        <p><a href="tel:{{ additional_phone }}"><bdi dir="ltr">{{ additional_phone_display }}</bdi></a></p>
+        <p><a href="mailto:talyamedicalrak@gmail.com"><bdi dir="ltr">talyamedicalrak@gmail.com</bdi></a></p>
+        <div class="hero-actions"><a class="button button-primary" href="{{ maps_url }}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#icon-pin"/></svg>{{ labels.open_maps }}</a><a class="button button-whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#icon-whatsapp"/></svg>{{ labels.whatsapp }}</a></div>
+        <h2>{{ labels.hours_heading }}</h2><p>{{ labels.hours_body }}</p><p><bdi dir="ltr">16:00–00:00</bdi> · {{ labels.dubai_timezone }}</p>
+      </article>
+      <article class="content-card"><h2>{{ labels.doctor_profiles }}</h2><p><a class="text-link" href="{{ profiles.mehira.path }}">{{ profiles.mehira.name | e }}</a> · {{ profiles.mehira.specialty | e }}</p><p><a class="text-link" href="{{ profiles.farouq.path }}">{{ profiles.farouq.name | e }}</a> · {{ profiles.farouq.specialty | e }}</p><a class="button button-primary" href="{{ home_path }}#appointment">{{ labels.patient_request }}</a></article>
+    </div></section>
+    {% endif %}
+  </main>
+  {% include "templates/includes/talya_footer.html" %}
+  {% include "templates/includes/talya_icons.html" %}
+</div>
+<script src="/assets/talya/js/public-page.js?v={{ asset_versions['js/public-page.js'] }}" defer></script>
+{% endblock %}

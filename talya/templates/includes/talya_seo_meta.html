@@ -1,0 +1,19 @@
+<meta name="description" content="{{ seo.description | e }}">
+<meta name="robots" content="{{ seo.robots | e }}">
+<meta property="og:title" content="{{ seo.title | e }}">
+<meta property="og:description" content="{{ seo.description | e }}">
+<meta property="og:type" content="{{ 'profile' if page_kind in ['mehira', 'farouq'] else 'website' }}">
+<meta property="og:site_name" content="{{ labels.clinic_name | e }}">
+<meta property="og:locale" content="{{ language }}_AE">
+<meta property="og:locale:alternate" content="{{ 'en' if language == 'ar' else 'ar' }}_AE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ seo.title | e }}">
+<meta name="twitter:description" content="{{ seo.description | e }}">
+{% if seo.image %}<meta property="og:image" content="{{ seo.image | e }}">
+<meta name="twitter:image" content="{{ seo.image | e }}">{% endif %}
+{% if seo.canonical_url %}<link rel="canonical" href="{{ seo.canonical_url | e }}">
+<meta property="og:url" content="{{ seo.canonical_url | e }}">{% endif %}
+{% for code, url in seo.alternates.items() %}<link rel="alternate" hreflang="{{ code }}" href="{{ url | e }}">
+{% endfor %}
+{% if seo.alternates %}<link rel="alternate" hreflang="x-default" href="{{ seo.alternates['en-AE'] | e }}">{% endif %}
+{% if seo.json_ld %}<script type="application/ld+json">{{ seo.json_ld | tojson }}</script>{% endif %}

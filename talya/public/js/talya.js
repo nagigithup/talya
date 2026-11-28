@@ -1,77 +1,336 @@
 (() => {
   const site = document.querySelector('.talya-site');
   if (!site) return;
-  const $ = (s, root = document) => root.querySelector(s);
-  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-  const dict = {
-    ar: {
-      menu:'القائمة',home:'الرئيسية',services:'خدماتنا',doctors:'أطباؤنا',book:'احجز موعد',contact:'تواصل معنا',
-      eyebrow:'الطب وطب الأسنان في رأس الخيمة',hero_title:'مركز تاليا الطبي',hero_subtitle:'الطب العام وطب الأسنان',hero_description:'رعاية صحية مهنية وإنسانية للأفراد والعائلات.',
-      whatsapp:'تواصل عبر واتساب',location:'موقعنا',care_areas:'مجالات رعاية',hero_doctors:'من الأطباء',hero_compassion:'رعاية باهتمام وخصوصية',dentist:'طبيب أسنان',tagline:'صحتك.. ابتسامتك.. أولويتنا',
-      our_services:'خدماتنا',care_for_family:'رعاية متكاملة لكل عائلة',services_intro:'رعاية طبية وطب أسنان مركزة، بوضوح واهتمام.',
-      dental:'عيادة طب الأسنان',dental_desc:'استشارات ورعاية وقائية وترميمية وتجميلية للأسنان.',dental_one:'الفحوصات والتنظيف والعناية باللثة',dental_two:'الحشوات والترميمات وعلاج الجذور',dental_three:'تجميل الأسنان والتبييض والزراعة',
-      family:'الطب العام',family_desc:'استشارات وفحوصات ورعاية صحية مستمرة تتمحور حول المريض والأسرة.',family_one:'الاستشارات العامة والفحوصات الشاملة',family_two:'تشخيص وعلاج الأمراض الشائعة',family_three:'الرعاية الوقائية والمتابعة ومراقبة الحالات',
-      lab:'المختبر الطبي',lab_desc:'فحوصات مخبرية وتحقيقات طبية لدعم التشخيص السريري.',lab_one:'الفحوصات المخبرية',lab_two:'التحقيقات الطبية',lab_three:'دعم التشخيص',request_appointment:'اطلب موعداً',
-      our_doctors:'أطباؤنا',meet_team:'تعرّف على فريق رعايتك',doctors_intro:'رعاية مهنية تركز على صحتك وراحتك واحتياجاتك الفردية.',
-      farouq_name:'د. فاروق عجيمي',farouq_bio:'يقدم رعاية في طب الأسنان العام والتجميلي، تشمل الفحوصات والرعاية الوقائية والترميمات وخطط العلاج مع التركيز على صحة الفم على المدى الطويل.',
-      mehira_name:'د. مهيرة فضل',mehira_bio:'طبيبة عامة تقدم رعاية شاملة تتمحور حول المريض، وتشمل الاستشارات الطبية والفحوصات الصحية العامة والرعاية الأسرية والمتابعة.',
-      booking_unavailable:'يلزم إعداد الحجز',gp:'طبيبة عامة',appointment_request:'طلب موعد',start_care:'ابدأ خطوتك الأولى نحو رعاية أفضل',booking_intro:'أرسل طلب موعد مفضل. سيتواصل فريقنا معك لتأكيده — إرسال النموذج لا يعني تأكيد الموعد.',
-      secure_request:'معالجة آمنة للطلب',schedule_aware:'مواعيد مرتبطة بالجدول',human_confirmation:'تأكيد من فريق الاستقبال',need_help:'هل تحتاج مساعدة؟',book_appointment:'احجز موعد',pending_note:'يبقى الطلب معلقاً حتى يؤكده الاستقبال.',easy:'سريع · سهل · خاص',
-      setup_needed:'إعداد الحجز الإلكتروني جارٍ',setup_explainer:'لا يوجد ممارس رعاية صحية معتمد ومفعّل بعد. يرجى الاتصال أو التواصل عبر واتساب.',full_name:'الاسم الكامل',mobile:'رقم الهاتف',email:'البريد الإلكتروني',clinic:'العيادة / التخصص',select_clinic:'اختر العيادة',doctor:'الطبيب',select_doctor:'اختر الطبيب',preferred_date:'التاريخ المفضل',preferred_time:'الوقت المفضل',select_time:'اختر الوقت',choose_doctor_date:'اختر الطبيب والتاريخ لعرض المواعيد المتاحة.',notes:'ملاحظات (اختياري)',notes_placeholder:'أي معلومات تود إبلاغ فريقنا بها...',consent:'أوافق على استخدام مركز تاليا الطبي لهذه البيانات لمعالجة طلبي والتواصل معي بخصوصه.',submit_request:'إرسال طلب الموعد',
-      our_location:'موقعنا',visit_talya:'قم بزيارة مركز تاليا الطبي',about_one:'يقدم مركز تاليا الطبي خدمات الرعاية الصحية في رأس الخيمة، بما يشمل الطب العام وطب الأسنان والخدمات المخبرية، مع التركيز على جودة الرعاية وراحة المرضى والاهتمام باحتياجات كل فرد من أفراد الأسرة.',about_two:'نهتم براحة المرضى والرعاية الشخصية وتقديم خدمات صحية ذات جودة للأفراد والعائلات.',address:'رأس الخيمة، النخيل، بالقرب من فندق أكشن، الإمارات العربية المتحدة.',call_us:'اتصل بنا',additional_phone:'هاتف إضافي',email_us:'راسلنا',open_maps:'افتح خرائط Google',privacy:'سياسة الخصوصية',
-      no_slots:'لا توجد مواعيد متاحة في هذا التاريخ.',loading_slots:'جارٍ تحميل المواعيد...',submit_success:'تم استلام طلب حجز موعدك بنجاح. سيتواصل معك فريق المركز لتأكيد الموعد.',generic_error:'تعذر إرسال الطلب. يرجى مراجعة البيانات أو التواصل معنا.'
+  const $ = selector => document.querySelector(selector);
+  const $$ = selector => [...document.querySelectorAll(selector)];
+  const translations = JSON.parse($('#talya-translations').textContent);
+  const lang = site.lang === 'ar' ? 'ar' : 'en';
+  const text = key => translations[lang][key] || translations.en[key] || key;
+  const practitioners = JSON.parse(site.dataset.practitioners || '[]').filter(row => row.booking_enabled);
+  const form = $('#booking-form');
+  const department = $('#department-select');
+  const practitioner = $('#practitioner-select');
+  const date = $('#preferred-date');
+  const time = $('#preferred-time');
+  const status = $('#form-status');
+  const lookupFields = $('#patient-lookup');
+  const registration = $('#patient-registration');
+  const visit = $('#appointment-fields');
+  const lookupKind = $('#lookup-kind');
+  const lookupValue = $('#lookup-value');
+  const lookupButton = $('#lookup-patient');
+  const lookupStatus = $('#patient-lookup-status');
+  const notice = $('#other-booking-notice');
+  const submitButton = form.querySelector('button[type=submit]');
+  const csrf = $('meta[name=csrf-token]').content;
+  const nonce = () => [...crypto.getRandomValues(new Uint8Array(16))]
+    .map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+  const flow = nonce();
+  let requestId = nonce();
+  let mode = '';
+  let reference = '';
+  let sharedMobile = '';
+  let pendingIdentity = Promise.resolve();
+  let identityVersion = 0;
+  let availabilityVersion = 0;
+  let noticeVersion = 0;
+  let submitting = false;
+  let booked = false;
+  let lookingUp = false;
+
+  async function request(method, data) {
+    const response = await fetch('/api/method/talya.api.' + method, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Frappe-CSRF-Token': csrf, Accept: 'application/json'},
+      body: JSON.stringify({...data, language: lang}),
+      cache: 'no-store',
+    });
+    if (response.status === 429) throw new Error(text('booking_rate_limited'));
+    const result = await response.json();
+    if (!response.ok || result.exc) {
+      // Display only errors this form explicitly expects. Framework errors can
+      // contain private record or configuration details.
+      let message;
+      try {
+        message = JSON.parse(JSON.parse(result._server_messages)[0]).message;
+      } catch { /* Use the public fallback. */ }
+      throw new Error(translations[lang].public_errors.includes(message) ? message : text('generic_error'));
     }
-  };
-  const en = {};
-  $$('[data-i18n]').forEach(el => en[el.dataset.i18n] = el.textContent.trim());
-  en.notes_placeholder = 'Anything our team should know...'; en.select_time='Select time'; en.no_slots='No configured slots are available on this date.'; en.loading_slots='Loading availability…'; en.submit_success='Your appointment request has been received successfully. Our team will contact you to confirm your appointment.'; en.generic_error='We could not submit the request. Please review the details or contact us.';
-  const translations = { en, ar: dict.ar };
-  let lang = localStorage.getItem('talya-language') === 'ar' ? 'ar' : 'en';
-  let practitioners = [];
-  try { practitioners = JSON.parse(site.dataset.practitioners || '[]'); } catch (_) {}
-  const form = $('#booking-form'); const department = $('#department-select'); const practitioner = $('#practitioner-select'); const date = $('#preferred-date'); const time = $('#preferred-time'); const status = $('#form-status');
-  const text = key => (translations[lang] && translations[lang][key]) || en[key] || key;
-  function applyLanguage(next) {
-    lang = next; localStorage.setItem('talya-language', lang); site.dir = lang === 'ar' ? 'rtl' : 'ltr'; site.lang = lang; document.documentElement.lang = lang; document.documentElement.dir = site.dir;
-    $$('[data-i18n]').forEach(el => { const v = text(el.dataset.i18n); if (v) el.textContent = v; });
-    $$('[data-i18n-placeholder]').forEach(el => el.placeholder = text(el.dataset.i18nPlaceholder));
-    $('.lang-en').classList.toggle('active', lang === 'en'); $('.lang-ar').classList.toggle('active', lang === 'ar');
-    document.title = lang === 'ar' ? 'مركز تاليا الطبي | الطب وطب الأسنان' : 'Talya Medical Center | Medicine & Dentistry';
-    renderSelects();
-    site.dispatchEvent(new CustomEvent('talya:languagechange', {detail: {language: lang}}));
+    return result.message;
   }
-  $('.language-switch').addEventListener('click', () => applyLanguage(lang === 'en' ? 'ar' : 'en'));
-  const toggle = $('.menu-toggle'); const nav = $('#main-nav'); toggle.addEventListener('click', () => { const open = !nav.classList.contains('open'); nav.classList.toggle('open', open); toggle.setAttribute('aria-expanded', String(open)); });
-  $$('.main-nav a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); }));
-  document.addEventListener('scroll', () => { let best = '#top'; $$('main section[id]').forEach(s => { if (s.getBoundingClientRect().top < 180) best = '#' + s.id; }); $$('.main-nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === best)); }, {passive:true});
-  date.min = new Date().toLocaleDateString('en-CA', {timeZone:'Asia/Dubai'});
-  function option(value, label, key) { const el = document.createElement('option'); el.value=value; el.textContent=label; if(key) el.dataset.i18n=key; return el; }
+
+  function displayLookup(message = '') {
+    lookupStatus.textContent = message;
+    lookupStatus.hidden = !message;
+  }
+
+  function setPanel(element, visible) {
+    element.hidden = !visible;
+    element.disabled = !visible;
+  }
+
+  function refreshForm() {
+    const ready = mode === 'new' || (mode === 'existing' && Boolean(reference));
+    setPanel(lookupFields, mode === 'existing');
+    setPanel(registration, mode === 'new');
+    setPanel(visit, ready && practitioners.length > 0);
+    submitButton.hidden = visit.hidden || booked;
+    submitButton.disabled = submitButton.hidden || submitting;
+    lookupButton.disabled = lookingUp;
+  }
+
+  function invalidateLookup() {
+    const previous = reference;
+    reference = '';
+    identityVersion++;
+    noticeVersion++;
+    notice.hidden = true;
+    requestId = nonce();
+    displayLookup();
+    if (previous) {
+      pendingIdentity = pendingIdentity.then(() =>
+        request('invalidate_patient_lookup', {flow_id: flow, booking_reference: previous})
+      ).catch(() => {
+        // Discard this form's reference immediately. A new lookup also replaces
+        // its server reference, and every reference has a short lifetime.
+      });
+    }
+    refreshForm();
+  }
+
+  function updateLookupLabel() {
+    const useId = lookupKind.value === 'emirates_id';
+    $('#lookup-label').textContent = text(useId ? 'emirates_id' : 'mobile');
+    lookupValue.inputMode = useId ? 'numeric' : 'tel';
+  }
+
+  function selectMode(next) {
+    invalidateLookup();
+    booked = false;
+    status.textContent = '';
+    status.className = 'form-status';
+    mode = next;
+    sharedMobile = '';
+    lookupKind.value = 'mobile';
+    lookupValue.value = '';
+    updateLookupLabel();
+    refreshForm();
+  }
+
+  $('#patient-mode').addEventListener('change', event => selectMode(event.target.value));
+  lookupValue.addEventListener('input', invalidateLookup);
+  lookupKind.addEventListener('change', () => {
+    invalidateLookup();
+    if (lookupKind.value === 'mobile') sharedMobile = '';
+    lookupValue.value = '';
+    updateLookupLabel();
+    lookupValue.focus();
+  });
+
+  async function lookupPatient() {
+    if (lookingUp || !lookupValue.value.trim()) {
+      if (!lookingUp) displayLookup(text('lookup_required'));
+      return;
+    }
+    const kind = lookupKind.value;
+    const value = lookupValue.value;
+    invalidateLookup();
+    const version = identityVersion;
+    lookingUp = true;
+    refreshForm();
+    try {
+      await pendingIdentity;
+      const result = await request('lookup_patient', {flow_id: flow, kind, value, shared_mobile: sharedMobile});
+      if (version !== identityVersion) {
+        if (result.booking_reference) {
+          await request('invalidate_patient_lookup', {flow_id: flow, booking_reference: result.booking_reference});
+        }
+        return;
+      }
+      if (result.booking_reference) {
+        reference = result.booking_reference;
+        displayLookup(text('patient_welcome').replace('{0}', () => result.first_name));
+        refreshForm();
+        updateNotice();
+      } else if (result.status === 'new') {
+        const mobile = kind === 'mobile' ? value : '';
+        const emiratesId = kind === 'emirates_id' ? value : '';
+        form.querySelector('[name=patient_mode][value=new]').checked = true;
+        selectMode('new');
+        form.elements.mobile_number.value = mobile;
+        form.elements.emirates_id.value = emiratesId;
+        displayLookup(text('no_patient_match'));
+        form.elements.first_name.focus();
+      } else if (result.status === 'emirates_id') {
+        sharedMobile = value;
+        lookupKind.value = 'emirates_id';
+        lookupValue.value = '';
+        updateLookupLabel();
+        displayLookup(text('shared_mobile_lookup'));
+        lookupValue.focus();
+      } else {
+        displayLookup(text('patient_lookup_reception'));
+      }
+    } catch (error) {
+      if (version === identityVersion) displayLookup(error.message);
+    } finally {
+      lookingUp = false;
+      refreshForm();
+    }
+  }
+
+  async function updateNotice() {
+    const version = ++noticeVersion;
+    notice.hidden = true;
+    if (!reference || !practitioner.value) return;
+    try {
+      const result = await request('booking_notice', {
+        flow_id: flow,
+        booking_reference: reference,
+        practitioner: practitioner.value,
+      });
+      if (version === noticeVersion) notice.hidden = !result.has_other_booking;
+    } catch { /* The final submission rechecks this non-blocking notice. */ }
+  }
+
   function renderSelects() {
-    const chosenDepartment = department.value, chosenPractitioner = practitioner.value;
-    department.replaceChildren(option('', text('select_clinic')));
-    [...new Set(practitioners.map(p => p.department).filter(Boolean))].forEach(d => department.append(option(d,d)));
-    if ([...department.options].some(o => o.value === chosenDepartment)) department.value = chosenDepartment;
-    practitioner.replaceChildren(option('', text('select_doctor')));
-    practitioners.filter(p => !department.value || p.department === department.value).forEach(p => practitioner.append(option(p.id, lang === 'ar' ? p.name_ar : p.name_en)));
-    if ([...practitioner.options].some(o => o.value === chosenPractitioner)) practitioner.value=chosenPractitioner;
-    $('#configuration-alert').hidden = practitioners.length > 0;
-    [department, practitioner, date, time, form.querySelector('button[type=submit]')].forEach(el => el.disabled = practitioners.length === 0);
-    renderDoctors();
+    const selectedDepartment = department.value;
+    const selectedDoctor = practitioner.value;
+    const departments = [...new Set(practitioners.map(row => row.department).filter(Boolean))];
+    department.replaceChildren(new Option(text('select_clinic'), ''), ...departments.map(d => new Option(d, d)));
+    department.value = departments.includes(selectedDepartment) ? selectedDepartment : '';
+    const doctors = practitioners.filter(row => !department.value || row.department === department.value);
+    practitioner.replaceChildren(
+      new Option(text('select_doctor'), ''),
+      ...doctors.map(row => new Option(lang === 'ar' ? row.name_ar : row.name_en, row.id))
+    );
+    practitioner.value = doctors.some(row => row.id === selectedDoctor) ? selectedDoctor : '';
   }
-  function renderDoctors() {
-    if (!practitioners.length) return;
-    const grid = $('#doctor-grid'); grid.innerHTML='';
-    practitioners.forEach(p => { const card=document.createElement('article'); card.className='doctor-card'; const image=p.image || (String(p.name_en).toLowerCase().includes('farouq') ? '/assets/talya/images/dr-farouq.png' : ''); card.innerHTML=`<div class="doctor-photo ${image?'':'placeholder'}">${image?`<img src="${image}" alt="">`:`<div class="avatar-mark">${(p.name_en||'DR').split(/\s+/).map(x=>x[0]).slice(-2).join('')}</div>`}</div><div class="doctor-info"><span class="specialty">${lang==='ar'?p.specialty_ar:p.specialty_en}</span><h3>${lang==='ar'?p.name_ar:p.name_en}</h3><p>${lang==='ar'?p.bio_ar:p.bio_en}</p><button class="doctor-book ${p.booking_enabled?'enabled':''}" type="button" ${p.booking_enabled?'':'disabled'}>${p.booking_enabled?text('book'):text('booking_unavailable')}</button></div>`; const b=$('button',card); if(p.booking_enabled)b.addEventListener('click',()=>{ department.value=p.department; renderSelects(); practitioner.value=p.id; document.querySelector('#appointment').scrollIntoView({behavior:'smooth'}); }); grid.append(card); });
-  }
-  department.addEventListener('change', () => { renderSelects(); time.replaceChildren(option('',text('select_time'))); });
+
   async function loadSlots() {
-    time.replaceChildren(option('', text('loading_slots'))); time.disabled=true;
-    if (!practitioner.value || !date.value) { time.replaceChildren(option('',text('select_time'))); time.disabled=practitioners.length===0; return; }
-    try { const url=`/api/method/talya.api.get_slots?practitioner=${encodeURIComponent(practitioner.value)}&date=${encodeURIComponent(date.value)}`; const res=await fetch(url,{headers:{Accept:'application/json'}}); const data=await res.json(); if(!res.ok)throw new Error(); const slots=(data.message&&data.message.slots)||[]; time.replaceChildren(option('', slots.length?text('select_time'):text('no_slots'))); slots.forEach(s=>time.append(option(s,s))); time.disabled=!slots.length; }
-    catch(e){time.replaceChildren(option('',text('generic_error'))); time.disabled=true;}
+    const version = ++availabilityVersion;
+    time.replaceChildren(new Option(text('select_time'), ''));
+    time.disabled = true;
+    if (!practitioner.value || !date.value) return;
+    time.replaceChildren(new Option(text('loading_slots'), ''));
+    try {
+      const params = new URLSearchParams({practitioner: practitioner.value, date: date.value});
+      const response = await fetch('/api/method/talya.api.get_slots?' + params, {cache: 'no-store'});
+      if (!response.ok) throw new Error();
+      const result = await response.json();
+      if (version !== availabilityVersion) return;
+      const slots = result.message.slots;
+      time.replaceChildren(new Option(text(slots.length ? 'select_time' : 'no_slots'), ''),
+        ...slots.map(slot => new Option(slot, slot)));
+      time.disabled = !slots.length;
+    } catch {
+      if (version === availabilityVersion) time.replaceChildren(new Option(text('generic_error'), ''));
+    }
   }
-  practitioner.addEventListener('change', () => { const p=practitioners.find(x=>x.id===practitioner.value); if(p&&p.department){department.value=p.department;} loadSlots(); }); date.addEventListener('change',loadSlots);
-  form.addEventListener('submit', async e => { e.preventDefault(); status.className='form-status'; status.textContent=''; if(!form.reportValidity())return; const button=form.querySelector('button[type=submit]'); button.disabled=true; const payload=Object.fromEntries(new FormData(form)); payload.language=lang; try{const res=await fetch('/api/method/talya.api.submit_booking',{method:'POST',headers:{'Content-Type':'application/json','X-Frappe-CSRF-Token':$('meta[name=csrf-token]').content,Accept:'application/json'},body:JSON.stringify(payload)}); const data=await res.json(); if(!res.ok||data.exc)throw new Error(data._server_messages||''); const ref=data.message.booking_reference; status.className='form-status success'; status.textContent=`${text('submit_success')} ${lang==='ar'?'رقم الطلب':'Reference'}: ${ref}`; form.reset(); renderSelects(); date.min=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Dubai'});}catch(err){let msg=text('generic_error'); try{const messages=JSON.parse(JSON.parse(err.message)[0]); if(messages.message)msg=messages.message;}catch(_){} status.className='form-status error';status.textContent=msg;}finally{button.disabled=practitioners.length===0;}});
-  $$('[data-service]').forEach(a => a.addEventListener('click', () => { const wanted=a.dataset.service.toLowerCase(); const match=[...department.options].find(o=>o.value.toLowerCase().includes(wanted.split(' ')[0].toLowerCase())); if(match){department.value=match.value;renderSelects();} }));
-  applyLanguage(lang);
+
+  lookupButton.addEventListener('click', lookupPatient);
+  lookupValue.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      lookupPatient();
+    }
+  });
+  form.addEventListener('input', () => {
+    if (!submitting) requestId = nonce();
+  });
+  department.addEventListener('change', () => { renderSelects(); loadSlots(); updateNotice(); });
+  practitioner.addEventListener('change', () => {
+    const selected = practitioners.find(row => row.id === practitioner.value);
+    if (selected) department.value = selected.department;
+    loadSlots();
+    updateNotice();
+  });
+  date.addEventListener('change', loadSlots);
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (submitting || booked || visit.hidden || time.disabled || !form.reportValidity()) return;
+    const booking = Object.fromEntries(new FormData(form));
+    submitting = true;
+    status.textContent = '';
+    status.className = 'form-status';
+    const controls = [...form.elements].filter(element => !element.disabled);
+    controls.forEach(element => { element.disabled = true; });
+    try {
+      await pendingIdentity;
+      const result = await request('submit_booking', {
+        ...booking, flow_id: flow, request_id: requestId, booking_reference: reference,
+      });
+      notice.hidden = !result.has_other_booking;
+      booked = true;
+      status.classList.add('success');
+      status.textContent = text('submit_success') + ' ' + text('booking_reference_label') + ' ' + result.booking_reference;
+      invalidateLookup();
+      notice.hidden = !result.has_other_booking;
+      form.reset();
+      mode = '';
+    } catch (error) {
+      status.classList.add('error');
+      status.textContent = error.message;
+    } finally {
+      controls.forEach(element => { element.disabled = false; });
+      submitting = false;
+      refreshForm();
+    }
+  });
+
+  const toggle = $('.menu-toggle');
+  const nav = $('#main-nav');
+  toggle.addEventListener('click', () => {
+    toggle.setAttribute('aria-expanded', String(nav.classList.toggle('open')));
+  });
+  $$('.main-nav a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+  document.addEventListener('scroll', () => {
+    let active = '#top';
+    $$('main section[id]').forEach(section => {
+      if (section.getBoundingClientRect().top < 180) active = '#' + section.id;
+    });
+    $$('.main-nav a').forEach(link => link.classList.toggle('active', new URL(link.href).hash === active));
+  }, {passive: true});
+  $('.language-switch').addEventListener('click', event => {
+    const target = new URL(event.currentTarget.href);
+    const selected = practitioners.find(row => row.id === practitioner.value);
+    if (selected?.profile_key) target.searchParams.set('doctor', selected.profile_key);
+    target.hash = window.location.hash;
+    event.currentTarget.href = target.toString();
+  });
+
+  function chooseDoctor(selected) {
+    if (!selected) return;
+    department.value = selected.department;
+    renderSelects();
+    practitioner.value = selected.id;
+    requestId = nonce();
+    loadSlots();
+    updateNotice();
+  }
+  $$('#doctor-grid .doctor-book').forEach(button => button.addEventListener('click', () => {
+    chooseDoctor(practitioners.find(row => row.id === button.dataset.practitioner));
+    $('#appointment').scrollIntoView({behavior: 'smooth'});
+  }));
+  $$('[data-service]').forEach(link => link.addEventListener('click', () => {
+    const wanted = link.dataset.service.toLowerCase();
+    const match = [...department.options].find(option => option.value.toLowerCase().includes(wanted));
+    if (!match) return;
+    department.value = match.value;
+    renderSelects();
+    requestId = nonce();
+    loadSlots();
+    updateNotice();
+  }));
+
+  date.min = new Date().toLocaleDateString('en-CA', {timeZone: 'Asia/Dubai'});
+  $('#configuration-alert').hidden = practitioners.length > 0;
+  renderSelects();
+  chooseDoctor(practitioners.find(row => row.id === site.dataset.selectedDoctor));
+  refreshForm();
 })();

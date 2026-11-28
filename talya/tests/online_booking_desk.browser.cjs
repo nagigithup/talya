@@ -54,7 +54,7 @@ fs.mkdirSync(artifacts,{recursive:true});
           frappe.call=options=>{
             let message;
             if(options.method==='talya.online_booking.patient_context') message=context;
-            else if(options.method==='talya.online_booking.visit_options') message={types:[{name:'SYNTHETIC-TYPE',default_duration:30}],service_units:['SYNTHETIC-ROOM'],default_type:'SYNTHETIC-TYPE',verified:false};
+            else if(options.method==='talya.online_booking.visit_options') message={types:[{name:'SYNTHETIC-TYPE',default_duration:30}],service_units:['SYNTHETIC-ROOM'],default_type:'SYNTHETIC-TYPE',verified:false,publicly_linked:Boolean(window.bookingForm?.doc.linked_patient)};
             else if(options.method==='talya.internal_booking.slots') message={slots:[{time:'11:00',end_time:'11:30',service_unit:'SYNTHETIC-ROOM',duration:30}],duration:30};
             else if(options.method.includes('validate_link')) message={name:options.args.docname};
             else if(options.method.includes('get_link_title')) message=options.args.docname;
@@ -108,8 +108,10 @@ fs.mkdirSync(artifacts,{recursive:true});
         await page.waitForFunction(()=>capturedBookingCalls.length===1);
         assert.equal(await page.evaluate(()=>capturedBookingCalls[0].args.patient),'SYNTHETIC-PATIENT-B');
         await page.waitForFunction(()=>getComputedStyle(bookingForm.__talya_patient_dialog.$wrapper[0]).display==='none');
-        await page.evaluate(()=>{
-          bookingForm.doc.linked_patient='SYNTHETIC-PATIENT-B';bookingForm.__talya_visit_options.verified=true;
+        await page.evaluate(async()=>{
+          bookingForm.doc.linked_patient='SYNTHETIC-PATIENT-B';
+          $('#fixture-toolbar').empty();
+          await bookingHandlers.refresh(bookingForm);
           frappe.confirm=(_message,callback)=>callback();
           $('#fixture-toolbar button').filter((_,button)=>button.textContent===__('Confirm & Create Appointment')).trigger('click');
         });

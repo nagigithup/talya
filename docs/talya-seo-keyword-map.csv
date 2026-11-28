@@ -1,0 +1,130 @@
+group,language,query,canonical_url,intent,content_status
+Clinic brand,ar,تاليا,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,تاليا الطبي,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,مركز تاليا الطبي,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,مركز تاليا للطب وطب الأسنان,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,تاليا رأس الخيمة,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,تاليا النخيل,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,مركز طبي في رأس الخيمة,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,مركز طبي في النخيل,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,ar,عيادة في رأس الخيمة,https://talyamedical.com/ar,Find the clinic,Approved clinic name and location; natural copy; no spelling-variant pages
+Clinic brand,en,Talya Medical Center,https://talyamedical.com/en,Find the clinic,Approved clinic name and location; spelling variants share one homepage
+Clinic brand,en,Talya Medical Centre,https://talyamedical.com/en,Find the clinic,Approved clinic name and location; spelling variants share one homepage
+Clinic brand,en,Talya Medical Center Ras Al Khaimah,https://talyamedical.com/en,Find the clinic,Approved clinic name and location; spelling variants share one homepage
+Clinic brand,en,Talya Al Nakheel,https://talyamedical.com/en,Find the clinic,Approved clinic name and location; spelling variants share one homepage
+Clinic brand,en,medical center in Ras Al Khaimah,https://talyamedical.com/en,Find the clinic,Approved clinic name and location; spelling variants share one homepage
+Clinic brand,en,medical clinic in Al Nakheel,https://talyamedical.com/en,Find the clinic,Approved clinic name and location; spelling variants share one homepage
+Location and contact,ar,عيادة قريبة مني,https://talyamedical.com/ar/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Location and contact,ar,مركز طبي قريب مني,https://talyamedical.com/ar/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Location and contact,ar,موقع تاليا الطبي,https://talyamedical.com/ar/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Location and contact,ar,رقم تاليا الطبي,https://talyamedical.com/ar/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Location and contact,en,clinic near me,https://talyamedical.com/en/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Location and contact,en,Talya clinic location,https://talyamedical.com/en/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Location and contact,en,Talya clinic phone number,https://talyamedical.com/en/contact,Directions or telephone,Approved existing address and Maps link; near-me terms remain research terms
+Clinic booking,ar,حجز موعد تاليا,https://talyamedical.com/ar,Request an appointment,Existing homepage booking form; reception confirmation still required
+Clinic booking,en,book an appointment at Talya,https://talyamedical.com/en,Request an appointment,Existing homepage booking form; reception confirmation still required
+Dr Mehira,ar,دكتورة مهيرة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,د. مهيرة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,دكتورة مهيرة رأس الخيمة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,دكتورة مهيرة تاليا,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,دكتورة عامة في رأس الخيمة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,دكتورة عربية في رأس الخيمة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,دكتورة سودانية في رأس الخيمة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,دكتورة سودانية في النخيل,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,د. مهيرة فضل,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,ar,حجز موعد دكتورة مهيرة,https://talyamedical.com/ar/doctors/dr-mehira-fadl,Find and book the approved GP,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Mehira,en,Dr. Mehira,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,Dr. Mehira Fadl,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,Dr. Mehira Ras Al Khaimah,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,Dr. Mehira Talya,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,female GP in Ras Al Khaimah,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,Arabic-speaking female GP in RAK,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,Sudanese female doctor in Ras Al Khaimah,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Mehira,en,book Dr. Mehira,https://talyamedical.com/en/doctors/dr-mehira-fadl,Find and book the approved GP,Publish exact approved spelling Dr. Mehira Fadl; no invented full-name expansion
+Dr Farouq,ar,دكتور فاروق أسنان,https://talyamedical.com/ar/doctors/dr-farouq-ejami,Find and book the approved dentist,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Farouq,ar,دكتور فاروق تاليا,https://talyamedical.com/ar/doctors/dr-farouq-ejami,Find and book the approved dentist,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Farouq,ar,دكتور فاروق رأس الخيمة,https://talyamedical.com/ar/doctors/dr-farouq-ejami,Find and book the approved dentist,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Farouq,ar,طبيب أسنان عربي في رأس الخيمة,https://talyamedical.com/ar/doctors/dr-farouq-ejami,Find and book the approved dentist,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Farouq,ar,طبيب أسنان سوداني في رأس الخيمة,https://talyamedical.com/ar/doctors/dr-farouq-ejami,Find and book the approved dentist,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Farouq,ar,د. فاروق عجيمي,https://talyamedical.com/ar/doctors/dr-farouq-ejami,Find and book the approved dentist,Name/specialty/Arabic/Sudanese confirmed; no individual years or hospital affiliations
+Dr Farouq,en,Dr. Farouq dentist,https://talyamedical.com/en/doctors/dr-farouq-ejami,Find and book the approved dentist,Publish exact approved spelling Dr. Farouq Ejami
+Dr Farouq,en,Dr. Farouq Ejami,https://talyamedical.com/en/doctors/dr-farouq-ejami,Find and book the approved dentist,Publish exact approved spelling Dr. Farouq Ejami
+Dr Farouq,en,Dr. Farouq Ras Al Khaimah,https://talyamedical.com/en/doctors/dr-farouq-ejami,Find and book the approved dentist,Publish exact approved spelling Dr. Farouq Ejami
+Dr Farouq,en,Arabic-speaking dentist in Ras Al Khaimah,https://talyamedical.com/en/doctors/dr-farouq-ejami,Find and book the approved dentist,Publish exact approved spelling Dr. Farouq Ejami
+Dr Farouq,en,Sudanese dentist in RAK,https://talyamedical.com/en/doctors/dr-farouq-ejami,Find and book the approved dentist,Publish exact approved spelling Dr. Farouq Ejami
+Clinic team,ar,أطباء سودانيون في رأس الخيمة,https://talyamedical.com/ar,Find Arabic-speaking Sudanese doctors,Doctors section; approved team-level 10+ UAE government-hospital statement only
+Clinic team,ar,طبيب يتحدث العربية في رأس الخيمة,https://talyamedical.com/ar,Find Arabic-speaking Sudanese doctors,Doctors section; approved team-level 10+ UAE government-hospital statement only
+Clinic team,en,Sudanese doctors in Ras Al Khaimah,https://talyamedical.com/en,Find Arabic-speaking Sudanese doctors,Doctors section; approved team-level experience only
+Clinic team,en,Arabic-speaking doctors in Al Nakheel,https://talyamedical.com/en,Find Arabic-speaking Sudanese doctors,Doctors section; approved team-level experience only
+General medicine,ar,طبيب عام في رأس الخيمة,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,ar,دكتور عام في النخيل,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,ar,عيادة طب عام في رأس الخيمة,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,ar,كشف طبي في رأس الخيمة,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,ar,حجز موعد طبيب عام,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,ar,متابعة الأمراض المزمنة,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,ar,فحص طبي في النخيل,https://talyamedical.com/ar/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,en,general practitioner in Ras Al Khaimah,https://talyamedical.com/en/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,en,GP in Al Nakheel,https://talyamedical.com/en/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,en,general medicine clinic in RAK,https://talyamedical.com/en/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,en,GP appointment in Ras Al Khaimah,https://talyamedical.com/en/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+General medicine,en,chronic disease follow-up,https://talyamedical.com/en/services/general-medicine,Book GP consultation or follow-up,GP consultations and chronic disease follow-up confirmed
+Condition-specific GP research,ar,دكتور للحرارة والكحة,https://talyamedical.com/ar/services/general-medicine,Condition-specific consultation,Research mapped to GP page; confirm specific clinical scope before adding condition-specific claims
+Condition-specific GP research,ar,متابعة السكري في رأس الخيمة,https://talyamedical.com/ar/services/general-medicine,Condition-specific consultation,Research mapped to GP page; confirm specific clinical scope before adding condition-specific claims
+Condition-specific GP research,ar,متابعة ضغط الدم,https://talyamedical.com/ar/services/general-medicine,Condition-specific consultation,Research mapped to GP page; confirm specific clinical scope before adding condition-specific claims
+Condition-specific GP research,en,GP for fever and cough,https://talyamedical.com/en/services/general-medicine,Condition-specific consultation,Broad chronic follow-up confirmed; specific condition/test wording remains conditional
+Condition-specific GP research,en,diabetes follow-up in RAK,https://talyamedical.com/en/services/general-medicine,Condition-specific consultation,Broad chronic follow-up confirmed; specific condition/test wording remains conditional
+Condition-specific GP research,en,blood pressure check,https://talyamedical.com/en/services/general-medicine,Condition-specific consultation,Broad chronic follow-up confirmed; specific condition/test wording remains conditional
+Laboratory research,ar,تحليل دم في رأس الخيمة,https://talyamedical.com/ar/services/general-medicine,Arrange a test,Provision/on-site/referral arrangements pending; no detailed lab page or on-site claim
+Laboratory research,en,blood test in Ras Al Khaimah,https://talyamedical.com/en/services/general-medicine,Arrange a test,Provision/on-site/referral arrangements pending; no availability or price claims
+Dental consultations,ar,عيادة أسنان في رأس الخيمة,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,ar,عيادة أسنان في النخيل,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,ar,عيادة أسنان في النخيل رأس الخيمة,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,ar,دكتور أسنان قريب مني,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,ar,حجز موعد أسنان,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,ar,كشف أسنان,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,ar,ألم الأسنان,https://talyamedical.com/ar/services/dental,Find a dentist or arrange consultation,"Approved dental consultations/checkups; near-me is research, not literal copy"
+Dental consultations,en,dentist in Ras Al Khaimah,https://talyamedical.com/en/services/dental,Find a dentist or arrange consultation,Approved dental care; location and booking links support nearby intent
+Dental consultations,en,dental clinic in Al Nakheel,https://talyamedical.com/en/services/dental,Find a dentist or arrange consultation,Approved dental care; location and booking links support nearby intent
+Dental consultations,en,dentist near me,https://talyamedical.com/en/services/dental,Find a dentist or arrange consultation,Approved dental care; location and booking links support nearby intent
+Dental consultations,en,dental checkup in RAK,https://talyamedical.com/en/services/dental,Find a dentist or arrange consultation,Approved dental care; location and booking links support nearby intent
+Dental consultations,en,dentist for toothache,https://talyamedical.com/en/services/dental,Find a dentist or arrange consultation,Approved dental care; location and booking links support nearby intent
+Cleaning and filling prices,ar,تنظيف الأسنان وإزالة الجير,https://talyamedical.com/ar/services/dental,Service and cost,Confirmed: professional cleaning AED 150 and cavity fillings AED 150
+Cleaning and filling prices,ar,سعر تنظيف الأسنان في رأس الخيمة,https://talyamedical.com/ar/services/dental,Service and cost,Confirmed: professional cleaning AED 150 and cavity fillings AED 150
+Cleaning and filling prices,ar,حشو أسنان,https://talyamedical.com/ar/services/dental,Service and cost,Confirmed: professional cleaning AED 150 and cavity fillings AED 150
+Cleaning and filling prices,ar,علاج تسوس الأسنان,https://talyamedical.com/ar/services/dental,Service and cost,Confirmed: professional cleaning AED 150 and cavity fillings AED 150
+Cleaning and filling prices,ar,سعر حشوة الأسنان,https://talyamedical.com/ar/services/dental,Service and cost,Confirmed: professional cleaning AED 150 and cavity fillings AED 150
+Cleaning and filling prices,en,teeth cleaning in Ras Al Khaimah,https://talyamedical.com/en/services/dental,Service and cost,Only the two confirmed service prices are published
+Cleaning and filling prices,en,dental cleaning cost,https://talyamedical.com/en/services/dental,Service and cost,Only the two confirmed service prices are published
+Cleaning and filling prices,en,cavity filling in RAK,https://talyamedical.com/en/services/dental,Service and cost,Only the two confirmed service prices are published
+Cleaning and filling prices,en,tooth filling cost,https://talyamedical.com/en/services/dental,Service and cost,Only the two confirmed service prices are published
+Crowns and bridges,ar,تركيبات الأسنان,https://talyamedical.com/ar/services/dental,Service or price quotation,Services confirmed; both crown/bridge prices withheld until pricing unit is confirmed
+Crowns and bridges,ar,تلبيس الأسنان,https://talyamedical.com/ar/services/dental,Service or price quotation,Services confirmed; both crown/bridge prices withheld until pricing unit is confirmed
+Crowns and bridges,ar,تلبيسة زيركون,https://talyamedical.com/ar/services/dental,Service or price quotation,Services confirmed; both crown/bridge prices withheld until pricing unit is confirmed
+Crowns and bridges,ar,تركيب جسر أسنان,https://talyamedical.com/ar/services/dental,Service or price quotation,Services confirmed; both crown/bridge prices withheld until pricing unit is confirmed
+Crowns and bridges,ar,سعر تلبيسة الزيركون,https://talyamedical.com/ar/services/dental,Service or price quotation,Services confirmed; both crown/bridge prices withheld until pricing unit is confirmed
+Crowns and bridges,ar,تلبيسة بورسلان,https://talyamedical.com/ar/services/dental,Service or price quotation,Services confirmed; both crown/bridge prices withheld until pricing unit is confirmed
+Crowns and bridges,en,zirconia crowns in Ras Al Khaimah,https://talyamedical.com/en/services/dental,Service or price quotation,Services confirmed; contact reception; do not imply per-tooth/per-bridge units
+Crowns and bridges,en,zirconia crown price,https://talyamedical.com/en/services/dental,Service or price quotation,Services confirmed; contact reception; do not imply per-tooth/per-bridge units
+Crowns and bridges,en,porcelain crowns,https://talyamedical.com/en/services/dental,Service or price quotation,Services confirmed; contact reception; do not imply per-tooth/per-bridge units
+Crowns and bridges,en,dental bridges,https://talyamedical.com/en/services/dental,Service or price quotation,Services confirmed; contact reception; do not imply per-tooth/per-bridge units
+Other confirmed dental services,ar,تبييض الأسنان,https://talyamedical.com/ar/services/dental,Service information,Service names confirmed; no prices supplied
+Other confirmed dental services,ar,فينير الأسنان,https://talyamedical.com/ar/services/dental,Service information,Service names confirmed; no prices supplied
+Other confirmed dental services,ar,تقويم الأسنان,https://talyamedical.com/ar/services/dental,Service information,Service names confirmed; no prices supplied
+Other confirmed dental services,ar,علاج اللثة,https://talyamedical.com/ar/services/dental,Service information,Service names confirmed; no prices supplied
+Other confirmed dental services,en,teeth whitening,https://talyamedical.com/en/services/dental,Service information,Service names confirmed; contact reception for prices
+Other confirmed dental services,en,veneers,https://talyamedical.com/en/services/dental,Service information,Service names confirmed; contact reception for prices
+Other confirmed dental services,en,braces,https://talyamedical.com/en/services/dental,Service information,Service names confirmed; contact reception for prices
+Other confirmed dental services,en,gum treatment,https://talyamedical.com/en/services/dental,Service information,Service names confirmed; contact reception for prices
+Hours and walk-ins,ar,عيادة مفتوحة الجمعة في رأس الخيمة,https://talyamedical.com/ar/contact,Check whether a visit is possible,"Clinic daily 16:00–00:00 Asia/Dubai, including Friday; walk-ins welcome. Never static open-now claims"
+Hours and walk-ins,ar,عيادة أسنان مفتوحة الجمعة,https://talyamedical.com/ar/contact,Check whether a visit is possible,"Clinic daily 16:00–00:00 Asia/Dubai, including Friday; walk-ins welcome. Never static open-now claims"
+Hours and walk-ins,ar,عيادة مسائية في رأس الخيمة,https://talyamedical.com/ar/contact,Check whether a visit is possible,"Clinic daily 16:00–00:00 Asia/Dubai, including Friday; walk-ins welcome. Never static open-now claims"
+Hours and walk-ins,ar,عيادة مفتوحة الآن في النخيل,https://talyamedical.com/ar/contact,Check whether a visit is possible,"Clinic daily 16:00–00:00 Asia/Dubai, including Friday; walk-ins welcome. Never static open-now claims"
+Hours and walk-ins,ar,عيادة تستقبل بدون موعد,https://talyamedical.com/ar/contact,Check whether a visit is possible,"Clinic daily 16:00–00:00 Asia/Dubai, including Friday; walk-ins welcome. Never static open-now claims"
+Hours and walk-ins,en,clinic open Friday in Ras Al Khaimah,https://talyamedical.com/en/contact,Check whether a visit is possible,Confirmed public hours and walk-ins; doctor availability stays in the live booking form
+Hours and walk-ins,en,dentist open Friday in RAK,https://talyamedical.com/en/contact,Check whether a visit is possible,Confirmed public hours and walk-ins; doctor availability stays in the live booking form
+Hours and walk-ins,en,evening clinic in Al Nakheel,https://talyamedical.com/en/contact,Check whether a visit is possible,Confirmed public hours and walk-ins; doctor availability stays in the live booking form
+Hours and walk-ins,en,clinic open now near me,https://talyamedical.com/en/contact,Check whether a visit is possible,Confirmed public hours and walk-ins; doctor availability stays in the live booking form
+Hours and walk-ins,en,walk-in clinic in Ras Al Khaimah,https://talyamedical.com/en/contact,Check whether a visit is possible,Confirmed public hours and walk-ins; doctor availability stays in the live booking form
+Hours and walk-ins,en,walk-in GP clinic,https://talyamedical.com/en/contact,Check whether a visit is possible,Confirmed public hours and walk-ins; doctor availability stays in the live booking form
+General medicine,ar,طبيب عام في النخيل رأس الخيمة,https://talyamedical.com/ar/services/general-medicine,Find a GP in Al Nakheel or RAK,Approved GP consultations and chronic disease follow-up
+General medicine,en,GP clinic in Ras Al Khaimah,https://talyamedical.com/en/services/general-medicine,Find a GP in Al Nakheel or RAK,Approved GP consultations and chronic disease follow-up
